@@ -1,0 +1,40 @@
+-------------------------------------------------------------------------------
+Test set: com.chatbot.workflow.controller.ExecutionControllerTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 8, Errors: 0, Skipped: 0, Time elapsed: 7.565 s <<< FAILURE! - in com.chatbot.workflow.controller.ExecutionControllerTest
+listExecutions_defaultPageSize_is20  Time elapsed: 0.29 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.listExecutions_defaultPageSize_is20(ExecutionControllerTest.java:189)
+
+executeWorkflow_returns202WithExecutionId  Time elapsed: 0.179 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.createSimpleWorkflow(ExecutionControllerTest.java:58)
+	at com.chatbot.workflow.controller.ExecutionControllerTest.executeWorkflow_returns202WithExecutionId(ExecutionControllerTest.java:101)
+
+getExecution_withHistory_returnsHistoryEntries  Time elapsed: 0.019 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.createWorkflowWithHistory(ExecutionControllerTest.java:92)
+	at com.chatbot.workflow.controller.ExecutionControllerTest.getExecution_withHistory_returnsHistoryEntries(ExecutionControllerTest.java:150)
+
+getExecution_returnsStatusAndDetails  Time elapsed: 0.01 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.createSimpleWorkflow(ExecutionControllerTest.java:58)
+	at com.chatbot.workflow.controller.ExecutionControllerTest.getExecution_returnsStatusAndDetails(ExecutionControllerTest.java:119)
+
+getExecution_nonExistentExecution_returns404  Time elapsed: 0.025 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.getExecution_nonExistentExecution_returns404(ExecutionControllerTest.java:144)
+
+listExecutions_pageSizeCappedAt100  Time elapsed: 0.009 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.listExecutions_pageSizeCappedAt100(ExecutionControllerTest.java:198)
+
+listExecutions_returnsPagedResults  Time elapsed: 0.011 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.createSimpleWorkflow(ExecutionControllerTest.java:58)
+	at com.chatbot.workflow.controller.ExecutionControllerTest.listExecutions_returnsPagedResults(ExecutionControllerTest.java:173)
+
+executeWorkflow_nonExistentWorkflow_returns404  Time elapsed: 0.02 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.ExecutionControllerTest.executeWorkflow_nonExistentWorkflow_returns404(ExecutionControllerTest.java:113)
+

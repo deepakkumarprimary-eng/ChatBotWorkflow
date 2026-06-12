@@ -1,0 +1,155 @@
+/* StateNode — Notion-style flat card nodes */
+
+.node {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--node-indicator-color, var(--color-border));
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-secondary);
+  box-shadow: var(--shadow-sm);
+  cursor: grab; 
+  transition: border-color var(--transition-standard), box-shadow var(--transition-standard);
+  position: relative;
+  overflow: visible;
+}
+
+.handle::before {
+  content: "";
+  position: absolute;
+  inset: -8px; /* larger invisible grab area */
+}
+
+.node:hover {
+  border-color: var(--color-border-strong);
+  border-left-color: var(--node-indicator-color, var(--color-border-strong));
+}
+
+/* --- Selected state (layered on React Flow's .react-flow__node.selected) --- */
+.selected {
+  outline: 1.5px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+/* --- End node (circular) --- */
+.endNode {
+  border-radius: 50%;
+  min-width: 60px;
+  min-height: 60px;
+}
+
+/* --- Content layout --- */
+.content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.icon {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+.type {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-code);
+}
+
+/* --- Handle styles (Notion-style: white bg with subtle border) --- */
+.handle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border-strong);
+  z-index: 10;
+    transition:
+    border-color var(--transition-standard),
+    transform var(--transition-standard);
+}
+
+.handle:hover {
+  border-color: var(--color-accent);
+    transform: scale(1.2);
+}
+
+/* --- State type indicator colors (sets --node-indicator-color for left-border) --- */
+.apiCall {
+  --node-indicator-color: var(--color-indicator-blue);
+}
+
+.condition {
+  --node-indicator-color: var(--color-indicator-orange);
+}
+
+.response {
+  --node-indicator-color: var(--color-indicator-green);
+}
+
+.input {
+  --node-indicator-color: var(--color-indicator-purple);
+}
+
+.wait {
+  --node-indicator-color: var(--color-indicator-orange);
+}
+
+.parallel {
+  --node-indicator-color: var(--color-indicator-green);
+}
+
+.end {
+  --node-indicator-color: var(--color-indicator-red);
+}
+
+/* --- Handle type classes (uniform style, kept for className compatibility) --- */
+.handleApiCall,
+.handleCondition,
+.handleResponse,
+.handleInput,
+.handleWait,
+.handleParallel,
+.handleEnd,
+.handleFalse,
+.handleTrue {
+  background: var(--color-surface);
+  border-color: var(--color-border-strong);
+}
+
+/* --- Execution states (subtle, no glow) --- */
+.node[data-execution-state="executing"] {
+  border-left-color: var(--color-accent);
+}
+
+.node[data-execution-state="completed"] {
+  border-left-color: var(--color-indicator-green);
+}
+
+.node[data-execution-state="errored"] {
+  border-left-color: var(--color-indicator-red);
+}
+
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

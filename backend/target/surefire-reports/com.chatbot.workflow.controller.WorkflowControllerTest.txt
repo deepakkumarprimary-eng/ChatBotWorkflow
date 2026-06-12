@@ -1,0 +1,52 @@
+-------------------------------------------------------------------------------
+Test set: com.chatbot.workflow.controller.WorkflowControllerTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 12, Errors: 0, Skipped: 0, Time elapsed: 0.196 s <<< FAILURE! - in com.chatbot.workflow.controller.WorkflowControllerTest
+updateWorkflow_existingId_returns200  Time elapsed: 0.003 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.updateWorkflow_existingId_returns200(WorkflowControllerTest.java:150)
+
+createWorkflow_withNameExactly100Chars_returns201  Time elapsed: 0.002 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.createWorkflow_withNameExactly100Chars_returns201(WorkflowControllerTest.java:104)
+
+createWorkflow_withDefinition_returns201WithDefinition  Time elapsed: 0.01 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.createWorkflow_withDefinition_returns201WithDefinition(WorkflowControllerTest.java:281)
+
+listWorkflows_returnsPagedResults  Time elapsed: 0.012 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.listWorkflows_returnsPagedResults(WorkflowControllerTest.java:252)
+
+createWorkflow_withValidRequest_returns201  Time elapsed: 0.007 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.createWorkflow_withValidRequest_returns201(WorkflowControllerTest.java:47)
+
+listWorkflows_withDefaultPagination_returnsResults  Time elapsed: 0.01 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.listWorkflows_withDefaultPagination_returnsResults(WorkflowControllerTest.java:268)
+
+getWorkflow_existingId_returns200  Time elapsed: 0.009 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.getWorkflow_existingId_returns200(WorkflowControllerTest.java:117)
+
+updateWorkflow_withInvalidName_returns400  Time elapsed: 0.01 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.updateWorkflow_withInvalidName_returns400(WorkflowControllerTest.java:192)
+
+deleteWorkflow_nonExistentId_returns404  Time elapsed: 0.009 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.deleteWorkflow_nonExistentId_returns404(WorkflowControllerTest.java:238)
+
+updateWorkflow_nonExistentId_returns404  Time elapsed: 0.013 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.updateWorkflow_nonExistentId_returns404(WorkflowControllerTest.java:179)
+
+deleteWorkflow_existingId_returns204  Time elapsed: 0.009 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.deleteWorkflow_existingId_returns204(WorkflowControllerTest.java:218)
+
+getWorkflow_nonExistentId_returns404  Time elapsed: 0.008 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.getWorkflow_nonExistentId_returns404(WorkflowControllerTest.java:137)
+

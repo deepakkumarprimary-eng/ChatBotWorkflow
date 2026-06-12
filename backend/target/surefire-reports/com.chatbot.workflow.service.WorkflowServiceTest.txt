@@ -1,0 +1,149 @@
+-------------------------------------------------------------------------------
+Test set: com.chatbot.workflow.service.WorkflowServiceTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 3, Errors: 10, Skipped: 0, Time elapsed: 1.398 s <<< FAILURE! - in com.chatbot.workflow.service.WorkflowServiceTest
+createWorkflow_shouldPersistWorkflowAndVersion  Time elapsed: 0.024 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.createWorkflow_shouldPersistWorkflowAndVersion(WorkflowServiceTest.java:61)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.createWorkflow_shouldPersistWorkflowAndVersion(WorkflowServiceTest.java:61)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.createWorkflow_shouldPersistWorkflowAndVersion(WorkflowServiceTest.java:61)
+
+listWorkflows_shouldCapPageSizeAt50  Time elapsed: 0.009 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldCapPageSizeAt50(WorkflowServiceTest.java:195)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldCapPageSizeAt50(WorkflowServiceTest.java:195)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldCapPageSizeAt50(WorkflowServiceTest.java:195)
+
+getWorkflow_shouldThrowWhenNotFound  Time elapsed: 0.007 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <com.chatbot.workflow.service.WorkflowNotFoundException> but was: <org.springframework.dao.InvalidDataAccessResourceUsageException>
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:94)
+Caused by: org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$getWorkflow_shouldThrowWhenNotFound$0(WorkflowServiceTest.java:94)
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:94)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$getWorkflow_shouldThrowWhenNotFound$0(WorkflowServiceTest.java:94)
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:94)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$getWorkflow_shouldThrowWhenNotFound$0(WorkflowServiceTest.java:94)
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:94)
+
+getWorkflow_shouldReturnWorkflowWithDefinition  Time elapsed: 0.01 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldReturnWorkflowWithDefinition(WorkflowServiceTest.java:81)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldReturnWorkflowWithDefinition(WorkflowServiceTest.java:81)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldReturnWorkflowWithDefinition(WorkflowServiceTest.java:81)
+
+listWorkflows_shouldReturnPagedResults  Time elapsed: 0.006 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldReturnPagedResults(WorkflowServiceTest.java:169)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldReturnPagedResults(WorkflowServiceTest.java:169)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldReturnPagedResults(WorkflowServiceTest.java:169)
+
+deleteWorkflow_shouldSoftDelete  Time elapsed: 0.012 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldSoftDelete(WorkflowServiceTest.java:146)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldSoftDelete(WorkflowServiceTest.java:146)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldSoftDelete(WorkflowServiceTest.java:146)
+
+listWorkflows_shouldBeSortedByLastModifiedDesc  Time elapsed: 0.007 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldBeSortedByLastModifiedDesc(WorkflowServiceTest.java:208)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldBeSortedByLastModifiedDesc(WorkflowServiceTest.java:208)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldBeSortedByLastModifiedDesc(WorkflowServiceTest.java:208)
+
+deleteWorkflow_shouldThrowWhenNotFound  Time elapsed: 0.008 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <com.chatbot.workflow.service.WorkflowNotFoundException> but was: <org.springframework.dao.InvalidDataAccessResourceUsageException>
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:162)
+Caused by: org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$deleteWorkflow_shouldThrowWhenNotFound$3(WorkflowServiceTest.java:162)
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:162)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$deleteWorkflow_shouldThrowWhenNotFound$3(WorkflowServiceTest.java:162)
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:162)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$deleteWorkflow_shouldThrowWhenNotFound$3(WorkflowServiceTest.java:162)
+	at com.chatbot.workflow.service.WorkflowServiceTest.deleteWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:162)
+
+updateWorkflow_shouldIncrementVersion  Time elapsed: 0.008 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldIncrementVersion(WorkflowServiceTest.java:107)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldIncrementVersion(WorkflowServiceTest.java:107)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldIncrementVersion(WorkflowServiceTest.java:107)
+
+updateWorkflow_shouldThrowWhenNotFound  Time elapsed: 0.009 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <com.chatbot.workflow.service.WorkflowNotFoundException> but was: <org.springframework.dao.InvalidDataAccessResourceUsageException>
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:140)
+Caused by: org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$updateWorkflow_shouldThrowWhenNotFound$2(WorkflowServiceTest.java:141)
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:140)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$updateWorkflow_shouldThrowWhenNotFound$2(WorkflowServiceTest.java:141)
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:140)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.lambda$updateWorkflow_shouldThrowWhenNotFound$2(WorkflowServiceTest.java:141)
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_shouldThrowWhenNotFound(WorkflowServiceTest.java:140)
+
+listWorkflows_shouldNotIncludeDeletedWorkflows  Time elapsed: 0.007 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldNotIncludeDeletedWorkflows(WorkflowServiceTest.java:181)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldNotIncludeDeletedWorkflows(WorkflowServiceTest.java:181)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.listWorkflows_shouldNotIncludeDeletedWorkflows(WorkflowServiceTest.java:181)
+
+getWorkflow_shouldThrowWhenDeleted  Time elapsed: 0.009 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenDeleted(WorkflowServiceTest.java:99)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenDeleted(WorkflowServiceTest.java:99)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.getWorkflow_shouldThrowWhenDeleted(WorkflowServiceTest.java:99)
+
+updateWorkflow_multipleUpdates_shouldIncrementMonotonically  Time elapsed: 0.008 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_multipleUpdates_shouldIncrementMonotonically(WorkflowServiceTest.java:124)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_multipleUpdates_shouldIncrementMonotonically(WorkflowServiceTest.java:124)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.service.WorkflowServiceTest.updateWorkflow_multipleUpdates_shouldIncrementMonotonically(WorkflowServiceTest.java:124)
+

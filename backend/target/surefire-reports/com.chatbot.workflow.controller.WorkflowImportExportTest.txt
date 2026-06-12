@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Test set: com.chatbot.workflow.controller.WorkflowImportExportTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 2, Errors: 2, Skipped: 0, Time elapsed: 0.142 s <<< FAILURE! - in com.chatbot.workflow.controller.WorkflowImportExportTest
+exportThenImport_roundTrip  Time elapsed: 0.005 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportThenImport_roundTrip(WorkflowImportExportTest.java:213)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportThenImport_roundTrip(WorkflowImportExportTest.java:213)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportThenImport_roundTrip(WorkflowImportExportTest.java:213)
+
+exportWorkflow_returns404ForNonExistentWorkflow  Time elapsed: 0.011 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportWorkflow_returns404ForNonExistentWorkflow(WorkflowImportExportTest.java:70)
+
+exportWorkflow_returnsJsonFileWithCorrectHeaders  Time elapsed: 0.006 s  <<< ERROR!
+org.springframework.dao.InvalidDataAccessResourceUsageException: could not prepare statement; SQL [insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)]; nested exception is org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportWorkflow_returnsJsonFileWithCorrectHeaders(WorkflowImportExportTest.java:52)
+Caused by: org.hibernate.exception.SQLGrammarException: could not prepare statement
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportWorkflow_returnsJsonFileWithCorrectHeaders(WorkflowImportExportTest.java:52)
+Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: 
+Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.exportWorkflow_returnsJsonFileWithCorrectHeaders(WorkflowImportExportTest.java:52)
+
+importWorkflow_successfulImport  Time elapsed: 0.035 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowImportExportTest.importWorkflow_successfulImport(WorkflowImportExportTest.java:84)
+

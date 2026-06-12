@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: com.chatbot.workflow.controller.WorkflowValidationEndpointTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.063 s <<< FAILURE! - in com.chatbot.workflow.controller.WorkflowValidationEndpointTest
+validateWorkflow_invalidWorkflow_returnsValidFalseWithErrors  Time elapsed: 0.016 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowValidationEndpointTest.validateWorkflow_invalidWorkflow_returnsValidFalseWithErrors(WorkflowValidationEndpointTest.java:112)
+
+validateWorkflow_emptyWorkflow_returnsValidFalseWithEmptyError  Time elapsed: 0.011 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowValidationEndpointTest.validateWorkflow_emptyWorkflow_returnsValidFalseWithEmptyError(WorkflowValidationEndpointTest.java:139)
+
+validateWorkflow_nonExistentId_returns404  Time elapsed: 0.012 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowValidationEndpointTest.validateWorkflow_nonExistentId_returns404(WorkflowValidationEndpointTest.java:160)
+
+validateWorkflow_validWorkflow_returnsValidTrue  Time elapsed: 0.013 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowValidationEndpointTest.validateWorkflow_validWorkflow_returnsValidTrue(WorkflowValidationEndpointTest.java:76)
+

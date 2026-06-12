@@ -1,0 +1,232 @@
+/**
+ * PropertyPanel styles
+ * Requirements: 2.2, 2.7, 2.10, 3.8
+ * - Card-based layout with 1px solid dividers between sections
+ * - Typography tokens for label font-size and font-weight
+ * - Token references for all colors, spacing, radius
+ */
+
+.panel {
+  width: 320px;
+  border-left: 1px solid var(--color-border);
+  padding: var(--space-4);
+  overflow-y: auto;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.emptyMessage {
+  color: var(--color-neutral-base);
+  text-align: center;
+  margin-top: var(--space-10);
+  font-size: var(--font-size-md);
+}
+
+/* --- Header section --- */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stateName {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-1);
+  color: var(--color-neutral-darkest);
+}
+
+.stateType {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-base);
+  margin-bottom: var(--space-4);
+}
+
+.deleteButton {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-error-base);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-error-base);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+  align-self: flex-start;
+}
+
+.deleteButton:hover {
+  background-color: var(--color-error-lightest);
+}
+
+/* --- Section title (divider between sections) --- */
+
+.sectionTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-3);
+  margin-top: var(--space-4);
+  color: var(--color-neutral-darkest);
+}
+
+/* --- Field styling --- */
+
+.fieldGroup {
+  margin-bottom: var(--space-3);
+}
+
+.fieldLabel {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-1);
+  color: var(--color-neutral-dark);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  box-sizing: border-box;
+  background: var(--glass-bg-strong);
+  color: var(--color-neutral-darkest);
+  transition: all var(--transition-fast);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary-base);
+  box-shadow: 0 0 0 3px rgba(59, 158, 221, 0.12);
+  background: var(--color-surface-solid);
+}
+
+.inputError {
+  composes: input;
+  border-color: var(--color-error-base);
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 2px var(--color-error-lightest);
+}
+
+.textarea {
+  composes: input;
+  min-height: 60px;
+  resize: vertical;
+}
+
+.textareaLarge {
+  composes: input;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.errorText {
+  color: var(--color-error-base);
+  font-size: var(--font-size-sm);
+  margin-top: 2px;
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-base);
+  margin-top: var(--space-1);
+}
+
+/* --- Buttons --- */
+
+.button {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  color: var(--color-neutral-darkest);
+}
+
+.button:hover {
+  background-color: var(--color-neutral-lightest);
+}
+
+.removeButton {
+  composes: button;
+  color: var(--color-error-base);
+  border-color: var(--color-error-base);
+}
+
+.removeButton:hover {
+  background-color: var(--color-error-lightest);
+}
+
+/* --- Key-value row (headers, mappings) --- */
+
+.keyValueRow {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+  align-items: center;
+}
+
+.keyValueInput {
+  composes: input;
+  flex: 1;
+}
+
+/* --- Retry Policy section (divider on top) --- */
+
+.retrySection {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.retryToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.retryToggleLabel {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-neutral-darkest);
+}
+
+/* --- No config message --- */
+
+.noConfig {
+  color: var(--color-neutral-base);
+  font-size: var(--font-size-base);
+}
+
+/* --- Branches (Parallel form) --- */
+
+.branchRow {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+  align-items: center;
+}
+
+.branchInput {
+  composes: input;
+  flex: 1;
+}
+
+/* --- Code font for variable name inputs via semantic selector --- */
+[data-role="variable-name"] {
+  font-family: var(--font-family-code);
+  font-size: var(--font-size-base);
+}
+
+/* --- Code font for state type label in panel --- */
+.stateType {
+  font-family: var(--font-family-code);
+}

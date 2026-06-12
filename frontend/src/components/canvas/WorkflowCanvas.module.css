@@ -1,0 +1,39 @@
+/**
+ * WorkflowCanvas styles
+ * Requirements: 6.1 - White canvas background
+ * Requirements: 6.4 - No mesh gradient overlays
+ * Requirements: 6.5 - Padding between canvas edge and UI chrome
+ * Requirements: 6.7 - Handle connection states use accent color at low opacity
+ */
+
+.canvasWrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: var(--color-canvas-bg);
+  padding: var(--space-4);
+}
+
+.minimap {
+  bottom: 16px;
+  right: 16px;
+}
+
+/* Global React Flow handle overrides for larger connection targets */
+.canvasWrapper :global(.react-flow__handle) {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  min-height: 12px;
+  transition: box-shadow var(--transition-standard);
+}
+
+/* Connecting state — accent color at low opacity */
+.canvasWrapper :global(.react-flow__handle-connecting) {
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}
+
+/* Valid connection target — accent color at low opacity */
+.canvasWrapper :global(.react-flow__handle-valid) {
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+}

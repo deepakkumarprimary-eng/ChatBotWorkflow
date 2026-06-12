@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.196" tests="15" errors="0" skipped="0" failures="12">
+  <properties>
+    <property name="sun.desktop" value="windows"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="E:\AI\chatbot\backend\target\test-classes;E:\AI\chatbot\backend\target\classes;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-web\2.7.18\spring-boot-starter-web-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter\2.7.18\spring-boot-starter-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot\2.7.18\spring-boot-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\2.7.18\spring-boot-autoconfigure-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-logging\2.7.18\spring-boot-starter-logging-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\ch\qos\logback\logback-classic\1.2.12\logback-classic-1.2.12.jar;C:\Users\Deepak Kumar\.m2\repository\ch\qos\logback\logback-core\1.2.12\logback-core-1.2.12.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.17.2\log4j-to-slf4j-2.17.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\logging\log4j\log4j-api\2.17.2\log4j-api-2.17.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\slf4j\jul-to-slf4j\1.7.36\jul-to-slf4j-1.7.36.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\annotation\jakarta.annotation-api\1.3.5\jakarta.annotation-api-1.3.5.jar;C:\Users\Deepak Kumar\.m2\repository\org\yaml\snakeyaml\1.30\snakeyaml-1.30.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-json\2.7.18\spring-boot-starter-json-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.13.5\jackson-databind-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.13.5\jackson-annotations-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.13.5\jackson-core-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.13.5\jackson-datatype-jdk8-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.13.5\jackson-datatype-jsr310-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.13.5\jackson-module-parameter-names-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\2.7.18\spring-boot-starter-tomcat-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\9.0.83\tomcat-embed-core-9.0.83.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\9.0.83\tomcat-embed-websocket-9.0.83.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-web\5.3.31\spring-web-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-beans\5.3.31\spring-beans-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-webmvc\5.3.31\spring-webmvc-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-aop\5.3.31\spring-aop-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-context\5.3.31\spring-context-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-expression\5.3.31\spring-expression-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-validation\2.7.18\spring-boot-starter-validation-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\9.0.83\tomcat-embed-el-9.0.83.jar;C:\Users\Deepak Kumar\.m2\repository\org\hibernate\validator\hibernate-validator\6.2.5.Final\hibernate-validator-6.2.5.Final.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\validation\jakarta.validation-api\2.0.2\jakarta.validation-api-2.0.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\classmate\1.5.1\classmate-1.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\2.7.18\spring-boot-starter-data-jpa-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-aop\2.7.18\spring-boot-starter-aop-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\aspectj\aspectjweaver\1.9.7\aspectjweaver-1.9.7.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\2.7.18\spring-boot-starter-jdbc-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\com\zaxxer\HikariCP\4.0.3\HikariCP-4.0.3.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-jdbc\5.3.31\spring-jdbc-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\transaction\jakarta.transaction-api\1.3.3\jakarta.transaction-api-1.3.3.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\persistence\jakarta.persistence-api\2.2.3\jakarta.persistence-api-2.2.3.jar;C:\Users\Deepak Kumar\.m2\repository\org\hibernate\hibernate-core\5.6.15.Final\hibernate-core-5.6.15.Final.jar;C:\Users\Deepak Kumar\.m2\repository\net\bytebuddy\byte-buddy\1.12.23\byte-buddy-1.12.23.jar;C:\Users\Deepak Kumar\.m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Users\Deepak Kumar\.m2\repository\org\jboss\jandex\2.4.2.Final\jandex-2.4.2.Final.jar;C:\Users\Deepak Kumar\.m2\repository\org\hibernate\common\hibernate-commons-annotations\5.1.2.Final\hibernate-commons-annotations-5.1.2.Final.jar;C:\Users\Deepak Kumar\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.9\jaxb-runtime-2.3.9.jar;C:\Users\Deepak Kumar\.m2\repository\org\glassfish\jaxb\txw2\2.3.9\txw2-2.3.9.jar;C:\Users\Deepak Kumar\.m2\repository\com\sun\istack\istack-commons-runtime\3.0.12\istack-commons-runtime-3.0.12.jar;C:\Users\Deepak Kumar\.m2\repository\com\sun\activation\jakarta.activation\1.2.2\jakarta.activation-1.2.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\data\spring-data-jpa\2.7.18\spring-data-jpa-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\data\spring-data-commons\2.7.18\spring-data-commons-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-orm\5.3.31\spring-orm-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-tx\5.3.31\spring-tx-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-aspects\5.3.31\spring-aspects-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\postgresql\postgresql\42.3.8\postgresql-42.3.8.jar;C:\Users\Deepak Kumar\.m2\repository\org\checkerframework\checker-qual\3.5.0\checker-qual-3.5.0.jar;C:\Users\Deepak Kumar\.m2\repository\org\flywaydb\flyway-core\8.5.13\flyway-core-8.5.13.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-test\2.7.18\spring-boot-starter-test-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-test\2.7.18\spring-boot-test-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\2.7.18\spring-boot-test-autoconfigure-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\com\jayway\jsonpath\json-path\2.7.0\json-path-2.7.0.jar;C:\Users\Deepak Kumar\.m2\repository\net\minidev\json-smart\2.4.11\json-smart-2.4.11.jar;C:\Users\Deepak Kumar\.m2\repository\net\minidev\accessors-smart\2.4.11\accessors-smart-2.4.11.jar;C:\Users\Deepak Kumar\.m2\repository\org\ow2\asm\asm\9.3\asm-9.3.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\2.3.3\jakarta.xml.bind-api-2.3.3.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\activation\jakarta.activation-api\1.2.2\jakarta.activation-api-1.2.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\assertj\assertj-core\3.22.0\assertj-core-3.22.0.jar;C:\Users\Deepak Kumar\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter\5.8.2\junit-jupiter-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.8.2\junit-jupiter-params-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\mockito\mockito-core\4.5.1\mockito-core-4.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.23\byte-buddy-agent-1.12.23.jar;C:\Users\Deepak Kumar\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\mockito\mockito-junit-jupiter\4.5.1\mockito-junit-jupiter-4.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\org\skyscreamer\jsonassert\1.5.1\jsonassert-1.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-core\5.3.31\spring-core-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-jcl\5.3.31\spring-jcl-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-test\5.3.31\spring-test-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik\1.8.2\jqwik-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-api\1.8.2\jqwik-api-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-web\1.8.2\jqwik-web-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-time\1.8.2\jqwik-time-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-engine\1.8.2\jqwik-engine-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\com\h2database\h2\2.1.214\h2-2.1.214.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Asia/Calcutta"/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="IN"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.30\bin"/>
+    <property name="sun.java.command" value="C:\Users\DEEPAK~1\AppData\Local\Temp\surefire3445537131483954951\surefirebooter6538395367467699579.jar C:\Users\Deepak Kumar\AppData\Local\Temp\surefire3445537131483954951 2026-06-10T03-12-55_963-jvmRun1 surefire16248173967122398242tmp surefire_012688510025691326648tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="E:\AI\chatbot\backend\target\test-classes;E:\AI\chatbot\backend\target\classes;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-web\2.7.18\spring-boot-starter-web-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter\2.7.18\spring-boot-starter-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot\2.7.18\spring-boot-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-autoconfigure\2.7.18\spring-boot-autoconfigure-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-logging\2.7.18\spring-boot-starter-logging-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\ch\qos\logback\logback-classic\1.2.12\logback-classic-1.2.12.jar;C:\Users\Deepak Kumar\.m2\repository\ch\qos\logback\logback-core\1.2.12\logback-core-1.2.12.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\logging\log4j\log4j-to-slf4j\2.17.2\log4j-to-slf4j-2.17.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\logging\log4j\log4j-api\2.17.2\log4j-api-2.17.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\slf4j\jul-to-slf4j\1.7.36\jul-to-slf4j-1.7.36.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\annotation\jakarta.annotation-api\1.3.5\jakarta.annotation-api-1.3.5.jar;C:\Users\Deepak Kumar\.m2\repository\org\yaml\snakeyaml\1.30\snakeyaml-1.30.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-json\2.7.18\spring-boot-starter-json-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.13.5\jackson-databind-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.13.5\jackson-annotations-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.13.5\jackson-core-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.13.5\jackson-datatype-jdk8-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.13.5\jackson-datatype-jsr310-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\jackson\module\jackson-module-parameter-names\2.13.5\jackson-module-parameter-names-2.13.5.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-tomcat\2.7.18\spring-boot-starter-tomcat-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\tomcat\embed\tomcat-embed-core\9.0.83\tomcat-embed-core-9.0.83.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\tomcat\embed\tomcat-embed-websocket\9.0.83\tomcat-embed-websocket-9.0.83.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-web\5.3.31\spring-web-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-beans\5.3.31\spring-beans-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-webmvc\5.3.31\spring-webmvc-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-aop\5.3.31\spring-aop-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-context\5.3.31\spring-context-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-expression\5.3.31\spring-expression-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-validation\2.7.18\spring-boot-starter-validation-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\apache\tomcat\embed\tomcat-embed-el\9.0.83\tomcat-embed-el-9.0.83.jar;C:\Users\Deepak Kumar\.m2\repository\org\hibernate\validator\hibernate-validator\6.2.5.Final\hibernate-validator-6.2.5.Final.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\validation\jakarta.validation-api\2.0.2\jakarta.validation-api-2.0.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar;C:\Users\Deepak Kumar\.m2\repository\com\fasterxml\classmate\1.5.1\classmate-1.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\2.7.18\spring-boot-starter-data-jpa-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-aop\2.7.18\spring-boot-starter-aop-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\aspectj\aspectjweaver\1.9.7\aspectjweaver-1.9.7.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\2.7.18\spring-boot-starter-jdbc-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\com\zaxxer\HikariCP\4.0.3\HikariCP-4.0.3.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-jdbc\5.3.31\spring-jdbc-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\transaction\jakarta.transaction-api\1.3.3\jakarta.transaction-api-1.3.3.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\persistence\jakarta.persistence-api\2.2.3\jakarta.persistence-api-2.2.3.jar;C:\Users\Deepak Kumar\.m2\repository\org\hibernate\hibernate-core\5.6.15.Final\hibernate-core-5.6.15.Final.jar;C:\Users\Deepak Kumar\.m2\repository\net\bytebuddy\byte-buddy\1.12.23\byte-buddy-1.12.23.jar;C:\Users\Deepak Kumar\.m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Users\Deepak Kumar\.m2\repository\org\jboss\jandex\2.4.2.Final\jandex-2.4.2.Final.jar;C:\Users\Deepak Kumar\.m2\repository\org\hibernate\common\hibernate-commons-annotations\5.1.2.Final\hibernate-commons-annotations-5.1.2.Final.jar;C:\Users\Deepak Kumar\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.9\jaxb-runtime-2.3.9.jar;C:\Users\Deepak Kumar\.m2\repository\org\glassfish\jaxb\txw2\2.3.9\txw2-2.3.9.jar;C:\Users\Deepak Kumar\.m2\repository\com\sun\istack\istack-commons-runtime\3.0.12\istack-commons-runtime-3.0.12.jar;C:\Users\Deepak Kumar\.m2\repository\com\sun\activation\jakarta.activation\1.2.2\jakarta.activation-1.2.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\data\spring-data-jpa\2.7.18\spring-data-jpa-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\data\spring-data-commons\2.7.18\spring-data-commons-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-orm\5.3.31\spring-orm-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-tx\5.3.31\spring-tx-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-aspects\5.3.31\spring-aspects-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\postgresql\postgresql\42.3.8\postgresql-42.3.8.jar;C:\Users\Deepak Kumar\.m2\repository\org\checkerframework\checker-qual\3.5.0\checker-qual-3.5.0.jar;C:\Users\Deepak Kumar\.m2\repository\org\flywaydb\flyway-core\8.5.13\flyway-core-8.5.13.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-starter-test\2.7.18\spring-boot-starter-test-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-test\2.7.18\spring-boot-test-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\boot\spring-boot-test-autoconfigure\2.7.18\spring-boot-test-autoconfigure-2.7.18.jar;C:\Users\Deepak Kumar\.m2\repository\com\jayway\jsonpath\json-path\2.7.0\json-path-2.7.0.jar;C:\Users\Deepak Kumar\.m2\repository\net\minidev\json-smart\2.4.11\json-smart-2.4.11.jar;C:\Users\Deepak Kumar\.m2\repository\net\minidev\accessors-smart\2.4.11\accessors-smart-2.4.11.jar;C:\Users\Deepak Kumar\.m2\repository\org\ow2\asm\asm\9.3\asm-9.3.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\2.3.3\jakarta.xml.bind-api-2.3.3.jar;C:\Users\Deepak Kumar\.m2\repository\jakarta\activation\jakarta.activation-api\1.2.2\jakarta.activation-api-1.2.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\assertj\assertj-core\3.22.0\assertj-core-3.22.0.jar;C:\Users\Deepak Kumar\.m2\repository\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter\5.8.2\junit-jupiter-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.8.2\junit-jupiter-api-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.8.2\junit-jupiter-params-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.8.2\junit-jupiter-engine-5.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\mockito\mockito-core\4.5.1\mockito-core-4.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.23\byte-buddy-agent-1.12.23.jar;C:\Users\Deepak Kumar\.m2\repository\org\objenesis\objenesis\3.2\objenesis-3.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\mockito\mockito-junit-jupiter\4.5.1\mockito-junit-jupiter-4.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\org\skyscreamer\jsonassert\1.5.1\jsonassert-1.5.1.jar;C:\Users\Deepak Kumar\.m2\repository\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-core\5.3.31\spring-core-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-jcl\5.3.31\spring-jcl-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\springframework\spring-test\5.3.31\spring-test-5.3.31.jar;C:\Users\Deepak Kumar\.m2\repository\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik\1.8.2\jqwik-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-api\1.8.2\jqwik-api-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\platform\junit-platform-commons\1.8.2\junit-platform-commons-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-web\1.8.2\jqwik-web-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-time\1.8.2\jqwik-time-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\net\jqwik\jqwik-engine\1.8.2\jqwik-engine-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\org\junit\platform\junit-platform-engine\1.8.2\junit-platform-engine-1.8.2.jar;C:\Users\Deepak Kumar\.m2\repository\com\h2database\h2\2.1.214\h2-2.1.214.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\Deepak Kumar"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-01-20"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-11.0.30"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="E:\AI\chatbot\backend"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="C:\Users\DEEPAK~1\AppData\Local\Temp\surefire3445537131483954951\surefirebooter6538395367467699579.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="11.0.30+7-LTS-282"/>
+    <property name="user.name" value="Deepak Kumar"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="18.9"/>
+    <property name="localRepository" value="C:\Users\Deepak Kumar\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\DEEPAK~1\AppData\Local\Temp\"/>
+    <property name="java.version" value="11.0.30"/>
+    <property name="user.dir" value="E:\AI\chatbot\backend"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-11.0.30\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\Deepak Kumar\AppData\Local\Programs\Python\Python312\Scripts\;C:\Users\Deepak Kumar\AppData\Local\Programs\Python\Python312\;C:\Python314\;C:\Python314\Scripts\;C:\Program Files\Volta\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;E:\ZooKeeper\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk-26\bin;%NVM_HOME%;%NVM_SYMLINK%;E:\gradle-9.5.1\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Deepak Kumar\AppData\Local\Programs\Python\Python312\Scripts\;C:\Users\Deepak Kumar\AppData\Local\Programs\Python\Python312\;C:\Python314\Scripts\;C:\Python314\;C:\Users\Deepak Kumar\AppData\Roaming\Python\Python314\Scripts;C:\Users\Deepak Kumar\AppData\Local\Python\bin;C:\Program Files\Volta\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;E:\ZooKeeper\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Java\jdk-11.0.30\bin;C:\Users\Deepak Kumar\AppData\Local\nvm;C:\nvm4w\nodejs;E:\gradle-9.5.1\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Deepak Kumar\AppData\Local\Volta\bin;C:\Users\Deepak Kumar\AppData\Local\Microsoft\WindowsApps;C:\Users\Deepak Kumar\AppData\Local\Programs\Zed\bin;E:\apache-maven-3.9.14\bin;C:\Users\Deepak Kumar\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Deepak Kumar\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe;C:\Users\Deepak Kumar\AppData\Local\Programs\Kiro\bin;c:\Users\Deepak Kumar\.kiro\extensions\vscjava.vscode-java-debug-0.59.0-universal\bundled\scripts\noConfigScripts;."/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.vm.version" value="11.0.30+7-LTS-282"/>
+    <property name="java.specification.maintenance.version" value="3"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="55.0"/>
+  </properties>
+  <testcase name="updateWorkflow_existingId_returns200" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.003">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.updateWorkflow_existingId_returns200(WorkflowControllerTest.java:150)
+]]></failure>
+    <system-out><![CDATA[2026-06-10 03:13:05.219  INFO 21964 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.chatbot.workflow.controller.WorkflowControllerTest], using SpringBootContextLoader
+2026-06-10 03:13:05.220  INFO 21964 --- [           main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.chatbot.workflow.controller.WorkflowControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2026-06-10 03:13:05.220  INFO 21964 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.chatbot.workflow.controller.WorkflowControllerTest]: WorkflowControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-06-10 03:13:05.236  INFO 21964 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.chatbot.workflow.WorkflowApplication for test class com.chatbot.workflow.controller.WorkflowControllerTest
+2026-06-10 03:13:05.238  INFO 21964 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2026-06-10 03:13:05.238  INFO 21964 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@4f5ad6b7, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@5069a91b, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@443d94ae, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@322399e6, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@2b551e7b, org.springframework.test.context.support.DirtiesContextTestExecutionListener@36e95b7b, org.springframework.test.context.transaction.TransactionalTestExecutionListener@1e5921ec, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@309b6768, org.springframework.test.context.event.EventPublishingTestExecutionListener@333e01c6, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@4f70b659, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@18f1a81a, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@73ba3c4b, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@304933cb, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@7a4199e5, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@6fe55fcf]
+Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.255  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.255 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"72"]
+             Body = {"name":"Original Name","description":"Original Desc","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="createWorkflow_withNameExactly100Chars_returns201" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.002">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.createWorkflow_withNameExactly100Chars_returns201(WorkflowControllerTest.java:104)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.285  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.286 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"159"]
+             Body = {"name":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","description":"Boundary test","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="createWorkflow_withDefinition_returns201WithDefinition" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.01">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.createWorkflow_withDefinition_returns201WithDefinition(WorkflowControllerTest.java:281)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.300  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.300 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"75"]
+             Body = {"name":"With Definition","description":"Has a definition","definition":{}}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="listWorkflows_returnsPagedResults" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.012">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.listWorkflows_returnsPagedResults(WorkflowControllerTest.java:252)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.313  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.313 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"70"]
+             Body = {"name":"List Test 0","description":"Description 0","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="createWorkflow_withNullName_returns400" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.064"/>
+  <testcase name="createWorkflow_withValidRequest_returns201" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.007">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.createWorkflow_withValidRequest_returns201(WorkflowControllerTest.java:47)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.387  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.387 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"74"]
+             Body = {"name":"Test Workflow","description":"A test workflow","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="listWorkflows_withDefaultPagination_returnsResults" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.01">
+    <failure message="Status expected:&lt;200&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<200> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.listWorkflows_withDefaultPagination_returnsResults(WorkflowControllerTest.java:268)
+]]></failure>
+    <system-out><![CDATA[Hibernate: select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.deleted_at is null order by workflowen0_.last_modified_at desc limit ?
+2026-06-10 03:13:05.399  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.399 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.deleted_at is null order by workflowen0_.last_modified_at desc limit ? [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#listWorkflows(int, int)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="getWorkflow_existingId_returns200" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.009">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.getWorkflow_existingId_returns200(WorkflowControllerTest.java:117)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.408  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.408 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"74"]
+             Body = {"name":"Get Test Workflow","description":"Description","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="createWorkflow_withEmptyName_returns400" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.006"/>
+  <testcase name="updateWorkflow_withInvalidName_returns400" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.01">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.updateWorkflow_withInvalidName_returns400(WorkflowControllerTest.java:192)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.426  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.426 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"60"]
+             Body = {"name":"Valid Name","description":"Desc","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="createWorkflow_withNameOver100Chars_returns400" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.005"/>
+  <testcase name="deleteWorkflow_nonExistentId_returns404" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.009">
+    <failure message="Status expected:&lt;404&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.deleteWorkflow_nonExistentId_returns404(WorkflowControllerTest.java:238)
+]]></failure>
+    <system-out><![CDATA[Hibernate: select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null)
+2026-06-10 03:13:05.444  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.445 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = DELETE
+      Request URI = /api/workflows/6b570a7c-5e4e-49bf-9ab8-53a3ce515f9d
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#deleteWorkflow(UUID)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="updateWorkflow_nonExistentId_returns404" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.013">
+    <failure message="Status expected:&lt;404&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.updateWorkflow_nonExistentId_returns404(WorkflowControllerTest.java:179)
+]]></failure>
+    <system-out><![CDATA[Hibernate: select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null)
+2026-06-10 03:13:05.459  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.459 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = PUT
+      Request URI = /api/workflows/459b2b60-e935-4599-840d-dcdaa4d1bf3e
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"54"]
+             Body = {"name":"Name","description":"Desc","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#updateWorkflow(UUID, UpdateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="deleteWorkflow_existingId_returns204" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.009">
+    <failure message="Status expected:&lt;201&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<201> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.deleteWorkflow_existingId_returns204(WorkflowControllerTest.java:218)
+]]></failure>
+    <system-out><![CDATA[Hibernate: insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?)
+2026-06-10 03:13:05.469  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.469 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+insert into chatbot.workflows (created_at, current_version, deleted_at, description, last_modified_at, name, id) values (?, ?, ?, ?, ?, ?, ?) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/workflows
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Content-Length:"79"]
+             Body = {"name":"Delete Test Workflow","description":"To be deleted","definition":null}
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#createWorkflow(CreateWorkflowRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+  <testcase name="getWorkflow_nonExistentId_returns404" classname="com.chatbot.workflow.controller.WorkflowControllerTest" time="0.008">
+    <failure message="Status expected:&lt;404&gt; but was:&lt;500&gt;" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Status expected:<404> but was:<500>
+	at com.chatbot.workflow.controller.WorkflowControllerTest.getWorkflow_nonExistentId_returns404(WorkflowControllerTest.java:137)
+]]></failure>
+    <system-out><![CDATA[Hibernate: select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null)
+2026-06-10 03:13:05.479  WARN 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 90079, SQLState: 90079
+2026-06-10 03:13:05.479 ERROR 21964 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : Schema "CHATBOT" not found; SQL statement:
+select workflowen0_.id as id1_4_, workflowen0_.created_at as created_2_4_, workflowen0_.current_version as current_3_4_, workflowen0_.deleted_at as deleted_4_4_, workflowen0_.description as descript5_4_, workflowen0_.last_modified_at as last_mod6_4_, workflowen0_.name as name7_4_ from chatbot.workflows workflowen0_ where workflowen0_.id=? and (workflowen0_.deleted_at is null) [90079-214]
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /api/workflows/85fc3cc8-2aae-48d3-994d-6e4c89b68fbc
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.chatbot.workflow.controller.WorkflowController
+           Method = com.chatbot.workflow.controller.WorkflowController#getWorkflow(UUID)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = org.springframework.dao.InvalidDataAccessResourceUsageException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 500
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"error":"Internal server error"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  </testcase>
+</testsuite>

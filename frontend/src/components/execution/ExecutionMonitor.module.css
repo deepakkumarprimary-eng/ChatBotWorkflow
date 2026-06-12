@@ -1,0 +1,201 @@
+/**
+ * ExecutionMonitor styles
+ * Requirements: 2.2 - CSS modules for component styling
+ * Requirements: 2.7 - Design token references for all colors
+ *
+ * Displays execution status, step history timeline, elapsed time,
+ * context variables, and current state info.
+ */
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 360px;
+  height: 100%;
+  background-color: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.header {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.closeButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--color-neutral-dark);
+}
+
+.closeButton:hover {
+  color: var(--color-neutral-darkest);
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+.error {
+  padding: var(--space-3);
+  background-color: var(--color-error-lightest);
+  border-radius: var(--radius-sm);
+  color: var(--color-error-base);
+  font-size: var(--font-size-base);
+}
+
+.statusSection {
+  margin-bottom: var(--space-4);
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  color: var(--color-surface);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+}
+
+.statusRunning {
+  background-color: var(--color-primary-base);
+}
+
+.statusCompleted {
+  background-color: var(--color-success-dark);
+}
+
+.statusFailed {
+  background-color: var(--color-error-base);
+}
+
+.statusPaused {
+  background-color: var(--color-warning-base);
+}
+
+.executionId {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-dark);
+}
+
+.section {
+  margin-bottom: var(--space-4);
+}
+
+.sectionLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-base);
+  margin-bottom: var(--space-1);
+}
+
+.sectionValue {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-base);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.toggleButton:hover {
+  color: var(--color-primary-dark);
+}
+
+.contextVariables {
+  margin-top: var(--space-2);
+  padding: var(--space-2);
+  background-color: var(--color-neutral-lightest);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  overflow: auto;
+  max-height: 150px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.historyLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-base);
+  margin-bottom: var(--space-2);
+}
+
+.historyEmpty {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-base);
+}
+
+.historyEntry {
+  padding: var(--space-2);
+  margin-bottom: 6px;
+  background-color: var(--color-neutral-lightest);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-neutral-base);
+}
+
+.historyEntrySucceeded {
+  border-left-color: var(--color-success-dark);
+}
+
+.historyEntryFailed {
+  border-left-color: var(--color-error-base);
+}
+
+.historyEntryTimedOut {
+  border-left-color: var(--color-warning-base);
+}
+
+.historyStateName {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+.historyTime {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-dark);
+  margin-top: 2px;
+}
+
+.historyOutcome {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-dark);
+  margin-top: 2px;
+  text-transform: capitalize;
+}
+
+.historyError {
+  font-size: var(--font-size-sm);
+  color: var(--color-error-base);
+  margin-top: var(--space-1);
+}

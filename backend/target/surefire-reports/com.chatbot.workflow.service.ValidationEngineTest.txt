@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.chatbot.workflow.service.ValidationEngineTest
--------------------------------------------------------------------------------
-Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s - in com.chatbot.workflow.service.ValidationEngineTest

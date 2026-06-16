@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.xpressbees.chatbot.service.WorkflowExecutionServiceErrorTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.547 s -- in com.xpressbees.chatbot.service.WorkflowExecutionServiceErrorTest

@@ -1,0 +1,10 @@
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\dto\ChatResponseFormatPropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\NodeProcessorClassificationPropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\ContextMergePropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\InfiniteLoopGuardPropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\PlaceholderServicePropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\SessionPersistencePropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\WorkflowCompletionPropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\WorkflowExecutionServiceErrorTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\WorkflowGraphTraversalPropertyTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\WorkflowIdValidationPropertyTest.java

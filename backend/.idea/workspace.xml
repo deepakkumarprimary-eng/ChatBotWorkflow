@@ -4,33 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a323b2a-0a1f-4318-9ee2-d001506f771a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/src/main/java/com/xpressbees/chatbot/config/WebSocketConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/src/main/java/com/xpressbees/chatbot/config/WebSocketConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/src/main/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/ChatbotApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/ChatbotApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/config/WebSocketConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/config/WebSocketConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/controller/WorkflowController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/controller/WorkflowController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/dto/WorkflowRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/dto/WorkflowRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/dto/WorkflowResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/dto/WorkflowResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/dto/WorkflowSummaryDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/dto/WorkflowSummaryDto.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/entity/Workflow.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/entity/Workflow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/exception/WorkflowNotFoundException.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/exception/WorkflowNotFoundException.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/repository/WorkflowRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/repository/WorkflowRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/service/WorkflowService.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/service/WorkflowService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/service/WorkflowServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/com/xpressbees/chatbot/service/WorkflowServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/classes/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/classes/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../chatbot_backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../chatbot_backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-    </list>
+    <list default="true" id="8a323b2a-0a1f-4318-9ee2-d001506f771a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="112" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />

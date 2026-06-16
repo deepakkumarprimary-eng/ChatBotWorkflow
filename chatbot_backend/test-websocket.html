@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+    <h2>WebSocket - Workflow List Test</h2>
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <pre id="output" style="background:#f4f4f4; padding:10px; margin-top:10px;"></pre>
+
+    <script>
+        var stompClient = null;
+
+        function log(msg) {
+            document.getElementById('output').textContent += msg + '\n';
+        }
+
+        function connect() {
+            var socket = new SockJS('http://localhost:8080/ws');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                log('Connected: ' + frame);
+
+                stompClient.subscribe('/topic/workflows', function (message) {
+                    log('Received workflows:');
+                    log(JSON.stringify(JSON.parse(message.body), null, 2));
+                });
+            }, function (error) {
+                log('Error: ' + error);
+            });
+        }
+
+        function disconnect() {
+            if (stompClient !== null) {
+                stompClient.disconnect();
+            }
+            log('Disconnected');
+        }
+    </script>
+</body>
+</html>

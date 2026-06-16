@@ -1,10 +1,13 @@
-com\xpressbees\chatbot\repository\WorkflowRepository.class
 com\xpressbees\chatbot\entity\Workflow.class
-com\xpressbees\chatbot\controller\WorkflowController.class
+com\xpressbees\chatbot\controller\ChatWebSocketHandler.class
 com\xpressbees\chatbot\exception\GlobalExceptionHandler.class
 com\xpressbees\chatbot\ChatbotApplication.class
 com\xpressbees\chatbot\exception\WorkflowNotFoundException.class
 com\xpressbees\chatbot\service\WorkflowServiceImpl.class
+com\xpressbees\chatbot\config\WebSocketConfig.class
+com\xpressbees\chatbot\repository\WorkflowRepository.class
+com\xpressbees\chatbot\controller\WorkflowController.class
+com\xpressbees\chatbot\dto\WorkflowSummaryDto.class
 com\xpressbees\chatbot\dto\WorkflowResponse.class
 com\xpressbees\chatbot\service\WorkflowService.class
 com\xpressbees\chatbot\dto\WorkflowRequest.class

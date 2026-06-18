@@ -53,11 +53,36 @@ CREATE TABLE IF NOT EXISTS api_payload (
 );
 
 CREATE TABLE IF NOT EXISTS api_response_mapping (
-    id            BIGSERIAL PRIMARY KEY,
-    api_id        BIGINT NOT NULL REFERENCES api_config(id) ON DELETE CASCADE,
-    response_path VARCHAR(512) NOT NULL,
-    created_at    TIMESTAMP NOT NULL DEFAULT NOW()
+    id                    BIGSERIAL PRIMARY KEY,
+    api_id                BIGINT NOT NULL REFERENCES api_config(id) ON DELETE CASCADE,
+    response_path         VARCHAR(512) NOT NULL,
+    context_variable_name VARCHAR(255) NOT NULL
+        CHECK (context_variable_name ~ '^[a-zA-Z_][a-zA-Z0-9_]*$'),
+    created_at            TIMESTAMP NOT NULL DEFAULT NOW(),
+    UNIQUE (api_id, context_variable_name)
 );
+
+-- Guarded migration: add context_variable_name column to existing api_response_mapping tables
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name = 'api_response_mapping'
+          AND column_name = 'context_variable_name'
+    ) THEN
+        ALTER TABLE api_response_mapping
+            ADD COLUMN context_variable_name VARCHAR(255) NOT NULL
+                DEFAULT '__migration_placeholder';
+        ALTER TABLE api_response_mapping
+            ADD CONSTRAINT chk_context_variable_name_format
+                CHECK (context_variable_name ~ '^[a-zA-Z_][a-zA-Z0-9_]*$');
+        ALTER TABLE api_response_mapping
+            ADD CONSTRAINT uq_api_response_mapping_api_id_ctx_var
+                UNIQUE (api_id, context_variable_name);
+        ALTER TABLE api_response_mapping
+            ALTER COLUMN context_variable_name DROP DEFAULT;
+    END IF;
+END $$;
 
 CREATE INDEX IF NOT EXISTS idx_api_header_api_id ON api_header(api_id);
 CREATE INDEX IF NOT EXISTS idx_api_payload_api_id ON api_payload(api_id);

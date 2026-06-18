@@ -8,16 +8,19 @@
 ## Frameworks & Libraries
 - Spring Web (REST controllers)
 - Spring Data JPA (repository layer)
-- Spring WebSocket (included, not yet active — Phase 2)
+- Spring WebSocket + STOMP (active — real-time chat execution)
 - Hibernate 6.3+ with PostgreSQL dialect
 - Hypersistence Utils 3.7.3 (`JsonType` for JSONB column mapping)
 - Lombok (`@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`)
 - PostgreSQL JDBC driver
+- jqwik 1.8.2 (property-based testing)
 
 ## Database
 - PostgreSQL (localhost:5432, schema `chatbot_db`)
 - DDL managed via `schema.sql` (runs on startup); Hibernate ddl-auto is `none`
-- JSONB column for flexible workflow storage
+- JSONB columns for flexible workflow and payload template storage
+- Tables: `workflow`, `chat_session`, `api_config`, `api_header`, `api_payload`, `api_response_mapping`
+- Cascade deletes on child tables via FK ON DELETE CASCADE
 
 ## Common Commands
 

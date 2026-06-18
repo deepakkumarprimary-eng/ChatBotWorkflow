@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "api_response_mapping")
+@Table(name = "api_response_mapping",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"api_id", "context_variable_name"}))
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class ApiResponseMapping {
 
     @Column(name = "response_path", nullable = false, length = 512)
     private String responsePath;
+
+    @Column(name = "context_variable_name", nullable = false, length = 255)
+    private String contextVariableName;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

@@ -2,9 +2,11 @@ package com.xpressbees.chatbot.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ public class ApiConfigServiceImpl implements ApiConfigService {
     private static final int MAX_RESPONSE_MAPPINGS = 50;
     private static final int DEFAULT_TIMEOUT_MS = 5000;
     private static final int DEFAULT_RETRY_COUNT = 1;
+    private static final Pattern CONTEXT_VARIABLE_NAME_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$");
 
     private final ApiConfigRepository apiConfigRepository;
     private final ApiHeaderRepository apiHeaderRepository;
@@ -57,6 +60,10 @@ public class ApiConfigServiceImpl implements ApiConfigService {
         String normalizedMethod = normalizeAndValidateMethod(request.getMethod());
         validateNumericRanges(request);
         validateCollectionSizes(request);
+
+        if (request.getResponseMappings() != null && !request.getResponseMappings().isEmpty()) {
+            validateResponseMappings(request.getResponseMappings());
+        }
 
         if (apiConfigRepository.existsByName(request.getName())) {
             throw new DuplicateApiConfigNameException(request.getName());
@@ -105,6 +112,7 @@ public class ApiConfigServiceImpl implements ApiConfigService {
                         ApiResponseMapping mapping = new ApiResponseMapping();
                         mapping.setApiConfig(savedConfig);
                         mapping.setResponsePath(dto.getResponsePath());
+                        mapping.setContextVariableName(dto.getContextVariableName());
                         return mapping;
                     })
                     .collect(Collectors.toList());
@@ -140,6 +148,10 @@ public class ApiConfigServiceImpl implements ApiConfigService {
         String normalizedMethod = normalizeAndValidateMethod(request.getMethod());
         validateNumericRanges(request);
         validateCollectionSizes(request);
+
+        if (request.getResponseMappings() != null && !request.getResponseMappings().isEmpty()) {
+            validateResponseMappings(request.getResponseMappings());
+        }
 
         if (apiConfigRepository.existsByNameAndIdNot(request.getName(), id)) {
             throw new DuplicateApiConfigNameException(request.getName());
@@ -193,6 +205,7 @@ public class ApiConfigServiceImpl implements ApiConfigService {
                             ApiResponseMapping mapping = new ApiResponseMapping();
                             mapping.setApiConfig(config);
                             mapping.setResponsePath(dto.getResponsePath());
+                            mapping.setContextVariableName(dto.getContextVariableName());
                             return mapping;
                         })
                         .collect(Collectors.toList());
@@ -258,6 +271,30 @@ public class ApiConfigServiceImpl implements ApiConfigService {
         }
     }
 
+    private void validateResponseMappings(List<ApiResponseMappingDto> mappings) {
+        Set<String> seenNames = new HashSet<>();
+        for (ApiResponseMappingDto mapping : mappings) {
+            String name = mapping.getContextVariableName();
+
+            if (name == null || name.isBlank()) {
+                throw new IllegalArgumentException("Field 'context_variable_name' is required");
+            }
+
+            if (name.length() > 255) {
+                throw new IllegalArgumentException("context_variable_name must not exceed 255 characters");
+            }
+
+            if (!CONTEXT_VARIABLE_NAME_PATTERN.matcher(name).matches()) {
+                throw new IllegalArgumentException(
+                        "context_variable_name must start with a letter or underscore and contain only alphanumeric characters and underscores");
+            }
+
+            if (!seenNames.add(name)) {
+                throw new IllegalArgumentException("Duplicate context_variable_name: '" + name + "'");
+            }
+        }
+    }
+
     private ApiConfigResponse mapToResponse(ApiConfig config) {
         ApiConfigResponse response = new ApiConfigResponse();
         response.setId(config.getId());
@@ -298,6 +335,7 @@ public class ApiConfigServiceImpl implements ApiConfigService {
                     .map(m -> {
                         ApiResponseMappingDto dto = new ApiResponseMappingDto();
                         dto.setResponsePath(m.getResponsePath());
+                        dto.setContextVariableName(m.getContextVariableName());
                         return dto;
                     })
                     .collect(Collectors.toList());

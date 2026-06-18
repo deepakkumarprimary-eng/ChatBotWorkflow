@@ -5,10 +5,12 @@ chatbot_backend/
 ├── pom.xml                          # Maven config, dependency management
 ├── src/main/java/com/xpressbees/chatbot/
 │   ├── ChatbotApplication.java      # Spring Boot entry point
-│   ├── controller/                  # REST API endpoints (@RestController)
+│   ├── config/                      # WebSocket configuration
+│   ├── controller/                  # REST + WebSocket controllers
 │   ├── dto/                         # Request/Response data transfer objects
 │   ├── entity/                      # JPA entities (DB-mapped classes)
 │   ├── exception/                   # Custom exceptions + global handler
+│   ├── processor/                   # Node processors (message, input)
 │   ├── repository/                  # Spring Data JPA repositories
 │   └── service/                     # Business logic (interface + impl)
 ├── src/main/resources/
@@ -37,4 +39,27 @@ Layered architecture with clear separation:
 - Exceptions: `{Domain}NotFoundException.java`
 
 ## API Base Path
-All REST endpoints live under `/api/{resource}` (e.g., `/api/workflows`).
+All REST endpoints live under `/api/{resource}` (e.g., `/api/workflows`, `/api/api-configs`).
+
+## WebSocket Endpoints
+- Connection: `ws://localhost:8080/ws` (SockJS)
+- Application prefix: `/app` (client sends here)
+- Broker prefix: `/topic` (server pushes here)
+- Subscribe: `/app/chat.init` → returns sessionId + workflow list
+- Send: `/app/chat.start` → starts workflow execution
+- Send: `/app/chat.message` → user replies during conversation
+- Receive: `/topic/chat/{sessionId}` → all server responses
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `WebSocketConfig.java` | STOMP broker config (endpoints, prefixes) |
+| `ChatWebSocketHandler.java` | Handles `/chat.init` subscribe (creates session, returns workflows) |
+| `ChatWebSocketController.java` | Handles `/chat.start` and `/chat.message` |
+| `WorkflowExecutionServiceImpl.java` | Workflow engine — processes nodes, manages session state, sends responses via SimpMessagingTemplate |
+| `ApiConfigController.java` | CRUD REST API for API configurations |
+| `ApiConfigServiceImpl.java` | Business logic for API config management |
+| `NodeProcessor.java` | Interface for node type handlers |
+| `MessageNodeProcessor.java` | Processes message nodes (auto-advance) |
+| `InputNodeProcessor.java` | Processes input nodes (pause for user reply) |

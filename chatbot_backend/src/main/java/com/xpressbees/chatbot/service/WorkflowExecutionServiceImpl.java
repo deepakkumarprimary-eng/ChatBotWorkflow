@@ -119,12 +119,21 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
     }
 
     private void handleInputNodeResume(ChatSession session, String sessionId, String message) {
-        // Store user input in context
+        // Store user input in context under the configured variable name
         Map<String, Object> context = session.getContext();
         if (context == null) {
             context = new HashMap<>();
         }
-        context.put("mobile_no", message);
+
+        // Read the target variable name from temporary context key
+        String variableName = (String) context.get("_inputVariableName");
+        if (variableName == null || variableName.trim().isEmpty()) {
+            // Defensive fallback: use current node id
+            variableName = session.getCurrentNodeId();
+        }
+
+        context.put(variableName, message);
+        context.remove("_inputVariableName");
         session.setContext(context);
 
         // Load workflow to get the JSON
@@ -430,6 +439,33 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
                 .filter(p -> p instanceof com.xpressbees.chatbot.processor.MessageNodeProcessor)
                 .findFirst()
                 .orElse(nodeProcessors.get(0));
+    }
+
+    @SuppressWarnings("unchecked")
+    private String getInputVariableName(String nodeId, Map<String, Object> workflowJson) {
+        if (nodeId == null || workflowJson == null) {
+            return nodeId != null ? nodeId : "userInput";
+        }
+
+        List<Map<String, Object>> nodes = (List<Map<String, Object>>) workflowJson.get("nodes");
+        if (nodes == null) {
+            return nodeId;
+        }
+
+        for (Map<String, Object> node : nodes) {
+            if (nodeId.equals(node.get("id"))) {
+                Map<String, Object> config = (Map<String, Object>) node.get("config");
+                if (config != null && config.get("variableName") != null) {
+                    String varName = String.valueOf(config.get("variableName")).trim();
+                    if (!varName.isEmpty()) {
+                        return varName;
+                    }
+                }
+                break;
+            }
+        }
+
+        return nodeId;
     }
 
     private void sendResponse(String sessionId, ChatResponse response) {

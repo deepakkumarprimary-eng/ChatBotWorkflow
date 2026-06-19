@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.xpressbees.chatbot.dto.ChatResponseFormatPropertyTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.270 s <<< FAILURE! -- in com.xpressbees.chatbot.dto.ChatResponseFormatPropertyTest
-com.xpressbees.chatbot.dto.ChatResponseFormatPropertyTest.responseFieldHasPlaceholderSubstitution -- Time elapsed: 0.047 s <<< FAILURE!
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.457 s <<< FAILURE! -- in com.xpressbees.chatbot.dto.ChatResponseFormatPropertyTest
+com.xpressbees.chatbot.dto.ChatResponseFormatPropertyTest.responseFieldHasPlaceholderSubstitution -- Time elapsed: 0.073 s <<< FAILURE!
 java.lang.AssertionError: Response should have placeholder replaced. Got: Your number is <mobile_no>
 	at com.xpressbees.chatbot.dto.ChatResponseFormatPropertyTest.responseFieldHasPlaceholderSubstitution(ChatResponseFormatPropertyTest.java:68)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:568)

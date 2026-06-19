@@ -10,7 +10,7 @@ chatbot_backend/
 │   ├── dto/                         # Request/Response data transfer objects
 │   ├── entity/                      # JPA entities (DB-mapped classes)
 │   ├── exception/                   # Custom exceptions + global handler
-│   ├── processor/                   # Node processors (message, input)
+│   ├── processor/                   # Node processors (message, input, api)
 │   ├── repository/                  # Spring Data JPA repositories
 │   └── service/                     # Business logic (interface + impl)
 ├── src/main/resources/
@@ -63,3 +63,8 @@ All REST endpoints live under `/api/{resource}` (e.g., `/api/workflows`, `/api/a
 | `NodeProcessor.java` | Interface for node type handlers |
 | `MessageNodeProcessor.java` | Processes message nodes (auto-advance) |
 | `InputNodeProcessor.java` | Processes input nodes (pause for user reply) |
+| `ApiNodeProcessor.java` | Processes API nodes (HTTP calls, response extraction, conditional branching, interactive selection) |
+| `HttpExecutor.java` | Executes HTTP requests with retry logic and timeout configuration |
+| `PlaceholderService.java` | Resolves `{{variable}}` placeholders in strings and payload maps using session context |
+| `ResponseExtractor.java` | Extracts values from JSON responses using JSONPath and stores them in session context |
+| `ConditionEvaluator.java` | Evaluates simple expressions (`var == value`, `and`/`or`) against session context for conditional branching |

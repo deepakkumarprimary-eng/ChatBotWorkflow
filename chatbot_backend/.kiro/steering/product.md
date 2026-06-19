@@ -25,11 +25,19 @@ Workflows represent conversational flows (nodes, edges, transitions) that drive 
 5. Client sends user input to `/app/chat.message` with `{sessionId, message}`
 6. Loop continues until workflow completes
 
-## Node Types (current)
+## Node Types
 
 - **message** — Sends a text message to the user, auto-advances to next node
 - **input** — Pauses execution and waits for user reply via `chat.message`
+- **api** — References an ApiConfig to make external HTTP calls during workflow execution. Supports three behaviors:
+  - **Auto-advance** — Single outgoing transition, no user interaction required
+  - **Conditional branching** — Multiple transitions with conditions evaluated against session context (first-match-wins)
+  - **Interactive selection** — Pauses for user input when `displayVariable` is set (array options) or when multiple transitions exist without conditions (button options)
 
-## Future (not yet implemented)
+## API Node Features (recently implemented)
 
-- **API node** — Will reference an ApiConfig to make external HTTP calls during workflow execution
+- Placeholder resolution in URLs, headers, and payload templates (`{{variableName}}` syntax)
+- HTTP execution with configurable timeout, retry logic (5xx/timeout retryable, 4xx not)
+- JSONPath-based response extraction into session context
+- Condition evaluation supporting `==`, `!=`, `<`, `>`, `<=`, `>=` operators with `and`/`or` logical connectors
+- Error handling with ChatErrorResponse pushed via WebSocket on failures

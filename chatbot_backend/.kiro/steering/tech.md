@@ -11,6 +11,8 @@
 - Spring WebSocket + STOMP (active — real-time chat execution)
 - Hibernate 6.3+ with PostgreSQL dialect
 - Hypersistence Utils 3.7.3 (`JsonType` for JSONB column mapping)
+- Jayway JsonPath 2.9.0 (API response extraction using JSONPath expressions)
+- Spring RestClient (HTTP execution in API node processor)
 - Lombok (`@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`)
 - PostgreSQL JDBC driver
 - jqwik 1.8.2 (property-based testing)

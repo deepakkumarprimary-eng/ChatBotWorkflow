@@ -107,11 +107,18 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
             return;
         }
 
-        if (!"input".equals(session.getCurrentNodeType())) {
-            sendError(sessionId, "Session is not awaiting input");
-            return;
-        }
+        String nodeType = session.getCurrentNodeType();
 
+        if ("input".equals(nodeType)) {
+            handleInputNodeResume(session, sessionId, message);
+        } else if ("api".equals(nodeType)) {
+            handleApiNodeResume(session, sessionId, message);
+        } else {
+            sendError(sessionId, "Session is not awaiting input");
+        }
+    }
+
+    private void handleInputNodeResume(ChatSession session, String sessionId, String message) {
         // Store user input in context
         Map<String, Object> context = session.getContext();
         if (context == null) {
@@ -155,6 +162,143 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
         processNodes(session, nextNode, workflowJson);
     }
 
+    private void handleApiNodeResume(ChatSession session, String sessionId, String message) {
+        Map<String, Object> context = session.getContext();
+        if (context == null) {
+            context = new HashMap<>();
+        }
+
+        String displayVariable = (String) context.get("_displayVariable");
+        String buttonOptions = (String) context.get("_buttonOptions");
+
+        if (displayVariable != null) {
+            // Type 3: Interactive selection - validate reply against stored options
+            String arrayValues = (String) context.get(displayVariable);
+            if (arrayValues != null) {
+                String[] options = arrayValues.split("\n");
+                boolean validSelection = Arrays.stream(options).anyMatch(opt -> opt.equals(message));
+
+                if (!validSelection) {
+                    sendError(sessionId, "'" + message + "' is not in the available options");
+                    return;
+                }
+
+                // Store selected value, replacing the newline-separated string
+                context.put(displayVariable, message);
+                context.remove("_displayVariable");
+                session.setContext(context);
+            } else {
+                sendError(sessionId, "Session is not awaiting input");
+                return;
+            }
+
+            // Load workflow and resolve next node
+            Optional<Workflow> workflowOpt = workflowRepository.findById(session.getWorkflowId());
+            if (workflowOpt.isEmpty()) {
+                sendError(sessionId, "Workflow not found");
+                return;
+            }
+
+            Map<String, Object> workflowJson = workflowOpt.get().getWorkflowJson();
+            Map<String, Object> nextNode = resolveNextNode(session.getCurrentNodeId(), workflowJson);
+
+            if (nextNode == null) {
+                // End of workflow
+                session.setStatus("completed");
+                try {
+                    chatSessionRepository.save(session);
+                } catch (DataAccessException e) {
+                    sendError(sessionId, "Failed to persist session state");
+                    return;
+                }
+                sendResponse(sessionId, new ChatResponse(null, "Session completed", sessionId, true));
+                return;
+            }
+
+            try {
+                chatSessionRepository.save(session);
+            } catch (DataAccessException e) {
+                sendError(sessionId, "Failed to persist session state");
+                return;
+            }
+
+            // Continue processing from next node
+            processNodes(session, nextNode, workflowJson);
+
+        } else if (buttonOptions != null) {
+            // Button node: validate reply matches a target node name
+            String[] options = buttonOptions.split("\n");
+            boolean validSelection = Arrays.stream(options).anyMatch(opt -> opt.equals(message));
+
+            if (!validSelection) {
+                sendError(sessionId, "'" + message + "' is not a valid selection");
+                return;
+            }
+
+            context.remove("_buttonOptions");
+            session.setContext(context);
+
+            // Load workflow to find the target node by name
+            Optional<Workflow> workflowOpt = workflowRepository.findById(session.getWorkflowId());
+            if (workflowOpt.isEmpty()) {
+                sendError(sessionId, "Workflow not found");
+                return;
+            }
+
+            Map<String, Object> workflowJson = workflowOpt.get().getWorkflowJson();
+
+            // Find the target node whose name matches the user's selection
+            Map<String, Object> targetNode = findTargetNodeByName(session.getCurrentNodeId(), message, workflowJson);
+
+            if (targetNode == null) {
+                sendError(sessionId, "Target node not found for selection: " + message);
+                return;
+            }
+
+            try {
+                chatSessionRepository.save(session);
+            } catch (DataAccessException e) {
+                sendError(sessionId, "Failed to persist session state");
+                return;
+            }
+
+            // Continue processing from the matched target node
+            processNodes(session, targetNode, workflowJson);
+
+        } else {
+            sendError(sessionId, "Session is not awaiting input");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> findTargetNodeByName(String currentNodeId, String targetName,
+                                                      Map<String, Object> workflowJson) {
+        List<Map<String, Object>> transitions = (List<Map<String, Object>>) workflowJson.get("transitions");
+        List<Map<String, Object>> nodes = (List<Map<String, Object>>) workflowJson.get("nodes");
+
+        if (transitions == null || nodes == null) {
+            return null;
+        }
+
+        // Find all transitions from current node
+        for (Map<String, Object> transition : transitions) {
+            if (currentNodeId.equals(transition.get("sourceNodeId"))) {
+                String targetNodeId = (String) transition.get("targetNodeId");
+                // Find the target node and check its name
+                for (Map<String, Object> node : nodes) {
+                    if (targetNodeId.equals(node.get("id"))) {
+                        Object name = node.get("name");
+                        if (name != null && targetName.equals(String.valueOf(name))) {
+                            return node;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private void processNodes(ChatSession session, Map<String, Object> currentNode,
                               Map<String, Object> workflowJson) {
         int messageNodeCount = 0;
@@ -175,7 +319,15 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
 
                 // Resolve next node
                 String nodeId = (String) node.get("id");
-                node = resolveNextNode(nodeId, workflowJson);
+
+                // Check for targeted routing (from conditional branching)
+                String targetNodeId = (String) session.getContext().get("_targetNodeId");
+                if (targetNodeId != null) {
+                    session.getContext().remove("_targetNodeId");
+                    node = resolveNextNode(nodeId, targetNodeId, workflowJson);
+                } else {
+                    node = resolveNextNode(nodeId, workflowJson);
+                }
 
                 if (node == null) {
                     // End of workflow
@@ -225,6 +377,21 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
                     }
                 }
                 break;
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> resolveNextNode(String currentNodeId, String targetNodeId, Map<String, Object> workflowJson) {
+        List<Map<String, Object>> nodes = (List<Map<String, Object>>) workflowJson.get("nodes");
+        if (nodes == null || targetNodeId == null) {
+            return resolveNextNode(currentNodeId, workflowJson);
+        }
+
+        for (Map<String, Object> node : nodes) {
+            if (targetNodeId.equals(node.get("id"))) {
+                return node;
             }
         }
         return null;

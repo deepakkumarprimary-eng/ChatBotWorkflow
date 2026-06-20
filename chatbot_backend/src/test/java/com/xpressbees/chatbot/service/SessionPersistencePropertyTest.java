@@ -32,7 +32,7 @@ class SessionPersistencePropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate);
+                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
 
         ChatSession session = new ChatSession();
         session.setSessionId("test-session-" + UUID.randomUUID());

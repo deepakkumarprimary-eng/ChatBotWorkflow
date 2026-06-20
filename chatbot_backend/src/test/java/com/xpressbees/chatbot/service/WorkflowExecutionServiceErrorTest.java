@@ -37,7 +37,7 @@ class WorkflowExecutionServiceErrorTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
     }
 
     @Test

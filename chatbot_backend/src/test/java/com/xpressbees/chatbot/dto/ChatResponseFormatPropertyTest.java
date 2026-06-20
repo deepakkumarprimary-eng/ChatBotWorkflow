@@ -65,7 +65,7 @@ class ChatResponseFormatPropertyTest {
         NodeProcessingResult result = messageProcessor.process(node, session, placeholderService);
 
         String responseText = result.getResponse().getResponse();
-        assert !responseText.contains("<mobile_no>") :
+        assert !responseText.contains("{{mobile_no}}") :
                 "Response should have placeholder replaced. Got: " + responseText;
         assert responseText.contains(mobileNo) :
                 "Response should contain mobile number. Got: " + responseText;
@@ -106,9 +106,9 @@ class ChatResponseFormatPropertyTest {
     @Provide
     Arbitrary<Map<String, Object>> nodesWithPlaceholder() {
         return Arbitraries.of(
-                "Your number is <mobile_no>",
-                "<mobile_no> confirmed",
-                "Call <mobile_no> now"
+                "Your number is {{mobile_no}}",
+                "{{mobile_no}} confirmed",
+                "Call {{mobile_no}} now"
         ).map(name -> {
             Map<String, Object> node = new HashMap<>();
             node.put("id", "3");

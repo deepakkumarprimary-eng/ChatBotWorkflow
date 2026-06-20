@@ -4,7 +4,10 @@ com\xpressbees\chatbot\ChatbotApplication.class
 com\xpressbees\chatbot\service\PlaceholderService.class
 com\xpressbees\chatbot\exception\ApiConfigNotFoundException.class
 com\xpressbees\chatbot\entity\ApiPayload.class
+com\xpressbees\chatbot\service\InputValidationServiceImpl.class
 com\xpressbees\chatbot\processor\NodeProcessor.class
+com\xpressbees\chatbot\service\InputValidationService.class
+com\xpressbees\chatbot\processor\WorkflowNodeProcessor.class
 com\xpressbees\chatbot\repository\ApiHeaderRepository.class
 com\xpressbees\chatbot\service\WorkflowService.class
 com\xpressbees\chatbot\controller\ApiConfigController.class
@@ -16,6 +19,7 @@ com\xpressbees\chatbot\dto\NodeProcessingResult.class
 com\xpressbees\chatbot\exception\WorkflowNotFoundException.class
 com\xpressbees\chatbot\entity\ApiResponseMapping.class
 com\xpressbees\chatbot\repository\ApiPayloadRepository.class
+com\xpressbees\chatbot\dto\ValidationResult.class
 com\xpressbees\chatbot\service\HttpExecutor.class
 com\xpressbees\chatbot\controller\WorkflowController.class
 com\xpressbees\chatbot\service\ResponseExtractor.class
@@ -28,6 +32,7 @@ com\xpressbees\chatbot\entity\ApiHeader.class
 com\xpressbees\chatbot\dto\ApiConfigRequest.class
 com\xpressbees\chatbot\exception\DuplicateApiConfigNameException.class
 com\xpressbees\chatbot\service\ApiConfigServiceImpl.class
+com\xpressbees\chatbot\dto\ChatBackRequest.class
 com\xpressbees\chatbot\processor\MessageNodeProcessor.class
 com\xpressbees\chatbot\service\WorkflowServiceImpl.class
 com\xpressbees\chatbot\dto\ChatMessageRequest.class

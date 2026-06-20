@@ -13,6 +13,7 @@ public class NodeProcessingResult {
     public enum Action {
         CONTINUE,
         PAUSE,
-        COMPLETE
+        COMPLETE,
+        ENTER_CHILD
     }
 }

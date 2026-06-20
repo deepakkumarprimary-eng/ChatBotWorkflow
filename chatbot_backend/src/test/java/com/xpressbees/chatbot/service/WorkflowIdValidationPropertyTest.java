@@ -43,7 +43,7 @@ class WorkflowIdValidationPropertyTest {
         when(chatSessionRepo.findBySessionId("sess-test")).thenReturn(Optional.of(session));
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
 
         service.startWorkflow("sess-test", null);
 
@@ -78,7 +78,7 @@ class WorkflowIdValidationPropertyTest {
         when(workflowRepo.findById(any())).thenReturn(Optional.empty());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
 
         service.startWorkflow("sess-test", workflowId);
 

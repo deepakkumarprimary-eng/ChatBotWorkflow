@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.controller;
 
+import com.xpressbees.chatbot.dto.ChatBackRequest;
 import com.xpressbees.chatbot.dto.ChatMessageRequest;
 import com.xpressbees.chatbot.dto.ChatStartRequest;
 import com.xpressbees.chatbot.service.WorkflowExecutionService;
@@ -25,6 +26,16 @@ public class ChatWebSocketController {
     @MessageMapping("/chat.message")
     public void handleMessage(ChatMessageRequest request) {
         workflowExecutionService.handleUserInput(request.getSessionId(), request.getMessage());
+    }
+
+    @MessageMapping("/chat.back")
+    public void handleBack(ChatBackRequest request) {
+        workflowExecutionService.handleBack(request.getSessionId());
+    }
+
+    @MessageMapping("/chat.restart")
+    public void handleRestart(ChatBackRequest request) {
+        workflowExecutionService.handleRestart(request.getSessionId());
     }
 
     @MessageExceptionHandler

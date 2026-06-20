@@ -7,6 +7,7 @@ import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
 import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
+import com.xpressbees.chatbot.dto.ValidationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ class HandleInputNodeResumeTest {
     private WorkflowRepository workflowRepository;
     private ChatSessionRepository chatSessionRepository;
     private SimpMessagingTemplate messagingTemplate;
+    private InputValidationService inputValidationService;
     private WorkflowExecutionServiceImpl service;
 
     @BeforeEach
@@ -37,11 +39,14 @@ class HandleInputNodeResumeTest {
         workflowRepository = mock(WorkflowRepository.class);
         chatSessionRepository = mock(ChatSessionRepository.class);
         messagingTemplate = mock(SimpMessagingTemplate.class);
+        inputValidationService = mock(InputValidationService.class);
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
+        when(inputValidationService.validate(any(), any())).thenReturn(new ValidationResult(true, null));
+
         service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, inputValidationService);
     }
 
     /**

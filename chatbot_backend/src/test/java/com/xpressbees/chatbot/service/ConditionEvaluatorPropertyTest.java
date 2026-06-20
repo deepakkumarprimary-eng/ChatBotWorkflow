@@ -289,6 +289,7 @@ class ConditionEvaluatorPropertyTest {
         // Validates: Requirements 8.6
         Assume.that(!varA.equals(varB));
         Assume.that(!valA.equals(wrongVal));
+        Assume.that(!valB.equals(wrongVal));
 
         // A is true, B is false
         String expression = varA + " == " + valA + " and " + varB + " == " + valB;

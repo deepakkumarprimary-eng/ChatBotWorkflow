@@ -33,7 +33,7 @@ class WorkflowCompletionPropertyTest {
         List<NodeProcessor> processors = List.of(new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate);
+                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
 
         ChatSession session = new ChatSession();
         session.setSessionId("test-session-" + UUID.randomUUID());

@@ -46,7 +46,7 @@ class MultiInputNodeIntegrationTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
 
         // Create session — starts without a workflow ID
         session = new ChatSession();

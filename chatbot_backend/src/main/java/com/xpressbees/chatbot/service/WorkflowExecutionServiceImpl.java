@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.dto.ChatResponse;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
@@ -27,19 +28,22 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
     private final PlaceholderService placeholderService;
     private final SimpMessagingTemplate messagingTemplate;
     private final InputValidationService inputValidationService;
+    private final ChatWebSocketHandler chatWebSocketHandler;
 
     public WorkflowExecutionServiceImpl(WorkflowRepository workflowRepository,
                                          ChatSessionRepository chatSessionRepository,
                                          List<NodeProcessor> nodeProcessors,
                                          PlaceholderService placeholderService,
                                          SimpMessagingTemplate messagingTemplate,
-                                         InputValidationService inputValidationService) {
+                                         InputValidationService inputValidationService,
+                                         ChatWebSocketHandler chatWebSocketHandler) {
         this.workflowRepository = workflowRepository;
         this.chatSessionRepository = chatSessionRepository;
         this.nodeProcessors = nodeProcessors;
         this.placeholderService = placeholderService;
         this.messagingTemplate = messagingTemplate;
         this.inputValidationService = inputValidationService;
+        this.chatWebSocketHandler = chatWebSocketHandler;
     }
 
     @Override
@@ -54,14 +58,12 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
             return;
         }
 
-        // Load existing session (created during chat.init)
-        Optional<ChatSession> sessionOpt = chatSessionRepository.findBySessionId(sessionId);
-        if (sessionOpt.isEmpty()) {
+        // Validate the session ID was generated during chat.init
+        boolean isPendingSession = chatWebSocketHandler.consumePendingSession(sessionId);
+        if (!isPendingSession) {
             sendError(sessionId, "No active session found");
             return;
         }
-
-        ChatSession session = sessionOpt.get();
 
         // Load workflow
         Optional<Workflow> workflowOpt = workflowRepository.findById(workflowId);
@@ -79,8 +81,12 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
             return;
         }
 
-        // Update session with the chosen workflow
+        // Create and persist ChatSession now that we have a valid workflowId
+        ChatSession session = new ChatSession();
+        session.setSessionId(sessionId);
         session.setWorkflowId(workflowId);
+        session.setStatus("active");
+        session.setContext(new HashMap<>());
         try {
             session = chatSessionRepository.save(session);
         } catch (DataAccessException e) {
@@ -384,7 +390,10 @@ public class WorkflowExecutionServiceImpl implements WorkflowExecutionService {
                     return;
                 }
 
-                sendResponse(session.getSessionId(), result.getResponse());
+                if (result.getResponse() != null) {
+                    sendResponse(session.getSessionId(), result.getResponse());
+                }
+
 
                 // Resolve next node
                 String nodeId = (String) node.get("id");

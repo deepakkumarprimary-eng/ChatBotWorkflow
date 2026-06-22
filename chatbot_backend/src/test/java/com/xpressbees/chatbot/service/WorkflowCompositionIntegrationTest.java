@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
@@ -16,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -52,9 +54,11 @@ class WorkflowCompositionIntegrationTest {
                 workflowNodeProcessor
         );
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
         service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, null);
+                placeholderService, messagingTemplate, null, chatWebSocketHandler);
 
         session = new ChatSession();
         session.setSessionId(SESSION_ID);
@@ -62,9 +66,12 @@ class WorkflowCompositionIntegrationTest {
         session.setStatus("active");
         session.setContext(new HashMap<>());
 
-        when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+        // Mock save to capture the session created by startWorkflow and make it findable
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            session = invocation.getArgument(0);
+            when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
+            return session;
+        });
     }
 
     /**
@@ -236,7 +243,7 @@ class WorkflowCompositionIntegrationTest {
      */
     @Test
     void recursionProtectionAtDepth10() {
-        // Pre-populate the stack to size 10
+        // Pre-populate the stack to size 10 — need to inject into the session that startWorkflow creates
         List<Map<String, Object>> preStack = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Map<String, Object> entry = new HashMap<>();
@@ -244,7 +251,14 @@ class WorkflowCompositionIntegrationTest {
             entry.put("workflowNodeId", "wf_node_" + i);
             preStack.add(entry);
         }
-        session.getContext().put("_workflowStack", preStack);
+
+        // Override save mock to inject the pre-populated stack into the new session
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            session = invocation.getArgument(0);
+            session.getContext().put("_workflowStack", new ArrayList<>(preStack));
+            when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
+            return session;
+        });
 
         // Parent workflow: workflow_node only (no subsequent nodes).
         // When recursion depth is exceeded, processor returns CONTINUE with error.

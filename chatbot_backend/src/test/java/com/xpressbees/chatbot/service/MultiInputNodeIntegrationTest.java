@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.ChatResponse;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
@@ -16,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -45,20 +47,18 @@ class MultiInputNodeIntegrationTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
         service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, chatWebSocketHandler);
 
-        // Create session — starts without a workflow ID
-        session = new ChatSession();
-        session.setSessionId(SESSION_ID);
-        session.setStatus("active");
-        session.setContext(new HashMap<>());
-
-        // Mock findBySessionId to always return the same session object (state accumulates)
-        when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
-
-        // Mock save to just return the argument (passthrough)
-        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // Mock save to capture the session created by startWorkflow() and make it
+        // findable by findBySessionId (used by handleUserInput)
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            session = invocation.getArgument(0);
+            when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
+            return session;
+        });
 
         // Build and mock the workflow
         Workflow workflow = buildMultiInputWorkflow();

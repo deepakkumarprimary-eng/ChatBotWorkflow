@@ -35,7 +35,7 @@ class InfiniteLoopGuardPropertyTest {
         List<NodeProcessor> processors = List.of(new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         // Create a chain of message nodes
         Map<String, Object> workflowJson = createMessageNodeChain(chainLength);
@@ -78,7 +78,7 @@ class InfiniteLoopGuardPropertyTest {
         List<NodeProcessor> processors = List.of(new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         Map<String, Object> workflowJson = createMessageNodeChain(chainLength);
         ChatSession session = new ChatSession();

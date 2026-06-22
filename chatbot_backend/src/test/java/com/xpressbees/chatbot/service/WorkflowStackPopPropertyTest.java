@@ -39,7 +39,7 @@ class WorkflowStackPopPropertyTest {
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, null);
+                placeholderService, messagingTemplate, null, null);
 
         // Create session pointing to child workflow
         ChatSession session = new ChatSession();

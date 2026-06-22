@@ -48,7 +48,7 @@ class ChildWorkflowPausePropertyTest {
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, null);
+                placeholderService, messagingTemplate, null, null);
 
         // Create session - start as parent workflow
         ChatSession session = new ChatSession();

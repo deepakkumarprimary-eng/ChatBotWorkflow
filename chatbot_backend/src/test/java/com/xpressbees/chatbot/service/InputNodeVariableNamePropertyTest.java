@@ -53,7 +53,7 @@ class InputNodeVariableNamePropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "test-session-" + UUID.randomUUID();
 
@@ -163,7 +163,7 @@ class InputNodeVariableNamePropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "test-session-fallback";
         String nodeId = "node-abc";
@@ -237,7 +237,7 @@ class InputNodeVariableNamePropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "test-session-" + variableName;
 

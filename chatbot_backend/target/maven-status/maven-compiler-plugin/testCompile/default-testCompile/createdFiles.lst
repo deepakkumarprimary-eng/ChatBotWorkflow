@@ -42,6 +42,7 @@ com\xpressbees\chatbot\processor\ApiNodeProcessorIntegrationTest.class
 com\xpressbees\chatbot\processor\InputNodeProcessorTest.class
 com\xpressbees\chatbot\service\MultiInputNodeIntegrationTest.class
 com\xpressbees\chatbot\service\WorkflowGraphTraversalPropertyTest$WorkflowTestData.class
+com\xpressbees\chatbot\ChatSessionPreservationTest.class
 com\xpressbees\chatbot\processor\NodeProcessorClassificationPropertyTest.class
 com\xpressbees\chatbot\service\WorkflowStackPopPropertyTest$StackPopScenario.class
 com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest$TransitionData.class
@@ -51,4 +52,5 @@ com\xpressbees\chatbot\service\WorkflowCompletionPropertyTest$TerminalWorkflowDa
 com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest.class
 com\xpressbees\chatbot\service\ContextMergePropertyTest.class
 com\xpressbees\chatbot\service\ChildWorkflowPausePropertyTest.class
+com\xpressbees\chatbot\ChatInitBugConditionTest.class
 com\xpressbees\chatbot\service\PlaceholderServicePropertyTest.class

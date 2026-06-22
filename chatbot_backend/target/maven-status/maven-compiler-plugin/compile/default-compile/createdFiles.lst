@@ -4,6 +4,7 @@ com\xpressbees\chatbot\ChatbotApplication.class
 com\xpressbees\chatbot\service\PlaceholderService.class
 com\xpressbees\chatbot\exception\ApiConfigNotFoundException.class
 com\xpressbees\chatbot\entity\ApiPayload.class
+com\xpressbees\chatbot\processor\DecisionNodeProcessor.class
 com\xpressbees\chatbot\service\InputValidationServiceImpl.class
 com\xpressbees\chatbot\processor\NodeProcessor.class
 com\xpressbees\chatbot\service\InputValidationService.class

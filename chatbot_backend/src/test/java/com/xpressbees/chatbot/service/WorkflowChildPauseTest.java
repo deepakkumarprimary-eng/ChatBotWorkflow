@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
@@ -16,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -54,20 +56,25 @@ class WorkflowChildPauseTest {
                 workflowNodeProcessor
         );
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
         service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, null);
+                placeholderService, messagingTemplate, null, chatWebSocketHandler);
 
-        // Create session
+        // Create session placeholder (will be replaced by the session startWorkflow() creates)
         session = new ChatSession();
         session.setSessionId(SESSION_ID);
         session.setWorkflowId(PARENT_WORKFLOW_ID);
         session.setStatus("active");
         session.setContext(new HashMap<>());
 
-        when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+        // Mock save to capture the session created by startWorkflow and make it findable
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            session = invocation.getArgument(0);
+            when(chatSessionRepository.findBySessionId(SESSION_ID)).thenReturn(Optional.of(session));
+            return session;
+        });
 
         // Build parent and child workflows
         Workflow parentWorkflow = buildParentWorkflow();

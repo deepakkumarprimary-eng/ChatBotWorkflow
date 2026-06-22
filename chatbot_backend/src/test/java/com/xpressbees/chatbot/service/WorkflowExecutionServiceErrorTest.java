@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
@@ -16,6 +17,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -36,8 +38,10 @@ class WorkflowExecutionServiceErrorTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
         service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, chatWebSocketHandler);
     }
 
     @Test

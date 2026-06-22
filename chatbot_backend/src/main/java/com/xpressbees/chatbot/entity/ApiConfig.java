@@ -44,13 +44,13 @@ public class ApiConfig {
     @Column(name = "client_id", length = 255)
     private String clientId;
 
-    @OneToMany(mappedBy = "apiConfig", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "apiConfig", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
     private List<ApiHeader> headers = new ArrayList<>();
 
-    @OneToOne(mappedBy = "apiConfig", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "apiConfig", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
     private ApiPayload payload;
 
-    @OneToMany(mappedBy = "apiConfig", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "apiConfig", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.EAGER)
     private List<ApiResponseMapping> responseMappings = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false)

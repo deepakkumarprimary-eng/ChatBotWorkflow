@@ -43,7 +43,7 @@ class NavigationHistoryPropertyTest {
         List<NodeProcessor> processors = List.of(new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         // Create a session with existing navigation history of size N
         ChatSession session = new ChatSession();

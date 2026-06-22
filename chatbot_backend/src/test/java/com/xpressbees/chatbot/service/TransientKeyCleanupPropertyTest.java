@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
@@ -15,6 +16,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -52,9 +54,12 @@ class TransientKeyCleanupPropertyTest {
         List<NodeProcessor> processors = List.of(
                 inputNodeProcessor, messageNodeProcessor, workflowNodeProcessor);
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService);
+                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
 
         // Session with transient keys in context
         String sessionId = "test-session-" + UUID.randomUUID();
@@ -72,8 +77,22 @@ class TransientKeyCleanupPropertyTest {
         context.put("_buttonOptions", transientValues.get("_buttonOptions"));
         session.setContext(context);
 
-        when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // startWorkflow() creates its own session with empty context.
+        // We need to inject the transient keys into it after creation so we can test they get cleaned.
+        final ChatSession[] sessionHolder = new ChatSession[1];
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            ChatSession savedSession = invocation.getArgument(0);
+            // Inject the transient keys into the newly created session's context
+            if (sessionHolder[0] == null) {
+                savedSession.getContext().put("_targetNodeId", transientValues.get("_targetNodeId"));
+                savedSession.getContext().put("_inputVariableName", transientValues.get("_inputVariableName"));
+                savedSession.getContext().put("_displayVariable", transientValues.get("_displayVariable"));
+                savedSession.getContext().put("_buttonOptions", transientValues.get("_buttonOptions"));
+                sessionHolder[0] = savedSession;
+            }
+            when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(savedSession));
+            return savedSession;
+        });
 
         // Parent workflow: has a workflow node that references child workflow (id=2)
         Long parentWorkflowId = 1L;
@@ -105,7 +124,7 @@ class TransientKeyCleanupPropertyTest {
         // --- Assert ---
         // After entering child workflow and pausing at input node,
         // all transient keys must be removed from context
-        Map<String, Object> resultContext = session.getContext();
+        Map<String, Object> resultContext = sessionHolder[0].getContext();
 
         assertThat(resultContext)
                 .as("_targetNodeId should be removed after entering child workflow")

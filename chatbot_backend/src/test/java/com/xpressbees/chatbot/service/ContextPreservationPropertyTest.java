@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
@@ -55,9 +56,12 @@ class ContextPreservationPropertyTest {
         List<com.xpressbees.chatbot.processor.NodeProcessor> processors = List.of(
                 inputNodeProcessor, messageNodeProcessor, workflowNodeProcessor);
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService);
+                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
 
         // Session with user variables in context
         String sessionId = "test-session-" + UUID.randomUUID();

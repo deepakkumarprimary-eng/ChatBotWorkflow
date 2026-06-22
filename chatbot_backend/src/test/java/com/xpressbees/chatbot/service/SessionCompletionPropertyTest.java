@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
@@ -15,6 +16,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -51,9 +53,12 @@ class SessionCompletionPropertyTest {
         List<NodeProcessor> processors = List.of(
                 inputNodeProcessor, messageNodeProcessor, workflowNodeProcessor);
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService);
+                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
 
         // Create a session with an EMPTY _workflowStack and arbitrary context variables
         ChatSession session = new ChatSession();
@@ -71,8 +76,14 @@ class SessionCompletionPropertyTest {
         context.put("_workflowStack", new ArrayList<>());
         session.setContext(context);
 
-        when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // Create a session reference holder — startWorkflow creates its own session
+        final ChatSession[] sessionHolder = new ChatSession[1];
+
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            sessionHolder[0] = invocation.getArgument(0);
+            when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(sessionHolder[0]));
+            return sessionHolder[0];
+        });
 
         // Build a simple workflow with a single message node that has no outgoing transition
         // (target node doesn't exist in nodes list, so resolveNextNode returns null)
@@ -90,7 +101,7 @@ class SessionCompletionPropertyTest {
         service.startWorkflow(sessionId, workflowId);
 
         // --- Assert ---
-        assertThat(session.getStatus())
+        assertThat(sessionHolder[0].getStatus())
                 .as("Session status should be 'completed' when workflow ends with empty stack")
                 .isEqualTo("completed");
     }
@@ -118,9 +129,12 @@ class SessionCompletionPropertyTest {
         List<NodeProcessor> processors = List.of(
                 inputNodeProcessor, messageNodeProcessor, workflowNodeProcessor);
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService);
+                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
 
         ChatSession session = new ChatSession();
         session.setId(1L);
@@ -135,8 +149,14 @@ class SessionCompletionPropertyTest {
         }
         session.setContext(context);
 
-        when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // Create a session reference holder — startWorkflow creates its own session
+        final ChatSession[] sessionHolder = new ChatSession[1];
+
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            sessionHolder[0] = invocation.getArgument(0);
+            when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(sessionHolder[0]));
+            return sessionHolder[0];
+        });
 
         String messageNodeId = "msg-node-" + UUID.randomUUID();
         Map<String, Object> workflowJson = buildSingleMessageNodeWorkflow(messageNodeId);
@@ -152,7 +172,7 @@ class SessionCompletionPropertyTest {
         service.startWorkflow(sessionId, workflowId);
 
         // --- Assert ---
-        assertThat(session.getStatus())
+        assertThat(sessionHolder[0].getStatus())
                 .as("Session status should be 'completed' when workflow ends with no stack in context")
                 .isEqualTo("completed");
     }

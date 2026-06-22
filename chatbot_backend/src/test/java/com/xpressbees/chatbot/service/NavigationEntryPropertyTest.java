@@ -57,7 +57,7 @@ class NavigationEntryPropertyTest {
 
             // Create a minimal service instance (only recordNavigationEntry uses session, no external deps)
             WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                    null, null, List.of(), null, null, null);
+                    null, null, List.of(), null, null, null, null);
 
             recordMethod.invoke(service, session, node);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.processor.MessageNodeProcessor;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -43,7 +45,7 @@ class WorkflowIdValidationPropertyTest {
         when(chatSessionRepo.findBySessionId("sess-test")).thenReturn(Optional.of(session));
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         service.startWorkflow("sess-test", null);
 
@@ -77,8 +79,11 @@ class WorkflowIdValidationPropertyTest {
         when(chatSessionRepo.findBySessionId("sess-test")).thenReturn(Optional.of(session));
         when(workflowRepo.findById(any())).thenReturn(Optional.empty());
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, chatWebSocketHandler);
 
         service.startWorkflow("sess-test", workflowId);
 

@@ -1,8 +1,11 @@
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\ChatInitBugConditionTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\ChatSessionPreservationTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\dto\ChatResponseFormatPropertyTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\ApiNodeProcessorIntegrationTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\ApiNodeProcessorPreservationPropertyTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\ApiNodeProcessorUnifiedFormatBugConditionTest.java
+E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\DecisionNodeProcessorTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\InputNodeProcessorTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\NodeProcessorClassificationPropertyTest.java
 E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\processor\WorkflowNodeCanHandlePropertyTest.java

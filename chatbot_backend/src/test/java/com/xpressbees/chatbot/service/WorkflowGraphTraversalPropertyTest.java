@@ -111,7 +111,7 @@ class WorkflowGraphTraversalPropertyTest {
     }
 
     private WorkflowExecutionServiceImpl createServiceInstance() {
-        return new WorkflowExecutionServiceImpl(null, null, List.of(), null, null, null);
+        return new WorkflowExecutionServiceImpl(null, null, List.of(), null, null, null, null);
     }
 
     record WorkflowTestData(String sourceNodeId, String expectedTargetNodeId, Map<String, Object> workflowJson) {}

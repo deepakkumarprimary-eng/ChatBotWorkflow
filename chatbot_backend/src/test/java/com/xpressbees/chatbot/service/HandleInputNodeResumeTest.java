@@ -46,7 +46,7 @@ class HandleInputNodeResumeTest {
         when(inputValidationService.validate(any(), any())).thenReturn(new ValidationResult(true, null));
 
         service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, inputValidationService);
+                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, inputValidationService, null);
     }
 
     /**

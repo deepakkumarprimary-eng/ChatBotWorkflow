@@ -198,8 +198,8 @@ public class ApiNodeProcessor implements NodeProcessor {
             return new NodeProcessingResult(Action.CONTINUE, null);
         }
 
-        // Check if transitions have conditions
-        boolean hasConditions = outgoingTransitions.stream()
+        // Check if transitions have conditions (Its a dead code , commented out , this case is handled by decisin node now)
+       /*  boolean hasConditions = outgoingTransitions.stream()
                 .anyMatch(t -> t.get("condition") != null && !String.valueOf(t.get("condition")).trim().isEmpty());
 
         if (hasConditions && outgoingTransitions.size() > 1) {
@@ -223,7 +223,7 @@ public class ApiNodeProcessor implements NodeProcessor {
                     new ChatErrorResponse("No matching transition found for current context", session.getSessionId()));
             return new NodeProcessingResult(Action.PAUSE, null);
         }
-
+*/
         if (outgoingTransitions.size() == 1) {
             // Type 1: Auto-advance (single transition without condition)
             return new NodeProcessingResult(Action.CONTINUE, null);

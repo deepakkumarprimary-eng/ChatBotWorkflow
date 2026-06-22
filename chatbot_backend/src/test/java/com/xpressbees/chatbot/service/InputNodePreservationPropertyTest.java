@@ -49,7 +49,7 @@ class InputNodePreservationPropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         // Setup session as if paused on an input node
         String sessionId = "session-" + UUID.randomUUID();
@@ -159,7 +159,7 @@ class InputNodePreservationPropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "session-resume-" + UUID.randomUUID();
         ChatSession session = new ChatSession();
@@ -232,7 +232,7 @@ class InputNodePreservationPropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "api-session-1";
         ChatSession session = new ChatSession();
@@ -299,7 +299,7 @@ class InputNodePreservationPropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "api-session-btn";
         ChatSession session = new ChatSession();
@@ -380,7 +380,7 @@ class InputNodePreservationPropertyTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null);
+                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
 
         String sessionId = "context-preserve-session";
         ChatSession session = new ChatSession();

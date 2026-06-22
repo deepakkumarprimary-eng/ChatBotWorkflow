@@ -46,7 +46,7 @@ class BackNavigationErrorTest {
 
         service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, null);
+                placeholderService, messagingTemplate, null, null);
     }
 
     /**

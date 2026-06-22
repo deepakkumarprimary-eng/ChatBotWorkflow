@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
@@ -15,6 +16,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -51,9 +53,12 @@ class ChildVariableRetentionPropertyTest {
         List<NodeProcessor> processors = List.of(
                 inputNodeProcessor, messageNodeProcessor, workflowNodeProcessor);
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService);
+                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
 
         // Session setup
         String sessionId = "test-session-" + UUID.randomUUID();
@@ -64,8 +69,13 @@ class ChildVariableRetentionPropertyTest {
         session.setStatus("active");
         session.setContext(new HashMap<>());
 
-        when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // startWorkflow() creates its own session, so we capture it and bridge findBySessionId
+        final ChatSession[] sessionHolder = new ChatSession[1];
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            sessionHolder[0] = invocation.getArgument(0);
+            when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(sessionHolder[0]));
+            return sessionHolder[0];
+        });
 
         // Parent workflow: workflow node → message node (after-node)
         Long parentWorkflowId = 1L;
@@ -100,9 +110,9 @@ class ChildVariableRetentionPropertyTest {
         service.startWorkflow(sessionId, parentWorkflowId);
 
         // Verify we paused in the child at the input node
-        assertThat(session.getCurrentNodeId()).isEqualTo(childInputNodeId);
-        assertThat(session.getCurrentNodeType()).isEqualTo("input");
-        assertThat(session.getWorkflowId()).isEqualTo(childWorkflowId);
+        assertThat(sessionHolder[0].getCurrentNodeId()).isEqualTo(childInputNodeId);
+        assertThat(sessionHolder[0].getCurrentNodeType()).isEqualTo("input");
+        assertThat(sessionHolder[0].getWorkflowId()).isEqualTo(childWorkflowId);
 
         // Step 2: User replies with variableValue → stored under variableName in context
         // After storing, child has no next node → handleChildWorkflowEnd → returns to parent
@@ -113,7 +123,7 @@ class ChildVariableRetentionPropertyTest {
 
         // After the full execution completes (child ended, parent continued and completed),
         // the variable stored during child execution must still be in context
-        Map<String, Object> resultContext = session.getContext();
+        Map<String, Object> resultContext = sessionHolder[0].getContext();
 
         assertThat(resultContext)
                 .as("Variable '%s' set during child execution should still be in context after returning to parent",

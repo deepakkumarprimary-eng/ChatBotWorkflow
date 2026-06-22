@@ -1,5 +1,6 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
@@ -16,6 +17,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 /**
@@ -56,9 +58,12 @@ class WorkflowStackPushPropertyTest {
         List<NodeProcessor> processors = List.of(
                 inputNodeProcessor, messageNodeProcessor, workflowNodeProcessor);
 
+        ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
+        when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
+
         WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
                 workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService);
+                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
 
         // Create session with pre-populated workflow stack of size N
         String sessionId = "test-session-" + UUID.randomUUID();
@@ -79,8 +84,20 @@ class WorkflowStackPushPropertyTest {
         context.put("_workflowStack", existingStack);
         session.setContext(context);
 
-        when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(session));
-        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        // startWorkflow() creates a new session with empty context, so we inject the
+        // pre-populated stack into it after creation
+        final ChatSession[] sessionHolder = new ChatSession[1];
+        final List<Map<String, Object>> stackToInject = existingStack;
+        when(chatSessionRepository.save(any(ChatSession.class))).thenAnswer(invocation -> {
+            ChatSession savedSession = invocation.getArgument(0);
+            if (sessionHolder[0] == null) {
+                // Inject the pre-existing stack entries into the new session's context
+                savedSession.getContext().put("_workflowStack", new ArrayList<>(stackToInject));
+            }
+            sessionHolder[0] = savedSession;
+            when(chatSessionRepository.findBySessionId(sessionId)).thenReturn(Optional.of(savedSession));
+            return savedSession;
+        });
 
         // Parent workflow: has a workflow node that references child workflow (id=999)
         Long childWorkflowId = 999L;
@@ -109,7 +126,7 @@ class WorkflowStackPushPropertyTest {
 
         // --- Assert ---
         @SuppressWarnings("unchecked")
-        List<Map<String, Object>> resultStack = (List<Map<String, Object>>) session.getContext().get("_workflowStack");
+        List<Map<String, Object>> resultStack = (List<Map<String, Object>>) sessionHolder[0].getContext().get("_workflowStack");
 
         assertThat(resultStack)
                 .as("Stack size should be N+1 after push (N=%d)", initialStackSize)

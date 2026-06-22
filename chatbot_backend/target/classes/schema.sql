@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS workflow (
 
 CREATE TABLE IF NOT EXISTS chat_session (
     id                BIGSERIAL PRIMARY KEY,
-    session_id        UUID NOT NULL UNIQUE,
+    session_id        VARCHAR(255) NOT NULL UNIQUE,
     workflow_id       BIGINT NOT NULL REFERENCES workflow(id),
     current_node_id   VARCHAR(255),
     current_type      VARCHAR(50),
@@ -62,27 +62,9 @@ CREATE TABLE IF NOT EXISTS api_response_mapping (
     UNIQUE (api_id, context_variable_name)
 );
 
--- Guarded migration: add context_variable_name column to existing api_response_mapping tables
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM information_schema.columns
-        WHERE table_name = 'api_response_mapping'
-          AND column_name = 'context_variable_name'
-    ) THEN
-        ALTER TABLE api_response_mapping
-            ADD COLUMN context_variable_name VARCHAR(255) NOT NULL
-                DEFAULT '__migration_placeholder';
-        ALTER TABLE api_response_mapping
-            ADD CONSTRAINT chk_context_variable_name_format
-                CHECK (context_variable_name ~ '^[a-zA-Z_][a-zA-Z0-9_]*$');
-        ALTER TABLE api_response_mapping
-            ADD CONSTRAINT uq_api_response_mapping_api_id_ctx_var
-                UNIQUE (api_id, context_variable_name);
-        ALTER TABLE api_response_mapping
-            ALTER COLUMN context_variable_name DROP DEFAULT;
-    END IF;
-END $$;
+-- Note: context_variable_name column is defined in the CREATE TABLE above.
+-- The guarded DO $$ migration block was removed because Spring Boot's SQL
+-- initializer does not support dollar-quoting. The column already exists.
 
 CREATE INDEX IF NOT EXISTS idx_api_header_api_id ON api_header(api_id);
 CREATE INDEX IF NOT EXISTS idx_api_payload_api_id ON api_payload(api_id);

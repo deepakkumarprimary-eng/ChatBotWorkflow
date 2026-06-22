@@ -52,9 +52,14 @@ public class ApiNodeProcessor implements NodeProcessor {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean canHandle(Map<String, Object> node) {
-        Object type = node.get("type");
-        return "api".equals(type);
+        String type = (String) node.get("type");
+        if (!"state".equals(type)) {
+            return false;
+        }
+        Map<String, Object> config = (Map<String, Object>) node.get("config");
+        return config != null && "api".equals(config.get("nodeType"));
     }
 
     @SuppressWarnings("unchecked")

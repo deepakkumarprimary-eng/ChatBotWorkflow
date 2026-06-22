@@ -1,11 +1,14 @@
 com\xpressbees\chatbot\service\WorkflowStackPropertyTest$NoUnwindScenario.class
 com\xpressbees\chatbot\dto\ChatResponseFormatPropertyTest.class
+com\xpressbees\chatbot\service\RestartPropertyTest.class
 com\xpressbees\chatbot\service\BackScanPropertyTest.class
 com\xpressbees\chatbot\service\WorkflowStackPushPropertyTest.class
 com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest$TransitionScenario.class
 com\xpressbees\chatbot\service\ChildWorkflowPausePropertyTest$PauseScenario.class
 com\xpressbees\chatbot\service\ConditionEvaluatorPropertyTest.class
+com\xpressbees\chatbot\processor\ApiNodeProcessorUnifiedFormatBugConditionTest.class
 com\xpressbees\chatbot\service\InputNodeVariableNamePropertyTest.class
+com\xpressbees\chatbot\processor\ApiNodeProcessorPreservationPropertyTest.class
 com\xpressbees\chatbot\processor\WorkflowRecursionDepthPropertyTest.class
 com\xpressbees\chatbot\service\InfiniteLoopGuardPropertyTest.class
 com\xpressbees\chatbot\service\WorkflowStackPropertyTest$WorkflowStackScenario.class
@@ -18,12 +21,14 @@ com\xpressbees\chatbot\service\WorkflowExecutionServiceErrorTest.class
 com\xpressbees\chatbot\processor\WorkflowNodeProcessorPropertyTest.class
 com\xpressbees\chatbot\service\ResponseExtractorPropertyTest.class
 com\xpressbees\chatbot\service\SessionPersistencePropertyTest$InputNodeData.class
+com\xpressbees\chatbot\service\NavigationHistoryPropertyTest.class
 com\xpressbees\chatbot\service\WorkflowStackPopPropertyTest.class
 com\xpressbees\chatbot\service\WorkflowIdValidationPropertyTest.class
 com\xpressbees\chatbot\service\SessionCompletionPropertyTest.class
 com\xpressbees\chatbot\service\HttpExecutorRetryPropertyTest.class
 com\xpressbees\chatbot\service\TransientKeyCleanupPropertyTest.class
 com\xpressbees\chatbot\service\ChildVariableRetentionPropertyTest.class
+com\xpressbees\chatbot\service\BackNavigationErrorTest.class
 com\xpressbees\chatbot\service\WorkflowStackPropertyTest.class
 com\xpressbees\chatbot\service\HttpExecutorRetryPropertyTest$1.class
 com\xpressbees\chatbot\service\WorkflowCompositionIntegrationTest.class
@@ -46,5 +51,4 @@ com\xpressbees\chatbot\service\WorkflowCompletionPropertyTest$TerminalWorkflowDa
 com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest.class
 com\xpressbees\chatbot\service\ContextMergePropertyTest.class
 com\xpressbees\chatbot\service\ChildWorkflowPausePropertyTest.class
-com\xpressbees\chatbot\processor\ApiNodeProcessorCanHandlePropertyTest.class
 com\xpressbees\chatbot\service\PlaceholderServicePropertyTest.class

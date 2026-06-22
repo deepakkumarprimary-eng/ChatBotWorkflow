@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.xpressbees.chatbot.dto.WorkflowSummaryDto;
 import com.xpressbees.chatbot.entity.ChatSession;
@@ -15,6 +16,7 @@ import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 
 @Controller
+@CrossOrigin("*")
 public class ChatWebSocketHandler {
 
     private final WorkflowRepository workflowRepository;

@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.xpressbees.chatbot.integration.WorkflowRepositoryIntegrationTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.015 s <<< FAILURE! -- in com.xpressbees.chatbot.integration.WorkflowRepositoryIntegrationTest
-com.xpressbees.chatbot.integration.WorkflowRepositoryIntegrationTest -- Time elapsed: 0.015 s <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.045 s <<< FAILURE! -- in com.xpressbees.chatbot.integration.WorkflowRepositoryIntegrationTest
+com.xpressbees.chatbot.integration.WorkflowRepositoryIntegrationTest -- Time elapsed: 0.045 s <<< ERROR!
 java.lang.IllegalStateException: Previous attempts to find a Docker environment failed. Will not retry. Please see logs and check configuration
 	at org.testcontainers.dockerclient.DockerClientProviderStrategy.getFirstValidStrategy(DockerClientProviderStrategy.java:232)
 	at org.testcontainers.DockerClientFactory.getOrInitializeStrategy(DockerClientFactory.java:152)

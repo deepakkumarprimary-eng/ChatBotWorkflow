@@ -73,8 +73,8 @@ class BehavioralEquivalenceTest {
 
         ChatMessageSender chatMessageSender = new ChatMessageSender(messagingTemplate);
         SessionStateManager sessionStateManager = new SessionStateManager(chatSessionRepository);
-        NavigationService navigationService = new NavigationService(workflowRepository, placeholderService);
-        ChildWorkflowService childWorkflowService = new ChildWorkflowService(workflowRepository);
+        NavigationService navigationService = new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService);
+        ChildWorkflowService childWorkflowService = new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository));
 
         service = TestServiceFactory.createService(
                 workflowRepository, processors, placeholderService,
@@ -541,8 +541,8 @@ class BehavioralEquivalenceTest {
 
         ChatMessageSender chatMessageSender = new ChatMessageSender(messagingTemplate);
         SessionStateManager sessionStateManager = new SessionStateManager(chatSessionRepository);
-        NavigationService navigationService = new NavigationService(workflowRepository, placeholderService);
-        ChildWorkflowService childWorkflowService = new ChildWorkflowService(workflowRepository);
+        NavigationService navigationService = new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService);
+        ChildWorkflowService childWorkflowService = new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository));
 
         service = TestServiceFactory.createService(
                 workflowRepository, processors, placeholderService,

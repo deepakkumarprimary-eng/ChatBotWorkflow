@@ -61,7 +61,7 @@ class WorkflowStackPushPropertyTest {
         ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
 
-        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, inputValidationService, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, inputValidationService, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService), new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository)));
 
         // Create session with pre-populated workflow stack of size N
         String sessionId = "test-session-" + UUID.randomUUID();

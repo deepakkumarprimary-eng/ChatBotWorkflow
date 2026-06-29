@@ -1,4 +1,5 @@
 com\xpressbees\chatbot\config\CorsConfigTest$ExplicitOrigins.class
+com\xpressbees\chatbot\config\WebSocketThreadPoolPropertyTest.class
 com\xpressbees\chatbot\integration\WebSocketStompIntegrationTest$5.class
 com\xpressbees\chatbot\service\RestartPropertyTest.class
 com\xpressbees\chatbot\service\PlaceholderServiceExtendedPropertyTest.class
@@ -32,6 +33,8 @@ com\xpressbees\chatbot\service\ApiConfigNameIndexTest.class
 com\xpressbees\chatbot\integration\ChatSessionRepositoryIntegrationTest.class
 com\xpressbees\chatbot\integration\WebSocketStompIntegrationTest$2.class
 com\xpressbees\chatbot\service\UrlValidatorExtendedPropertyTest.class
+com\xpressbees\chatbot\config\WebSocketConfigTest.class
+com\xpressbees\chatbot\config\WebSocketThreadPoolSaturationPropertyTest.class
 com\xpressbees\chatbot\service\TransientKeyCleanupPropertyTest.class
 com\xpressbees\chatbot\service\ExecutionTrackerTest$ShutdownBehavior.class
 com\xpressbees\chatbot\integration\WorkflowExecutionIntegrationTest.class
@@ -44,6 +47,7 @@ com\xpressbees\chatbot\service\TestServiceFactory.class
 com\xpressbees\chatbot\service\NavigationEntryPropertyTest.class
 com\xpressbees\chatbot\service\SessionPersistencePropertyTest.class
 com\xpressbees\chatbot\service\EncryptionServicePropertyTest.class
+com\xpressbees\chatbot\config\WebSocketThreadPoolIntegrationTest.class
 com\xpressbees\chatbot\processor\WorkflowNodeProcessorTest.class
 com\xpressbees\chatbot\service\InputValidationServiceImplTest$ErrorMessageTests.class
 com\xpressbees\chatbot\config\CorsConfigTest$TestCorsRegistry.class
@@ -53,9 +57,11 @@ com\xpressbees\chatbot\service\InputValidationServiceImplTest$NumericOnlyRuleTes
 com\xpressbees\chatbot\controller\ReconnectionControllerPropertyTest.class
 com\xpressbees\chatbot\processor\InputNodeProcessorTest.class
 com\xpressbees\chatbot\service\GracefulShutdownListenerTest$TimeoutBehavior.class
+com\xpressbees\chatbot\config\WebSocketThreadPoolIntegrationTest$TestConfig.class
 com\xpressbees\chatbot\config\WebSocketHealthIndicatorPropertyTest.class
 com\xpressbees\chatbot\service\WorkflowGraphTraversalPropertyTest$WorkflowTestData.class
 com\xpressbees\chatbot\integration\WebSocketStompIntegrationTest$6.class
+com\xpressbees\chatbot\config\WebSocketThreadPoolValidationPropertyTest.class
 com\xpressbees\chatbot\service\ExecutionTrackerTest$ConcurrencyIntegrity.class
 com\xpressbees\chatbot\config\WorkflowEngineHealthIndicatorTest.class
 com\xpressbees\chatbot\service\ConnectionRegistryPropertyTest.class
@@ -121,15 +127,18 @@ com\xpressbees\chatbot\controller\ReconnectionControllerTest.class
 com\xpressbees\chatbot\service\BackNavigationErrorTest.class
 com\xpressbees\chatbot\exception\GlobalExceptionHandlerTest.class
 com\xpressbees\chatbot\service\WorkflowCompositionIntegrationTest.class
+com\xpressbees\chatbot\ProductionReliabilityBugConditionTest.class
 com\xpressbees\chatbot\service\ExecutionTrackerTest.class
 com\xpressbees\chatbot\service\EncryptionServiceTest.class
 com\xpressbees\chatbot\integration\WebSocketStompIntegrationTest$11.class
 com\xpressbees\chatbot\service\GracefulShutdownListenerTest.class
+com\xpressbees\chatbot\ProductionReliabilityPreservationTest.class
 com\xpressbees\chatbot\service\HttpExecutorRetryPropertyTest$2.class
 com\xpressbees\chatbot\service\ContextPreservationPropertyTest.class
 com\xpressbees\chatbot\config\CorsConfigTest.class
 com\xpressbees\chatbot\service\StaleSessionCleanupServiceTest$CleanupExecution.class
 com\xpressbees\chatbot\processor\ApiNodeProcessorIntegrationTest.class
+com\xpressbees\chatbot\config\LoggingCallerRunsPolicyTest.class
 com\xpressbees\chatbot\service\ApiConfigCacheSerializationTest.class
 com\xpressbees\chatbot\integration\OpenApiIntegrationTest.class
 com\xpressbees\chatbot\integration\WebSocketStompIntegrationTest$3.class

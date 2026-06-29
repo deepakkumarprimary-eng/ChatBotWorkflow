@@ -47,7 +47,7 @@ class HandleInputNodeResumeTest {
 
         when(inputValidationService.validate(any(), any())).thenReturn(new ValidationResult(true, null));
 
-        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, inputValidationService, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
+        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, inputValidationService, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService), new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository)));
     }
 
     /**

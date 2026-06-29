@@ -3,7 +3,6 @@ package com.xpressbees.chatbot.service;
 import com.xpressbees.chatbot.dto.ChildWorkflowResult;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
-import com.xpressbees.chatbot.repository.WorkflowRepository;
 import com.xpressbees.chatbot.util.WorkflowJsonUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +15,10 @@ import java.util.*;
 @Service
 public class ChildWorkflowService {
 
-    private final WorkflowRepository workflowRepository;
+    private final WorkflowCacheService workflowCacheService;
 
-    public ChildWorkflowService(WorkflowRepository workflowRepository) {
-        this.workflowRepository = workflowRepository;
+    public ChildWorkflowService(WorkflowCacheService workflowCacheService) {
+        this.workflowCacheService = workflowCacheService;
     }
 
     /**
@@ -54,8 +53,8 @@ public class ChildWorkflowService {
         // 4. Switch session to child workflow
         session.setWorkflowId(childWorkflowId);
 
-        // 5. Load child workflow from DB
-        Optional<Workflow> childWorkflowOpt = workflowRepository.findById(childWorkflowId);
+        // 5. Load child workflow from cache/DB
+        Optional<Workflow> childWorkflowOpt = workflowCacheService.findById(childWorkflowId);
 
         // 6. If not found, return error
         if (childWorkflowOpt.isEmpty()) {
@@ -109,8 +108,8 @@ public class ChildWorkflowService {
         // 5. Restore parent workflow ID on session
         session.setWorkflowId(parentWorkflowId);
 
-        // 6. Load parent workflow from DB
-        Optional<Workflow> parentWorkflowOpt = workflowRepository.findById(parentWorkflowId);
+        // 6. Load parent workflow from cache/DB
+        Optional<Workflow> parentWorkflowOpt = workflowCacheService.findById(parentWorkflowId);
 
         // 7. If not found, return error
         if (parentWorkflowOpt.isEmpty()) {

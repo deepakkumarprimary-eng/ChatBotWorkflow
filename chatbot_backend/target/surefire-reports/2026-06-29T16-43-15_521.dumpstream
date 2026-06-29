@@ -1,5 +1,0 @@
-# Created at 2026-06-29T16:43:15.729
-Boot Manifest-JAR contains absolute paths in classpath 'E:\ChatBotWorkflow\chatbot_backend\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-

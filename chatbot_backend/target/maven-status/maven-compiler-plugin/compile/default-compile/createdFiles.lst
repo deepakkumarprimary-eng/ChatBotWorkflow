@@ -80,6 +80,7 @@ com\xpressbees\chatbot\repository\ApiResponseMappingRepository.class
 com\xpressbees\chatbot\service\DisconnectListener.class
 com\xpressbees\chatbot\dto\WorkflowSummaryDto.class
 com\xpressbees\chatbot\dto\WorkflowResponse.class
+com\xpressbees\chatbot\config\LoggingCallerRunsPolicy.class
 com\xpressbees\chatbot\config\WorkflowEngineHealthIndicator.class
 com\xpressbees\chatbot\config\WebSocketAuthInterceptor.class
 com\xpressbees\chatbot\dto\NavigationResult$Outcome.class

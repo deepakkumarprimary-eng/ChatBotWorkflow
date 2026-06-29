@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.xpressbees.chatbot.service.ConditionEvaluatorPropertyTest
 -------------------------------------------------------------------------------
-Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.293 s -- in com.xpressbees.chatbot.service.ConditionEvaluatorPropertyTest
+Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.349 s -- in com.xpressbees.chatbot.service.ConditionEvaluatorPropertyTest

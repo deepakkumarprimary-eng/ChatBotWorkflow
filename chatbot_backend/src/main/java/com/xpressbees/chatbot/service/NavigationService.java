@@ -3,7 +3,6 @@ package com.xpressbees.chatbot.service;
 import com.xpressbees.chatbot.dto.NavigationResult;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
-import com.xpressbees.chatbot.repository.WorkflowRepository;
 import com.xpressbees.chatbot.util.WorkflowJsonUtils;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +16,12 @@ import java.util.*;
 @Service
 public class NavigationService {
 
-    private final WorkflowRepository workflowRepository;
+    private final WorkflowCacheService workflowCacheService;
     private final PlaceholderService placeholderService;
 
-    public NavigationService(WorkflowRepository workflowRepository,
+    public NavigationService(WorkflowCacheService workflowCacheService,
                              PlaceholderService placeholderService) {
-        this.workflowRepository = workflowRepository;
+        this.workflowCacheService = workflowCacheService;
         this.placeholderService = placeholderService;
     }
 
@@ -88,7 +87,7 @@ public class NavigationService {
         session.setCurrentNodeType(targetNodeType);
 
         // Load target workflow and find target node
-        Optional<Workflow> workflowOpt = workflowRepository.findById(targetWorkflowId);
+        Optional<Workflow> workflowOpt = workflowCacheService.findById(targetWorkflowId);
         if (workflowOpt.isEmpty()) {
             return NavigationResult.error("Workflow not found");
         }
@@ -155,7 +154,7 @@ public class NavigationService {
         }
 
         // Load the root workflow
-        Optional<Workflow> workflowOpt = workflowRepository.findById(rootWorkflowId);
+        Optional<Workflow> workflowOpt = workflowCacheService.findById(rootWorkflowId);
         if (workflowOpt.isEmpty()) {
             return NavigationResult.error("Workflow not found");
         }

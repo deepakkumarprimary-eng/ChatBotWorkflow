@@ -1,0 +1,594 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.xpressbees:chatbot >-----------------------
+[INFO] Building chatbot 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ chatbot ---
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ chatbot ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ chatbot ---
+[INFO] Copying 5 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ chatbot ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ chatbot ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Reverse Proxy — Missing Forward Headers Strategy") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.prodPropertiesMustConfigureForwardHeadersStrategy(java.lang.String,java.lang.String)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — ChildWorkflowService.handleChildEnd()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceHandleChildEndMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Data Race — Missing Optimistic Locking") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.chatSessionMustHaveVersionFieldForOptimisticLocking(java.util.Map,java.util.Map)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — ChildWorkflowService.enterChild()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceEnterChildMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — NavigationService.handleRestart()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleRestartMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — NavigationService.handleBack()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleBackMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Reverse Proxy — Missing Forward Headers Strategy") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.prodPropertiesMustConfigureForwardHeadersStrategy(java.lang.String,java.lang.String)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — ChildWorkflowService.handleChildEnd()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceHandleChildEndMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Data Race — Missing Optimistic Locking") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.chatSessionMustHaveVersionFieldForOptimisticLocking(java.util.Map,java.util.Map)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — ChildWorkflowService.enterChild()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceEnterChildMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — NavigationService.handleRestart()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleRestartMustUseCacheService(java.lang.Long)]. Tag will be ignored
+Jun 30, 2026 12:57:23 AM net.jqwik.engine.descriptor.DiscoverySupport lambda$findTestTags$0
+WARNING: Invalid tag format in @Tag("Bug Condition: Cache Bypass — NavigationService.handleBack()") on [void com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleBackMustUseCacheService(java.lang.Long)]. Tag will be ignored
+[INFO] Running com.xpressbees.chatbot.ProductionReliabilityBugConditionTest
+timestamp = 2026-06-30T00:57:24.661443800, ProductionReliabilityBugConditionTest:prodPropertiesMustConfigureForwardHeadersStrategy = 
+  java.lang.AssertionError:
+    BUG CONFIRMED: application-prod.properties does NOT set server.forward-headers-strategy=native. A request from client IP 1.1.1.1 via https through a reverse proxy will resolve request.getRemoteAddr() as the proxy IP (not 1.1.1.1) and request.isSecure() will return false even when the original client connection was https. Current value: null
+
+                              |-----------------------jqwik-----------------------
+tries = 1                     | # of calls to property
+checks = 1                    | # of not rejected calls
+generation = RANDOMIZED       | parameters are randomly generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 50         | # of all combined edge cases
+edge-cases#tried = 0          | # of edge cases tried in current run
+seed = 8877797782128602055    | random seed to reproduce generated values
+
+Shrunk Sample (5 steps)
+-----------------------
+  clientIp: "1.1.1.1"
+  protocol: "https"
+
+Original Sample
+---------------
+  clientIp: "2.2.254.2"
+  protocol: "http"
+
+  Original Error
+  --------------
+  java.lang.AssertionError:
+    BUG CONFIRMED: application-prod.properties does NOT set server.forward-headers-strategy=native. A request from client IP 2.2.254.2 via http through a reverse proxy will resolve request.getRemoteAddr() as the proxy IP (not 2.2.254.2) and request.isSecure() will return true even when the original client connection was http. Current value: null
+
+
+timestamp = 2026-06-30T00:57:24.814646100, ProductionReliabilityBugConditionTest:childWorkflowServiceHandleChildEndMustUseCacheService = 
+  java.lang.AssertionError:
+    BUG CONFIRMED: ChildWorkflowService has NO WorkflowCacheService field. handleChildEnd() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every child workflow exit.
+
+                              |-----------------------jqwik-----------------------
+tries = 1                     | # of calls to property
+checks = 1                    | # of not rejected calls
+generation = RANDOMIZED       | parameters are randomly generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 4          | # of all combined edge cases
+edge-cases#tried = 0          | # of edge cases tried in current run
+seed = 2086276318523232542    | random seed to reproduce generated values
+
+Shrunk Sample (1 steps)
+-----------------------
+  parentWorkflowId: 1
+
+Original Sample
+---------------
+  parentWorkflowId: 33
+
+  Original Error
+  --------------
+  java.lang.AssertionError:
+    BUG CONFIRMED: ChildWorkflowService has NO WorkflowCacheService field. handleChildEnd() will call workflowRepository.findById(33) bypassing Redis cache, hitting PostgreSQL on every child workflow exit.
+
+
+timestamp = 2026-06-30T00:57:25.523069100, ProductionReliabilityBugConditionTest:chatSessionMustHaveVersionFieldForOptimisticLocking = 
+  java.lang.AssertionError:
+    BUG CONFIRMED: ChatSession has NO @Version field. Concurrent threads reading the same row and applying independent mutations (contextA={A=0}, contextB={A=0}) will result in lost updates. The last writer overwrites without ObjectOptimisticLockingFailureException being thrown.
+
+                              |-----------------------jqwik-----------------------
+tries = 1                     | # of calls to property
+checks = 1                    | # of not rejected calls
+generation = RANDOMIZED       | parameters are randomly generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 96         | # of all combined edge cases
+edge-cases#tried = 0          | # of edge cases tried in current run
+seed = -2206017204587574332   | random seed to reproduce generated values
+
+Shrunk Sample (21 steps)
+------------------------
+  contextA: {"A"=0}
+  contextB: {"A"=0}
+
+Original Sample
+---------------
+  contextA: {"gCPVNvrkv"="QUadQmzr", "xqBvJB"=45}
+  contextB: {"z"=0, "FmwhkhZ"=0, "CAbaGCq"=0, "a"=0}
+
+  Original Error
+  --------------
+  java.lang.AssertionError:
+    BUG CONFIRMED: ChatSession has NO @Version field. Concurrent threads reading the same row and applying independent mutations (contextA={gCPVNvrkv=QUadQmzr, xqBvJB=45}, contextB={z=0, FmwhkhZ=0, CAbaGCq=0, a=0}) will result in lost updates. The last writer overwrites without ObjectOptimisticLockingFailureException being thrown.
+
+
+timestamp = 2026-06-30T00:57:25.555794700, ProductionReliabilityBugConditionTest:childWorkflowServiceEnterChildMustUseCacheService = 
+  java.lang.AssertionError:
+    BUG CONFIRMED: ChildWorkflowService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. enterChild(session, 1, node) will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every child workflow entry.
+
+                              |-----------------------jqwik-----------------------
+tries = 1                     | # of calls to property
+checks = 1                    | # of not rejected calls
+generation = RANDOMIZED       | parameters are randomly generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 4          | # of all combined edge cases
+edge-cases#tried = 0          | # of edge cases tried in current run
+seed = 2707462722527891879    | random seed to reproduce generated values
+
+Shrunk Sample (1 steps)
+-----------------------
+  childWorkflowId: 1
+
+Original Sample
+---------------
+  childWorkflowId: 12
+
+  Original Error
+  --------------
+  java.lang.AssertionError:
+    BUG CONFIRMED: ChildWorkflowService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. enterChild(session, 12, node) will call workflowRepository.findById(12) bypassing Redis cache, hitting PostgreSQL on every child workflow entry.
+
+
+timestamp = 2026-06-30T00:57:25.567028200, ProductionReliabilityBugConditionTest:navigationServiceHandleRestartMustUseCacheService = 
+  java.lang.AssertionError:
+    BUG CONFIRMED: NavigationService has NO WorkflowCacheService field. handleRestart() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every restart navigation.
+
+                              |-----------------------jqwik-----------------------
+tries = 1                     | # of calls to property
+checks = 1                    | # of not rejected calls
+generation = RANDOMIZED       | parameters are randomly generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 4          | # of all combined edge cases
+edge-cases#tried = 0          | # of edge cases tried in current run
+seed = 6309396125242645171    | random seed to reproduce generated values
+
+Shrunk Sample (1 steps)
+-----------------------
+  rootWorkflowId: 1
+
+Original Sample
+---------------
+  rootWorkflowId: 244
+
+  Original Error
+  --------------
+  java.lang.AssertionError:
+    BUG CONFIRMED: NavigationService has NO WorkflowCacheService field. handleRestart() will call workflowRepository.findById(244) bypassing Redis cache, hitting PostgreSQL on every restart navigation.
+
+
+timestamp = 2026-06-30T00:57:25.599240500, ProductionReliabilityBugConditionTest:navigationServiceHandleBackMustUseCacheService = 
+  java.lang.AssertionError:
+    BUG CONFIRMED: NavigationService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. handleBack() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every back navigation.
+
+                              |-----------------------jqwik-----------------------
+tries = 1                     | # of calls to property
+checks = 1                    | # of not rejected calls
+generation = RANDOMIZED       | parameters are randomly generated
+after-failure = SAMPLE_FIRST  | try previously failed sample, then previous seed
+when-fixed-seed = ALLOW       | fixing the random seed is allowed
+edge-cases#mode = MIXIN       | edge cases are mixed in
+edge-cases#total = 4          | # of all combined edge cases
+edge-cases#tried = 1          | # of edge cases tried in current run
+seed = 8362605003250409840    | random seed to reproduce generated values
+
+Shrunk Sample (1 steps)
+-----------------------
+  targetWorkflowId: 1
+
+Original Sample
+---------------
+  targetWorkflowId: 2
+
+  Original Error
+  --------------
+  java.lang.AssertionError:
+    BUG CONFIRMED: NavigationService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. handleBack() will call workflowRepository.findById(2) bypassing Redis cache, hitting PostgreSQL on every back navigation.
+
+
+[ERROR] Tests run: 6, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 1.845 s <<< FAILURE! -- in com.xpressbees.chatbot.ProductionReliabilityBugConditionTest
+[ERROR] com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.prodPropertiesMustConfigureForwardHeadersStrategy -- Time elapsed: 0.930 s <<< FAILURE!
+java.lang.AssertionError: BUG CONFIRMED: application-prod.properties does NOT set server.forward-headers-strategy=native. A request from client IP 1.1.1.1 via https through a reverse proxy will resolve request.getRemoteAddr() as the proxy IP (not 1.1.1.1) and request.isSecure() will return false even when the original client connection was https. Current value: null
+	at com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.prodPropertiesMustConfigureForwardHeadersStrategy(ProductionReliabilityBugConditionTest.java:101)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$1(CheckedPropertyFactory.java:84)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$2(CheckedPropertyFactory.java:91)
+	at net.jqwik.engine.properties.CheckedFunction.execute(CheckedFunction.java:17)
+	at net.jqwik.api.lifecycle.AroundTryHook.lambda$static$0(AroundTryHook.java:57)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.TryLifecycleMethodsHook.aroundTry(TryLifecycleMethodsHook.java:56)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.BeforeTryMembersHook.aroundTry(BeforeTryMembersHook.java:69)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createTryExecutor$0(CheckedPropertyFactory.java:60)
+	at net.jqwik.engine.execution.lifecycle.AroundTryLifecycle.execute(AroundTryLifecycle.java:23)
+	at net.jqwik.engine.properties.GenericProperty.lambda$createFalsifier$1(GenericProperty.java:229)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$0(PropertyShrinker.java:55)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrinkAsLongAsSampleImproves$6(PropertyShrinker.java:122)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$falsify$5(AbstractSampleShrinker.java:91)
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1220)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.falsify(AbstractSampleShrinker.java:91)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$shrink$2(AbstractSampleShrinker.java:53)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$15$1.accept(ReferencePipeline.java:541)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.AbstractList$RandomAccessSpliterator.tryAdvance(AbstractList.java:706)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findAny(ReferencePipeline.java:652)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.shrink(AbstractSampleShrinker.java:63)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrinkSingleParameter(OneAfterTheOtherParameterShrinker.java:43)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrink(OneAfterTheOtherParameterShrinker.java:25)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrinkOneParameterAfterTheOther(ShrinkingAlgorithm.java:52)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrink(ShrinkingAlgorithm.java:32)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.shrinkAsLongAsSampleImproves(PropertyShrinker.java:135)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$3(PropertyShrinker.java:87)
+	at net.jqwik.engine.execution.lifecycle.CurrentTestDescriptor.runWithDescriptor(CurrentTestDescriptor.java:17)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$4(PropertyShrinker.java:103)
+	at net.jqwik.engine.execution.lifecycle.CurrentDomainContext.runWithContext(CurrentDomainContext.java:28)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$5(PropertyShrinker.java:101)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+[ERROR] com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceHandleChildEndMustUseCacheService -- Time elapsed: 0.042 s <<< FAILURE!
+java.lang.AssertionError: BUG CONFIRMED: ChildWorkflowService has NO WorkflowCacheService field. handleChildEnd() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every child workflow exit.
+	at com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceHandleChildEndMustUseCacheService(ProductionReliabilityBugConditionTest.java:155)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$1(CheckedPropertyFactory.java:84)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$2(CheckedPropertyFactory.java:91)
+	at net.jqwik.engine.properties.CheckedFunction.execute(CheckedFunction.java:17)
+	at net.jqwik.api.lifecycle.AroundTryHook.lambda$static$0(AroundTryHook.java:57)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.TryLifecycleMethodsHook.aroundTry(TryLifecycleMethodsHook.java:56)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.BeforeTryMembersHook.aroundTry(BeforeTryMembersHook.java:69)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createTryExecutor$0(CheckedPropertyFactory.java:60)
+	at net.jqwik.engine.execution.lifecycle.AroundTryLifecycle.execute(AroundTryLifecycle.java:23)
+	at net.jqwik.engine.properties.GenericProperty.lambda$createFalsifier$1(GenericProperty.java:229)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$0(PropertyShrinker.java:55)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrinkAsLongAsSampleImproves$6(PropertyShrinker.java:122)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$falsify$5(AbstractSampleShrinker.java:91)
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1220)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.falsify(AbstractSampleShrinker.java:91)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$shrink$2(AbstractSampleShrinker.java:53)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$15$1.accept(ReferencePipeline.java:541)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:300)
+	at net.jqwik.engine.support.StreamConcatenation$ConcatSpliterator.tryAdvance(StreamConcatenation.java:302)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findAny(ReferencePipeline.java:652)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.shrink(AbstractSampleShrinker.java:63)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrinkSingleParameter(OneAfterTheOtherParameterShrinker.java:43)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrink(OneAfterTheOtherParameterShrinker.java:25)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrinkOneParameterAfterTheOther(ShrinkingAlgorithm.java:52)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrink(ShrinkingAlgorithm.java:32)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.shrinkAsLongAsSampleImproves(PropertyShrinker.java:135)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$3(PropertyShrinker.java:87)
+	at net.jqwik.engine.execution.lifecycle.CurrentTestDescriptor.runWithDescriptor(CurrentTestDescriptor.java:17)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$4(PropertyShrinker.java:103)
+	at net.jqwik.engine.execution.lifecycle.CurrentDomainContext.runWithContext(CurrentDomainContext.java:28)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$5(PropertyShrinker.java:101)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+[ERROR] com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.chatSessionMustHaveVersionFieldForOptimisticLocking -- Time elapsed: 0.701 s <<< FAILURE!
+java.lang.AssertionError: BUG CONFIRMED: ChatSession has NO @Version field. Concurrent threads reading the same row and applying independent mutations (contextA={A=0}, contextB={A=0}) will result in lost updates. The last writer overwrites without ObjectOptimisticLockingFailureException being thrown.
+	at com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.chatSessionMustHaveVersionFieldForOptimisticLocking(ProductionReliabilityBugConditionTest.java:63)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$1(CheckedPropertyFactory.java:84)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$2(CheckedPropertyFactory.java:91)
+	at net.jqwik.engine.properties.CheckedFunction.execute(CheckedFunction.java:17)
+	at net.jqwik.api.lifecycle.AroundTryHook.lambda$static$0(AroundTryHook.java:57)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.TryLifecycleMethodsHook.aroundTry(TryLifecycleMethodsHook.java:56)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.BeforeTryMembersHook.aroundTry(BeforeTryMembersHook.java:69)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createTryExecutor$0(CheckedPropertyFactory.java:60)
+	at net.jqwik.engine.execution.lifecycle.AroundTryLifecycle.execute(AroundTryLifecycle.java:23)
+	at net.jqwik.engine.properties.GenericProperty.lambda$createFalsifier$1(GenericProperty.java:229)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$0(PropertyShrinker.java:55)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrinkAsLongAsSampleImproves$6(PropertyShrinker.java:122)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$falsify$5(AbstractSampleShrinker.java:91)
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1220)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.falsify(AbstractSampleShrinker.java:91)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$shrink$2(AbstractSampleShrinker.java:53)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$15$1.accept(ReferencePipeline.java:541)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:300)
+	at net.jqwik.engine.support.StreamConcatenation$ConcatSpliterator.tryAdvance(StreamConcatenation.java:302)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findAny(ReferencePipeline.java:652)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.shrink(AbstractSampleShrinker.java:63)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrinkSingleParameter(OneAfterTheOtherParameterShrinker.java:43)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrink(OneAfterTheOtherParameterShrinker.java:25)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrinkOneParameterAfterTheOther(ShrinkingAlgorithm.java:52)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrink(ShrinkingAlgorithm.java:32)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.shrinkAsLongAsSampleImproves(PropertyShrinker.java:135)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$3(PropertyShrinker.java:87)
+	at net.jqwik.engine.execution.lifecycle.CurrentTestDescriptor.runWithDescriptor(CurrentTestDescriptor.java:17)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$4(PropertyShrinker.java:103)
+	at net.jqwik.engine.execution.lifecycle.CurrentDomainContext.runWithContext(CurrentDomainContext.java:28)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$5(PropertyShrinker.java:101)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+[ERROR] com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceEnterChildMustUseCacheService -- Time elapsed: 0.016 s <<< FAILURE!
+java.lang.AssertionError: BUG CONFIRMED: ChildWorkflowService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. enterChild(session, 1, node) will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every child workflow entry.
+	at com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.childWorkflowServiceEnterChildMustUseCacheService(ProductionReliabilityBugConditionTest.java:129)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$1(CheckedPropertyFactory.java:84)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$2(CheckedPropertyFactory.java:91)
+	at net.jqwik.engine.properties.CheckedFunction.execute(CheckedFunction.java:17)
+	at net.jqwik.api.lifecycle.AroundTryHook.lambda$static$0(AroundTryHook.java:57)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.TryLifecycleMethodsHook.aroundTry(TryLifecycleMethodsHook.java:56)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.BeforeTryMembersHook.aroundTry(BeforeTryMembersHook.java:69)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createTryExecutor$0(CheckedPropertyFactory.java:60)
+	at net.jqwik.engine.execution.lifecycle.AroundTryLifecycle.execute(AroundTryLifecycle.java:23)
+	at net.jqwik.engine.properties.GenericProperty.lambda$createFalsifier$1(GenericProperty.java:229)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$0(PropertyShrinker.java:55)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrinkAsLongAsSampleImproves$6(PropertyShrinker.java:122)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$falsify$5(AbstractSampleShrinker.java:91)
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1220)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.falsify(AbstractSampleShrinker.java:91)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$shrink$2(AbstractSampleShrinker.java:53)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$15$1.accept(ReferencePipeline.java:541)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:300)
+	at net.jqwik.engine.support.StreamConcatenation$ConcatSpliterator.tryAdvance(StreamConcatenation.java:302)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findAny(ReferencePipeline.java:652)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.shrink(AbstractSampleShrinker.java:63)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrinkSingleParameter(OneAfterTheOtherParameterShrinker.java:43)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrink(OneAfterTheOtherParameterShrinker.java:25)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrinkOneParameterAfterTheOther(ShrinkingAlgorithm.java:52)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrink(ShrinkingAlgorithm.java:32)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.shrinkAsLongAsSampleImproves(PropertyShrinker.java:135)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$3(PropertyShrinker.java:87)
+	at net.jqwik.engine.execution.lifecycle.CurrentTestDescriptor.runWithDescriptor(CurrentTestDescriptor.java:17)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$4(PropertyShrinker.java:103)
+	at net.jqwik.engine.execution.lifecycle.CurrentDomainContext.runWithContext(CurrentDomainContext.java:28)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$5(PropertyShrinker.java:101)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+[ERROR] com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleRestartMustUseCacheService -- Time elapsed: 0.012 s <<< FAILURE!
+java.lang.AssertionError: BUG CONFIRMED: NavigationService has NO WorkflowCacheService field. handleRestart() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every restart navigation.
+	at com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleRestartMustUseCacheService(ProductionReliabilityBugConditionTest.java:202)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$1(CheckedPropertyFactory.java:84)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$2(CheckedPropertyFactory.java:91)
+	at net.jqwik.engine.properties.CheckedFunction.execute(CheckedFunction.java:17)
+	at net.jqwik.api.lifecycle.AroundTryHook.lambda$static$0(AroundTryHook.java:57)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.TryLifecycleMethodsHook.aroundTry(TryLifecycleMethodsHook.java:56)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.BeforeTryMembersHook.aroundTry(BeforeTryMembersHook.java:69)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createTryExecutor$0(CheckedPropertyFactory.java:60)
+	at net.jqwik.engine.execution.lifecycle.AroundTryLifecycle.execute(AroundTryLifecycle.java:23)
+	at net.jqwik.engine.properties.GenericProperty.lambda$createFalsifier$1(GenericProperty.java:229)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$0(PropertyShrinker.java:55)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrinkAsLongAsSampleImproves$6(PropertyShrinker.java:122)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$falsify$5(AbstractSampleShrinker.java:91)
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1220)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.falsify(AbstractSampleShrinker.java:91)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$shrink$2(AbstractSampleShrinker.java:53)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$15$1.accept(ReferencePipeline.java:541)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:300)
+	at net.jqwik.engine.support.StreamConcatenation$ConcatSpliterator.tryAdvance(StreamConcatenation.java:302)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findAny(ReferencePipeline.java:652)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.shrink(AbstractSampleShrinker.java:63)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrinkSingleParameter(OneAfterTheOtherParameterShrinker.java:43)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrink(OneAfterTheOtherParameterShrinker.java:25)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrinkOneParameterAfterTheOther(ShrinkingAlgorithm.java:52)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrink(ShrinkingAlgorithm.java:32)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.shrinkAsLongAsSampleImproves(PropertyShrinker.java:135)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$3(PropertyShrinker.java:87)
+	at net.jqwik.engine.execution.lifecycle.CurrentTestDescriptor.runWithDescriptor(CurrentTestDescriptor.java:17)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$4(PropertyShrinker.java:103)
+	at net.jqwik.engine.execution.lifecycle.CurrentDomainContext.runWithContext(CurrentDomainContext.java:28)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$5(PropertyShrinker.java:101)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+[ERROR] com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleBackMustUseCacheService -- Time elapsed: 0.021 s <<< FAILURE!
+java.lang.AssertionError: BUG CONFIRMED: NavigationService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. handleBack() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every back navigation.
+	at com.xpressbees.chatbot.ProductionReliabilityBugConditionTest.navigationServiceHandleBackMustUseCacheService(ProductionReliabilityBugConditionTest.java:178)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$1(CheckedPropertyFactory.java:84)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createRawFunction$2(CheckedPropertyFactory.java:91)
+	at net.jqwik.engine.properties.CheckedFunction.execute(CheckedFunction.java:17)
+	at net.jqwik.api.lifecycle.AroundTryHook.lambda$static$0(AroundTryHook.java:57)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.TryLifecycleMethodsHook.aroundTry(TryLifecycleMethodsHook.java:56)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$2(HookSupport.java:48)
+	at net.jqwik.engine.hooks.lifecycle.BeforeTryMembersHook.aroundTry(BeforeTryMembersHook.java:69)
+	at net.jqwik.engine.execution.lifecycle.HookSupport.lambda$wrap$3(HookSupport.java:53)
+	at net.jqwik.engine.execution.CheckedPropertyFactory.lambda$createTryExecutor$0(CheckedPropertyFactory.java:60)
+	at net.jqwik.engine.execution.lifecycle.AroundTryLifecycle.execute(AroundTryLifecycle.java:23)
+	at net.jqwik.engine.properties.GenericProperty.lambda$createFalsifier$1(GenericProperty.java:229)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$0(PropertyShrinker.java:55)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrinkAsLongAsSampleImproves$6(PropertyShrinker.java:122)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$falsify$5(AbstractSampleShrinker.java:91)
+	at java.base/java.util.HashMap.computeIfAbsent(HashMap.java:1220)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.falsify(AbstractSampleShrinker.java:91)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.lambda$shrink$2(AbstractSampleShrinker.java:53)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$15$1.accept(ReferencePipeline.java:541)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.tryAdvance(StreamSpliterators.java:300)
+	at net.jqwik.engine.support.StreamConcatenation$ConcatSpliterator.tryAdvance(StreamConcatenation.java:302)
+	at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:129)
+	at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:527)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:513)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.FindOps$FindOp.evaluateSequential(FindOps.java:150)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.findAny(ReferencePipeline.java:652)
+	at net.jqwik.engine.properties.shrinking.AbstractSampleShrinker.shrink(AbstractSampleShrinker.java:63)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrinkSingleParameter(OneAfterTheOtherParameterShrinker.java:43)
+	at net.jqwik.engine.properties.shrinking.OneAfterTheOtherParameterShrinker.shrink(OneAfterTheOtherParameterShrinker.java:25)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrinkOneParameterAfterTheOther(ShrinkingAlgorithm.java:52)
+	at net.jqwik.engine.properties.shrinking.ShrinkingAlgorithm.shrink(ShrinkingAlgorithm.java:32)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.shrinkAsLongAsSampleImproves(PropertyShrinker.java:135)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$shrink$3(PropertyShrinker.java:87)
+	at net.jqwik.engine.execution.lifecycle.CurrentTestDescriptor.runWithDescriptor(CurrentTestDescriptor.java:17)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$4(PropertyShrinker.java:103)
+	at net.jqwik.engine.execution.lifecycle.CurrentDomainContext.runWithContext(CurrentDomainContext.java:28)
+	at net.jqwik.engine.properties.shrinking.PropertyShrinker.lambda$withTimeout$5(PropertyShrinker.java:101)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1768)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.exec(CompletableFuture.java:1760)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ProductionReliabilityBugConditionTest.chatSessionMustHaveVersionFieldForOptimisticLocking:63 BUG CONFIRMED: ChatSession has NO @Version field. Concurrent threads reading the same row and applying independent mutations (contextA={A=0}, contextB={A=0}) will result in lost updates. The last writer overwrites without ObjectOptimisticLockingFailureException being thrown.
+[ERROR]   ProductionReliabilityBugConditionTest.childWorkflowServiceEnterChildMustUseCacheService:129 BUG CONFIRMED: ChildWorkflowService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. enterChild(session, 1, node) will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every child workflow entry.
+[ERROR]   ProductionReliabilityBugConditionTest.childWorkflowServiceHandleChildEndMustUseCacheService:155 BUG CONFIRMED: ChildWorkflowService has NO WorkflowCacheService field. handleChildEnd() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every child workflow exit.
+[ERROR]   ProductionReliabilityBugConditionTest.navigationServiceHandleBackMustUseCacheService:178 BUG CONFIRMED: NavigationService does NOT accept WorkflowCacheService in its constructor. It uses WorkflowRepository directly. handleBack() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every back navigation.
+[ERROR]   ProductionReliabilityBugConditionTest.navigationServiceHandleRestartMustUseCacheService:202 BUG CONFIRMED: NavigationService has NO WorkflowCacheService field. handleRestart() will call workflowRepository.findById(1) bypassing Redis cache, hitting PostgreSQL on every restart navigation.
+[ERROR]   ProductionReliabilityBugConditionTest.prodPropertiesMustConfigureForwardHeadersStrategy:101 BUG CONFIRMED: application-prod.properties does NOT set server.forward-headers-strategy=native. A request from client IP 1.1.1.1 via https through a reverse proxy will resolve request.getRemoteAddr() as the proxy IP (not 1.1.1.1) and request.isSecure() will return false even when the original client connection was https. Current value: null
+[INFO] 
+[ERROR] Tests run: 6, Failures: 6, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  16.774 s
+[INFO] Finished at: 2026-06-30T00:57:25+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project chatbot: There are test failures.
+[ERROR] 
+[ERROR] Please refer to E:\ChatBotWorkflow\chatbot_backend\target\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

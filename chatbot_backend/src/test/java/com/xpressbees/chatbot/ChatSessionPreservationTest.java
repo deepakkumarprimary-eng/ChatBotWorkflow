@@ -69,8 +69,8 @@ class ChatSessionPreservationTest {
                 chatWebSocketHandler,
                 new ChatMessageSender(messagingTemplate),
                 new SessionStateManager(chatSessionRepository),
-                new NavigationService(workflowRepository, placeholderService),
-                new ChildWorkflowService(workflowRepository)
+                new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService),
+                new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository))
         );
     }
 

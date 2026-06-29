@@ -51,7 +51,7 @@ class MultiInputNodeIntegrationTest {
 
         ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
-        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
+        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService), new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository)));
 
         // Mock save to capture the session created by startWorkflow() and make it
         // findable by findBySessionId (used by handleUserInput)

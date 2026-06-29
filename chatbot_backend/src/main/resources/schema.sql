@@ -71,3 +71,6 @@ CREATE TABLE IF NOT EXISTS api_response_mapping (
 CREATE INDEX IF NOT EXISTS idx_api_header_api_id ON api_header(api_id);
 CREATE INDEX IF NOT EXISTS idx_api_payload_api_id ON api_payload(api_id);
 CREATE INDEX IF NOT EXISTS idx_api_response_mapping_api_id ON api_response_mapping(api_id);
+
+-- Optimistic locking for ChatSession (prevents lost updates on concurrent writes)
+ALTER TABLE chat_session ADD COLUMN IF NOT EXISTS version BIGINT NOT NULL DEFAULT 0;

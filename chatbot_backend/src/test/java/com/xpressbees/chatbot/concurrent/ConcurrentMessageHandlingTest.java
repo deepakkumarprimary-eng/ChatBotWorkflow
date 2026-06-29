@@ -52,8 +52,8 @@ class ConcurrentMessageHandlingTest {
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
         ChatMessageSender chatMessageSender = new ChatMessageSender(messagingTemplate);
         SessionStateManager sessionStateManager = new SessionStateManager(chatSessionRepository);
-        NavigationService navigationService = new NavigationService(workflowRepository, placeholderService);
-        ChildWorkflowService childWorkflowService = new ChildWorkflowService(workflowRepository);
+        NavigationService navigationService = new NavigationService(TestServiceFactory.createMockCacheService(workflowRepository), placeholderService);
+        ChildWorkflowService childWorkflowService = new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepository));
 
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
 

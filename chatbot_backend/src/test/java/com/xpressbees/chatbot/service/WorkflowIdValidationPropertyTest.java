@@ -44,7 +44,7 @@ class WorkflowIdValidationPropertyTest {
         session.setContext(new HashMap<>());
         when(chatSessionRepo.findBySessionId("sess-test")).thenReturn(Optional.of(session));
 
-        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(TestServiceFactory.createMockCacheService(workflowRepo), placeholderService), new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepo)));
 
         service.startWorkflow("sess-test", null);
 
@@ -81,7 +81,7 @@ class WorkflowIdValidationPropertyTest {
         ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
 
-        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(TestServiceFactory.createMockCacheService(workflowRepo), placeholderService), new ChildWorkflowService(TestServiceFactory.createMockCacheService(workflowRepo)));
 
         service.startWorkflow("sess-test", workflowId);
 

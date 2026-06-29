@@ -21,7 +21,7 @@ import net.jqwik.api.*;
  */
 class ApiNodeProcessorUnifiedFormatBugConditionTest {
 
-    private final ApiNodeProcessor processor = new ApiNodeProcessor(null, null, null, null, null, null);
+    private final ApiNodeProcessor processor = new ApiNodeProcessor(null, null, null, null);
 
     /**
      * Property: For any node with type="state" and config.nodeType="api",

@@ -1,0 +1,9 @@
+.git
+target/
+.idea/
+*.iml
+.kiro/
+.vscode/
+.cursor/
+*.log
+docs/

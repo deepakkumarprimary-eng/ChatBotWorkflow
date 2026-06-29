@@ -67,9 +67,9 @@ This feature addresses critical testing gaps in the Chatbot Workflow Engine by a
 
 1. WHEN a client subscribes to /app/chat.init, THE WebSocket_Test SHALL verify the response contains a non-null sessionId and a workflows array
 2. WHEN a client sends a chat.start message with a valid sessionId and workflowId, THE WebSocket_Test SHALL verify responses arrive on /topic/chat/{sessionId} containing the first node content
-3. WHEN a client sends a chat.message with user input during an active session, THE WebSocket_Test SHALL verify the workflow advances and the next node response is received
+3. WHEN a client sends a chat.message with user input during an active session with a valid sessionId, THE WebSocket_Test SHALL verify the workflow advances and the next node response is received; WHEN the sessionId is invalid, THE WebSocket_Test SHALL verify the message is rejected even if the session appears active
 4. WHEN a client sends a chat.start message with an invalid sessionId, THE WebSocket_Test SHALL verify a ChatErrorResponse is pushed to the client topic
-5. WHEN a workflow execution completes all nodes, THE WebSocket_Test SHALL verify the final response has the completion flag set to true
+5. WHEN a workflow execution completes all nodes successfully, THE WebSocket_Test SHALL verify the final response has the completion flag set to true; WHEN the final node fails to execute properly, THE WebSocket_Test SHALL verify the completion flag is set to false
 6. WHEN an error occurs during workflow processing, THE WebSocket_Test SHALL verify a ChatErrorResponse with a descriptive message is pushed to the session topic
 
 ### Requirement 5: ApiConfigServiceImpl Validation Unit Tests
@@ -84,7 +84,7 @@ This feature addresses critical testing gaps in the Chatbot Workflow Engine by a
 4. WHEN retryCount is less than 0 or greater than 10, THE ApiConfig_Service SHALL throw an IllegalArgumentException
 5. WHEN the headers list exceeds 50 entries, THE ApiConfig_Service SHALL throw an IllegalArgumentException
 6. WHEN the response mappings list exceeds 50 entries, THE ApiConfig_Service SHALL throw an IllegalArgumentException
-7. WHEN a response mapping has a context_variable_name that does not match the pattern ^[a-zA-Z_][a-zA-Z0-9_]*$, THE ApiConfig_Service SHALL throw an IllegalArgumentException
+7. WHEN a response mapping has a context_variable_name that does not match the pattern ^[a-zA-Z_][a-zA-Z0-9_]*$, THE ApiConfig_Service SHALL throw an IllegalArgumentException; WHEN multiple validation errors occur simultaneously, THE ApiConfig_Service SHALL throw the first exception encountered based on validation order (method → timeoutMs → retryCount → headers size → response mappings size → variable name format → variable name uniqueness → variable name length)
 8. WHEN two response mappings share the same context_variable_name, THE ApiConfig_Service SHALL throw an IllegalArgumentException indicating the duplicate
 9. WHEN a context_variable_name exceeds 255 characters, THE ApiConfig_Service SHALL throw an IllegalArgumentException
 
@@ -96,7 +96,7 @@ This feature addresses critical testing gaps in the Chatbot Workflow Engine by a
 
 1. WHEN multiple chat.message requests arrive for the same sessionId concurrently, THE Workflow_Engine SHALL process each message without corrupting the session context
 2. WHEN multiple chat.init requests arrive concurrently, THE Pending_Sessions_Map SHALL store each generated sessionId without overwriting others
-3. WHEN a chat.start and a chat.message arrive nearly simultaneously for the same session, THE Workflow_Engine SHALL handle the ordering correctly without throwing exceptions
+3. WHEN a chat.start and a chat.message arrive nearly simultaneously for the same session, THE Workflow_Engine SHALL guarantee that chat.start is processed before chat.message and SHALL handle the ordering correctly without throwing exceptions
 4. WHEN concurrent threads call consumePendingSession with the same sessionId, THE Pending_Sessions_Map SHALL return true for exactly one caller and false for all others
 
 ### Requirement 7: Extended Property-Based Tests for PlaceholderService
@@ -106,7 +106,7 @@ This feature addresses critical testing gaps in the Chatbot Workflow Engine by a
 #### Acceptance Criteria
 
 1. FOR ALL context maps with nested placeholder references (value of one placeholder contains another placeholder pattern), THE PlaceholderService SHALL resolve placeholders to a maximum depth without infinite recursion
-2. FOR ALL strings without placeholder syntax (no "{{" and "}}" pairs), THE PlaceholderService SHALL return the input string unchanged (idempotence)
+2. FOR ALL strings without placeholder syntax (no "{{" and "}}" pairs), THE PlaceholderService SHALL return the input string unchanged without any modification to encoding, whitespace, or character representation (idempotence and byte-level preservation)
 3. FOR ALL context maps where a placeholder key references itself, THE PlaceholderService SHALL terminate resolution without infinite loops
 4. FOR ALL resolved outputs, THE PlaceholderService SHALL produce a result containing no unresolved "{{...}}" patterns when all referenced keys exist in the context
 
@@ -119,7 +119,7 @@ This feature addresses critical testing gaps in the Chatbot Workflow Engine by a
 1. FOR ALL single comparison expressions (var == value, var != value, var < value, var > value, var <= value, var >= value), THE ConditionEvaluator SHALL produce a result consistent with Java comparison semantics on the context value
 2. FOR ALL compound conditions joined by "and", THE ConditionEvaluator SHALL return true only when every sub-condition evaluates to true (conjunction property)
 3. FOR ALL compound conditions joined by "or", THE ConditionEvaluator SHALL return true when at least one sub-condition evaluates to true (disjunction property)
-4. FOR ALL conditions referencing a variable not present in the context, THE ConditionEvaluator SHALL evaluate the condition as false without throwing an exception
+4. FOR ALL conditions referencing a variable not present in the context, THE ConditionEvaluator SHALL evaluate the condition as false without throwing an exception; WHEN a variable exists in the context but has a null value, THE ConditionEvaluator SHALL allow the null to participate in comparisons according to Java comparison semantics
 
 ### Requirement 9: URL Validation Property Tests
 
@@ -127,6 +127,6 @@ This feature addresses critical testing gaps in the Chatbot Workflow Engine by a
 
 #### Acceptance Criteria
 
-1. FOR ALL URLs containing private/internal IP ranges (10.x.x.x, 172.16-31.x.x, 192.168.x.x, 127.x.x.x), THE Test_Suite SHALL generate test cases that can validate rejection when SSRF protection is implemented
-2. FOR ALL URLs with valid public HTTP/HTTPS schemes and hosts, THE Test_Suite SHALL verify they are accepted as valid API endpoint targets
+1. FOR ALL URLs containing private/internal IP ranges (10.x.x.x, 172.16-31.x.x, 192.168.x.x, 127.x.x.x), THE Test_Suite SHALL generate test cases that can validate rejection when SSRF protection is implemented; private IP rejection SHALL be enforced consistently across all test scenarios including those testing public URL acceptance
+2. FOR ALL URLs with valid public HTTP/HTTPS schemes and hosts, THE Test_Suite SHALL verify they are accepted equally as valid API endpoint targets regardless of whether HTTP or HTTPS is used
 3. FOR ALL URLs containing non-HTTP schemes (file://, ftp://, gopher://), THE Test_Suite SHALL generate test cases that can validate rejection

@@ -24,6 +24,11 @@ public class WorkflowNodeProcessor implements NodeProcessor {
     }
 
     @Override
+    public String getNodeType() {
+        return "workflow";
+    }
+
+    @Override
     public boolean canHandle(Map<String, Object> node) {
         String type = (String) node.get("type");
         if (!"state".equals(type)) {
@@ -37,7 +42,7 @@ public class WorkflowNodeProcessor implements NodeProcessor {
     @SuppressWarnings("unchecked")
     @Override
     public NodeProcessingResult process(Map<String, Object> node, ChatSession session,
-                                         PlaceholderService placeholderService) {
+                                         PlaceholderService placeholderService, Map<String, Object> workflowJson) {
         // 1. Extract config map
         Map<String, Object> config = (Map<String, Object>) node.get("config");
         if (config == null) {

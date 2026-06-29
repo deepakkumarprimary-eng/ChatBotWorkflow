@@ -121,7 +121,7 @@ Add server-side input validation to the chatbot workflow engine's input nodes. T
     - **Validates: Requirements 6.4**
     - Test that for any input failing validation, session's `currentNodeId`, `currentNodeType`, and `context` remain unchanged
 
-- [ ] 5. Write unit tests for InputValidationServiceImpl
+- [x] 5. Write unit tests for InputValidationServiceImpl
   - [ ]* 5.1 Write unit tests for individual validation rules
     - Create `src/test/java/com/xpressbees/chatbot/service/InputValidationServiceImplTest.java`
     - Test required rule: null, empty, whitespace, valid input, non-boolean required value

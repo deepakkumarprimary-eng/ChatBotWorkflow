@@ -10,8 +10,13 @@ import com.xpressbees.chatbot.processor.NodeProcessor;
 import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 import com.xpressbees.chatbot.service.InputValidationService;
+import com.xpressbees.chatbot.service.ChatMessageSender;
+import com.xpressbees.chatbot.service.SessionStateManager;
 import com.xpressbees.chatbot.service.PlaceholderService;
+import com.xpressbees.chatbot.service.NavigationService;
+import com.xpressbees.chatbot.service.ChildWorkflowService;
 import com.xpressbees.chatbot.service.WorkflowExecutionServiceImpl;
+import com.xpressbees.chatbot.service.TestServiceFactory;
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.LongRange;
 import org.mockito.ArgumentCaptor;
@@ -53,16 +58,19 @@ class ChatSessionPreservationTest {
         chatWebSocketHandler = mock(ChatWebSocketHandler.class);
 
         // MessageNodeProcessor handles all nodes in our test (returns CONTINUE with a response)
+        when(messageNodeProcessor.getNodeType()).thenReturn("message");
         when(messageNodeProcessor.canHandle(any())).thenReturn(true);
 
-        service = new WorkflowExecutionServiceImpl(
+        service = TestServiceFactory.createService(
                 workflowRepository,
-                chatSessionRepository,
                 List.of(messageNodeProcessor),
                 placeholderService,
-                messagingTemplate,
                 inputValidationService,
-                chatWebSocketHandler
+                chatWebSocketHandler,
+                new ChatMessageSender(messagingTemplate),
+                new SessionStateManager(chatSessionRepository),
+                new NavigationService(workflowRepository, placeholderService),
+                new ChildWorkflowService(workflowRepository)
         );
     }
 
@@ -72,6 +80,7 @@ class ChatSessionPreservationTest {
     private Map<String, Object> createSimpleWorkflowJson(String nodeId) {
         Map<String, Object> node = new HashMap<>();
         node.put("id", nodeId);
+        node.put("type", "state");
         node.put("name", "Hello");
         node.put("config", Map.of("nodeType", "message"));
 
@@ -127,7 +136,7 @@ class ChatSessionPreservationTest {
         when(workflowRepository.findById(workflowId)).thenReturn(Optional.of(workflow));
 
         // Mock: node processor returns CONTINUE (simulates message node processing)
-        when(messageNodeProcessor.process(any(), any(), any())).thenReturn(
+        when(messageNodeProcessor.process(any(), any(), any(), any())).thenReturn(
                 new NodeProcessingResult(
                         NodeProcessingResult.Action.CONTINUE,
                         new ChatResponse(null, "Hello from node", sessionId)
@@ -144,7 +153,7 @@ class ChatSessionPreservationTest {
         verify(workflowRepository).findById(workflowId);
 
         // Assert: node processor was invoked (workflow execution started)
-        verify(messageNodeProcessor, atLeastOnce()).process(any(), any(), any());
+        verify(messageNodeProcessor, atLeastOnce()).process(any(), any(), any(), any());
 
         // Assert: response was sent via messaging template (no error)
         ArgumentCaptor<Object> responseCaptor = ArgumentCaptor.forClass(Object.class);

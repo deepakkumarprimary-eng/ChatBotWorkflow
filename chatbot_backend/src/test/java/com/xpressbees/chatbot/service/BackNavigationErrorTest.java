@@ -8,6 +8,10 @@ import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
 import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
+import com.xpressbees.chatbot.service.ChatMessageSender;
+import com.xpressbees.chatbot.service.SessionStateManager;
+import com.xpressbees.chatbot.service.NavigationService;
+import com.xpressbees.chatbot.service.ChildWorkflowService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,9 +48,7 @@ class BackNavigationErrorTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, null, null);
+        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
     }
 
     /**

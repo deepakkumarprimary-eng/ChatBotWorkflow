@@ -122,7 +122,7 @@ class WorkflowNodeProcessorTest {
 
         ChatSession session = createSession("session-1");
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         assertEquals(NodeProcessingResult.Action.CONTINUE, result.getAction());
         assertNotNull(result.getResponse());
@@ -135,7 +135,7 @@ class WorkflowNodeProcessorTest {
         Map<String, Object> node = createWorkflowNode("node-6", null);
         ChatSession session = createSession("session-2");
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         assertEquals(NodeProcessingResult.Action.CONTINUE, result.getAction());
         assertNotNull(result.getResponse());
@@ -148,7 +148,7 @@ class WorkflowNodeProcessorTest {
         Map<String, Object> node = createWorkflowNode("node-7", "abc");
         ChatSession session = createSession("session-3");
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         assertEquals(NodeProcessingResult.Action.CONTINUE, result.getAction());
         assertNotNull(result.getResponse());
@@ -163,7 +163,7 @@ class WorkflowNodeProcessorTest {
 
         when(workflowRepository.findById(999L)).thenReturn(Optional.empty());
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         assertEquals(NodeProcessingResult.Action.CONTINUE, result.getAction());
         assertNotNull(result.getResponse());
@@ -182,7 +182,7 @@ class WorkflowNodeProcessorTest {
         workflow.setName("Child Workflow");
         when(workflowRepository.findById(42L)).thenReturn(Optional.of(workflow));
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         assertEquals(NodeProcessingResult.Action.ENTER_CHILD, result.getAction());
         assertNull(result.getResponse());
@@ -211,7 +211,7 @@ class WorkflowNodeProcessorTest {
         workflow.setName("Deep Child");
         when(workflowRepository.findById(50L)).thenReturn(Optional.of(workflow));
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         assertEquals(NodeProcessingResult.Action.CONTINUE, result.getAction());
         assertNotNull(result.getResponse());

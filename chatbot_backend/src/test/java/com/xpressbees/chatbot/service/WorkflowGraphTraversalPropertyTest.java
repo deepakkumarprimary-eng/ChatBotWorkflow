@@ -1,8 +1,8 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.util.WorkflowJsonUtils;
 import net.jqwik.api.*;
 
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -19,15 +19,8 @@ class WorkflowGraphTraversalPropertyTest {
 
     @Property(tries = 100)
     @Tag("Feature: websocket-workflow-execution, Property 3: Graph Traversal Returns Correct Next Node")
-    void resolvesCorrectNextNodeWhenTransitionExists(@ForAll("workflowsWithTransitions") WorkflowTestData data) throws Exception {
-        WorkflowExecutionServiceImpl service = createServiceInstance();
-        Method resolveNextNode = WorkflowExecutionServiceImpl.class.getDeclaredMethod(
-                "resolveNextNode", String.class, Map.class);
-        resolveNextNode.setAccessible(true);
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = (Map<String, Object>) resolveNextNode.invoke(
-                service, data.sourceNodeId, data.workflowJson);
+    void resolvesCorrectNextNodeWhenTransitionExists(@ForAll("workflowsWithTransitions") WorkflowTestData data) {
+        Map<String, Object> result = WorkflowJsonUtils.resolveNextNode(data.sourceNodeId, data.workflowJson);
 
         assert result != null : "Should find next node when transition exists";
         assert data.expectedTargetNodeId.equals(result.get("id")) :
@@ -36,17 +29,10 @@ class WorkflowGraphTraversalPropertyTest {
 
     @Property(tries = 100)
     @Tag("Feature: websocket-workflow-execution, Property 3: Graph Traversal Returns Correct Next Node")
-    void returnsNullWhenNoTransitionExists(@ForAll("terminalNodeIds") String terminalNodeId) throws Exception {
-        WorkflowExecutionServiceImpl service = createServiceInstance();
-        Method resolveNextNode = WorkflowExecutionServiceImpl.class.getDeclaredMethod(
-                "resolveNextNode", String.class, Map.class);
-        resolveNextNode.setAccessible(true);
-
+    void returnsNullWhenNoTransitionExists(@ForAll("terminalNodeIds") String terminalNodeId) {
         Map<String, Object> workflowJson = createSimpleWorkflow();
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> result = (Map<String, Object>) resolveNextNode.invoke(
-                service, terminalNodeId, workflowJson);
+        Map<String, Object> result = WorkflowJsonUtils.resolveNextNode(terminalNodeId, workflowJson);
 
         assert result == null : "Should return null for terminal node (no outgoing transition)";
     }
@@ -108,10 +94,6 @@ class WorkflowGraphTraversalPropertyTest {
         t.put("sourceNodeId", sourceId);
         t.put("targetNodeId", targetId);
         return t;
-    }
-
-    private WorkflowExecutionServiceImpl createServiceInstance() {
-        return new WorkflowExecutionServiceImpl(null, null, List.of(), null, null, null, null);
     }
 
     record WorkflowTestData(String sourceNodeId, String expectedTargetNodeId, Map<String, Object> workflowJson) {}

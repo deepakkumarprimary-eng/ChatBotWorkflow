@@ -7,20 +7,22 @@ CREATE TABLE IF NOT EXISTS workflow (
 );
 
 CREATE TABLE IF NOT EXISTS chat_session (
-    id                BIGSERIAL PRIMARY KEY,
-    session_id        VARCHAR(255) NOT NULL UNIQUE,
-    workflow_id       BIGINT NOT NULL REFERENCES workflow(id),
-    current_node_id   VARCHAR(255),
-    current_type      VARCHAR(50),
-    current_node_type VARCHAR(50),
-    context           JSONB DEFAULT '{}',
-    status            VARCHAR(20) NOT NULL DEFAULT 'active',
-    created_at        TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at        TIMESTAMP NOT NULL DEFAULT NOW()
+    id                   BIGSERIAL PRIMARY KEY,
+    session_id           VARCHAR(255) NOT NULL UNIQUE,
+    workflow_id          BIGINT NOT NULL REFERENCES workflow(id),
+    current_node_id      VARCHAR(255),
+    current_type         VARCHAR(50),
+    current_node_type    VARCHAR(50),
+    context              JSONB DEFAULT '{}',
+    status               VARCHAR(20) NOT NULL DEFAULT 'active',
+    last_prompt_payload  JSONB,
+    created_at           TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at           TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_chat_session_session_id ON chat_session(session_id);
 CREATE INDEX IF NOT EXISTS idx_chat_session_status ON chat_session(status);
+CREATE INDEX IF NOT EXISTS idx_chat_session_status_updated ON chat_session(status, updated_at) WHERE status = 'active';
 
 -- API Node Configuration tables
 CREATE TABLE IF NOT EXISTS api_config (

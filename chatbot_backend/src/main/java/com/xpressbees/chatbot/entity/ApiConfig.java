@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "api_config")
+@EntityListeners(ApiConfigEntityListener.class)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

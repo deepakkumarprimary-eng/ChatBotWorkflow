@@ -9,10 +9,12 @@ import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
 import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.junit.jupiter.api.Test;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.mockito.ArgumentCaptor;
 
 import java.util.*;
 
@@ -49,8 +51,7 @@ class MultiInputNodeIntegrationTest {
 
         ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
-        service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, chatWebSocketHandler);
+        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
 
         // Mock save to capture the session created by startWorkflow() and make it
         // findable by findBySessionId (used by handleUserInput)

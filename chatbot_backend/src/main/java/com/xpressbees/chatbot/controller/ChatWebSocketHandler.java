@@ -1,36 +1,34 @@
 package com.xpressbees.chatbot.controller;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 import com.xpressbees.chatbot.dto.WorkflowSummaryDto;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
+import com.xpressbees.chatbot.service.PendingSessionStore;
 
 @Controller
-@CrossOrigin("*")
 public class ChatWebSocketHandler {
 
     private final WorkflowRepository workflowRepository;
-    private final ConcurrentHashMap<String, Instant> pendingSessions = new ConcurrentHashMap<>();
+    private final PendingSessionStore pendingSessionStore;
 
-    public ChatWebSocketHandler(WorkflowRepository workflowRepository) {
+    public ChatWebSocketHandler(WorkflowRepository workflowRepository,
+                                PendingSessionStore pendingSessionStore) {
         this.workflowRepository = workflowRepository;
+        this.pendingSessionStore = pendingSessionStore;
     }
 
     @SubscribeMapping("/chat.init")
     public Map<String, Object> onChatInit() {
-        // Generate session ID and store in pending map (no DB write)
+        // Generate session ID and register in Redis-backed store (no DB write)
         String sessionId = UUID.randomUUID().toString();
-        pendingSessions.put(sessionId, Instant.now());
+        pendingSessionStore.register(sessionId);
 
         // Get workflow list
         List<WorkflowSummaryDto> workflows = workflowRepository.findAll().stream()
@@ -45,12 +43,12 @@ public class ChatWebSocketHandler {
     }
 
     /**
-     * Atomically removes a pending session ID from the map.
+     * Atomically consumes (removes) a pending session ID from Redis.
      *
      * @param sessionId the session ID to consume
      * @return true if the session ID was found and removed, false otherwise
      */
     public boolean consumePendingSession(String sessionId) {
-        return pendingSessions.remove(sessionId) != null;
+        return pendingSessionStore.consume(sessionId);
     }
 }

@@ -1,12 +1,12 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.repository.ChatSessionRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
-import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.IntRange;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
@@ -42,8 +42,7 @@ class NavigationHistoryPropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(null, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(null, placeholderService), new ChildWorkflowService(null));
 
         // Create a session with existing navigation history of size N
         ChatSession session = new ChatSession();

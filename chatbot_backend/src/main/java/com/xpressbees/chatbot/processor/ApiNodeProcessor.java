@@ -2,24 +2,21 @@ package com.xpressbees.chatbot.processor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.dto.ChatResponse;
 import com.xpressbees.chatbot.dto.ExtractionResult;
 import com.xpressbees.chatbot.dto.HttpExecutionResult;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
 import com.xpressbees.chatbot.dto.NodeProcessingResult.Action;
+import com.xpressbees.chatbot.dto.UrlValidationResult;
 import com.xpressbees.chatbot.entity.ApiConfig;
 import com.xpressbees.chatbot.entity.ApiHeader;
 import com.xpressbees.chatbot.entity.ChatSession;
-import com.xpressbees.chatbot.entity.Workflow;
-import com.xpressbees.chatbot.repository.ApiConfigRepository;
-import com.xpressbees.chatbot.repository.WorkflowRepository;
-import com.xpressbees.chatbot.service.ConditionEvaluator;
+import com.xpressbees.chatbot.service.ApiConfigCacheService;
 import com.xpressbees.chatbot.service.HttpExecutor;
 import com.xpressbees.chatbot.service.PlaceholderService;
 import com.xpressbees.chatbot.service.ResponseExtractor;
+import com.xpressbees.chatbot.service.UrlValidator;
 import org.springframework.core.annotation.Order;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -29,26 +26,25 @@ import java.util.stream.Collectors;
 @Order(3)
 public class ApiNodeProcessor implements NodeProcessor {
 
-    private final ApiConfigRepository apiConfigRepository;
-    private final WorkflowRepository workflowRepository;
+    private final ApiConfigCacheService apiConfigCacheService;
     private final HttpExecutor httpExecutor;
     private final ResponseExtractor responseExtractor;
-    private final ConditionEvaluator conditionEvaluator;
-    private final SimpMessagingTemplate messagingTemplate;
+    private final UrlValidator urlValidator;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ApiNodeProcessor(ApiConfigRepository apiConfigRepository,
-                            WorkflowRepository workflowRepository,
+    public ApiNodeProcessor(ApiConfigCacheService apiConfigCacheService,
                             HttpExecutor httpExecutor,
                             ResponseExtractor responseExtractor,
-                            ConditionEvaluator conditionEvaluator,
-                            SimpMessagingTemplate messagingTemplate) {
-        this.apiConfigRepository = apiConfigRepository;
-        this.workflowRepository = workflowRepository;
+                            UrlValidator urlValidator) {
+        this.apiConfigCacheService = apiConfigCacheService;
         this.httpExecutor = httpExecutor;
         this.responseExtractor = responseExtractor;
-        this.conditionEvaluator = conditionEvaluator;
-        this.messagingTemplate = messagingTemplate;
+        this.urlValidator = urlValidator;
+    }
+
+    @Override
+    public String getNodeType() {
+        return "api";
     }
 
     @Override
@@ -65,8 +61,8 @@ public class ApiNodeProcessor implements NodeProcessor {
     @SuppressWarnings("unchecked")
     @Override
     public NodeProcessingResult process(Map<String, Object> node, ChatSession session,
-                                         PlaceholderService placeholderService) {
-        // --- Task 8.2: Config loading and request preparation ---
+                                         PlaceholderService placeholderService, Map<String, Object> workflowJson) {
+        // --- Config loading and request preparation ---
 
         // 1. Extract config map from node
         Map<String, Object> config = (Map<String, Object>) node.get("config");
@@ -90,18 +86,24 @@ public class ApiNodeProcessor implements NodeProcessor {
                     new ChatResponse(node, "API configuration identifier is invalid", session.getSessionId()));
         }
 
-        // 6. Load ApiConfig from repository
-        Optional<ApiConfig> apiConfigOpt = apiConfigRepository.findById(id);
+        // 6. Load ApiConfig from cache service (Redis-backed with PostgreSQL fallback)
+        Optional<ApiConfig> apiConfigOpt = apiConfigCacheService.findById(id);
         if (apiConfigOpt.isEmpty()) {
-            // 7. Handle not-found case
-            return new NodeProcessingResult(Action.CONTINUE,
-                    new ChatResponse(node, "No API configuration found for ID: " + id, session.getSessionId()));
+            // 7. Handle not-found case — return ERROR result
+            return NodeProcessingResult.error("No API configuration found for ID: " + id);
         }
 
         ApiConfig apiConfig = apiConfigOpt.get();
 
         // 8. Resolve URL using PlaceholderService
         String resolvedUrl = placeholderService.resolve(apiConfig.getUrl(), session.getContext());
+
+        // 8a. Validate resolved URL for SSRF protection
+        UrlValidationResult urlValidation = urlValidator.validate(resolvedUrl);
+        if (!urlValidation.isAllowed()) {
+            return NodeProcessingResult.error(
+                    "SSRF protection: URL blocked by security policy - " + urlValidation.reason());
+        }
 
         // 9. Resolve headers: iterate and resolve each header value
         Map<String, String> resolvedHeaders = new HashMap<>();
@@ -125,12 +127,12 @@ public class ApiNodeProcessor implements NodeProcessor {
             }
         }
 
-        // --- Task 8.3: HTTP execution and response extraction ---
+        // --- HTTP execution and response extraction ---
 
         // 11. Execute HTTP call
         HttpExecutionResult httpResult = httpExecutor.execute(apiConfig, resolvedUrl, resolvedHeaders, resolvedBody);
 
-        // 12. Handle HTTP failure
+        // 12. Handle HTTP failure — return ERROR result
         if (!httpResult.isSuccess()) {
             String errorMsg;
             if (httpResult.getStatusCode() == 0) {
@@ -138,9 +140,7 @@ public class ApiNodeProcessor implements NodeProcessor {
             } else {
                 errorMsg = "External API call failed with status: " + httpResult.getStatusCode();
             }
-            messagingTemplate.convertAndSend("/topic/chat/" + session.getSessionId(),
-                    new ChatErrorResponse(errorMsg, session.getSessionId()));
-            return new NodeProcessingResult(Action.PAUSE, null);
+            return NodeProcessingResult.error(errorMsg);
         }
 
         // 13. Extract response values
@@ -149,9 +149,8 @@ public class ApiNodeProcessor implements NodeProcessor {
                     httpResult.getResponseBody(), apiConfig.getResponseMappings());
 
             if (!extractionResult.isSuccess()) {
-                messagingTemplate.convertAndSend("/topic/chat/" + session.getSessionId(),
-                        new ChatErrorResponse(extractionResult.getErrorMessage(), session.getSessionId()));
-                return new NodeProcessingResult(Action.PAUSE, null);
+                // Extraction failure — return ERROR result
+                return NodeProcessingResult.error(extractionResult.getErrorMessage());
             }
 
             // 14. Store extracted values in session context
@@ -160,13 +159,13 @@ public class ApiNodeProcessor implements NodeProcessor {
             }
         }
 
-        // --- Task 8.4: Behavior inference and routing ---
+        // --- Behavior inference and routing ---
 
         String nodeId = (String) node.get("id");
         Object displayVariable = node.get("displayVariable");
 
-        // Load workflow to get transitions
-        List<Map<String, Object>> outgoingTransitions = getOutgoingTransitions(nodeId, session.getWorkflowId());
+        // Use workflowJson parameter to get transitions (no DB lookup)
+        List<Map<String, Object>> outgoingTransitions = getOutgoingTransitions(nodeId, workflowJson);
 
         // Type 3: Interactive array selection (node has displayVariable)
         if (displayVariable != null && !String.valueOf(displayVariable).trim().isEmpty()) {
@@ -174,10 +173,8 @@ public class ApiNodeProcessor implements NodeProcessor {
             String arrayValues = (String) session.getContext().get(displayVarName);
 
             if (arrayValues == null || arrayValues.trim().isEmpty()) {
-                // No options available - send error and advance
-                messagingTemplate.convertAndSend("/topic/chat/" + session.getSessionId(),
-                        new ChatErrorResponse("No options available", session.getSessionId()));
-                return new NodeProcessingResult(Action.CONTINUE, null);
+                // No options available — return ERROR result
+                return NodeProcessingResult.error("No options available");
             }
 
             // Store displayVariable in context for resume handler
@@ -198,32 +195,6 @@ public class ApiNodeProcessor implements NodeProcessor {
             return new NodeProcessingResult(Action.CONTINUE, null);
         }
 
-        // Check if transitions have conditions (Its a dead code , commented out , this case is handled by decisin node now)
-       /*  boolean hasConditions = outgoingTransitions.stream()
-                .anyMatch(t -> t.get("condition") != null && !String.valueOf(t.get("condition")).trim().isEmpty());
-
-        if (hasConditions && outgoingTransitions.size() > 1) {
-            // Type 2: Conditional branching - evaluate conditions in order (first-match-wins)
-            for (Map<String, Object> transition : outgoingTransitions) {
-                Object conditionObj = transition.get("condition");
-                if (conditionObj == null || String.valueOf(conditionObj).trim().isEmpty()) {
-                    continue;
-                }
-                String condition = String.valueOf(conditionObj);
-                if (conditionEvaluator.evaluate(condition, session.getContext())) {
-                    // First match wins - store target for the engine to use
-                    String targetNodeId = (String) transition.get("targetNodeId");
-                    session.getContext().put("_targetNodeId", targetNodeId);
-                    return new NodeProcessingResult(Action.CONTINUE, null);
-                }
-            }
-
-            // No condition matched - error
-            messagingTemplate.convertAndSend("/topic/chat/" + session.getSessionId(),
-                    new ChatErrorResponse("No matching transition found for current context", session.getSessionId()));
-            return new NodeProcessingResult(Action.PAUSE, null);
-        }
-*/
         if (outgoingTransitions.size() == 1) {
             // Type 1: Auto-advance (single transition without condition)
             return new NodeProcessingResult(Action.CONTINUE, null);
@@ -231,7 +202,7 @@ public class ApiNodeProcessor implements NodeProcessor {
 
         // Button node: multiple transitions without conditions
         // Collect target node names as button options
-        List<String> buttonOptions = getTargetNodeNames(outgoingTransitions, session.getWorkflowId());
+        List<String> buttonOptions = getTargetNodeNames(outgoingTransitions, workflowJson);
 
         if (buttonOptions.isEmpty()) {
             return new NodeProcessingResult(Action.CONTINUE, null);
@@ -251,18 +222,8 @@ public class ApiNodeProcessor implements NodeProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    private List<Map<String, Object>> getOutgoingTransitions(String nodeId, Long workflowId) {
-        if (nodeId == null || workflowId == null) {
-            return Collections.emptyList();
-        }
-
-        Optional<Workflow> workflowOpt = workflowRepository.findById(workflowId);
-        if (workflowOpt.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        Map<String, Object> workflowJson = workflowOpt.get().getWorkflowJson();
-        if (workflowJson == null) {
+    private List<Map<String, Object>> getOutgoingTransitions(String nodeId, Map<String, Object> workflowJson) {
+        if (nodeId == null || workflowJson == null) {
             return Collections.emptyList();
         }
 
@@ -277,13 +238,7 @@ public class ApiNodeProcessor implements NodeProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    private List<String> getTargetNodeNames(List<Map<String, Object>> outgoingTransitions, Long workflowId) {
-        Optional<Workflow> workflowOpt = workflowRepository.findById(workflowId);
-        if (workflowOpt.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        Map<String, Object> workflowJson = workflowOpt.get().getWorkflowJson();
+    private List<String> getTargetNodeNames(List<Map<String, Object>> outgoingTransitions, Map<String, Object> workflowJson) {
         if (workflowJson == null) {
             return Collections.emptyList();
         }

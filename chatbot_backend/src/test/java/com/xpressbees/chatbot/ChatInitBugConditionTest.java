@@ -3,6 +3,7 @@ package com.xpressbees.chatbot;
 import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
+import com.xpressbees.chatbot.service.PendingSessionStore;
 import net.jqwik.api.*;
 
 import java.util.List;
@@ -48,8 +49,10 @@ class ChatInitBugConditionTest {
         // Mock: WorkflowRepository.findAll() returns the provided workflow list
         when(workflowRepository.findAll()).thenReturn(workflows);
 
-        // Act: create the handler with FIXED code (only takes WorkflowRepository) and call onChatInit()
-        ChatWebSocketHandler handler = new ChatWebSocketHandler(workflowRepository);
+        // Act: create the handler with FIXED code and call onChatInit()
+        PendingSessionStore pendingSessionStore = mock(PendingSessionStore.class);
+        when(pendingSessionStore.register(anyString())).thenReturn(true);
+        ChatWebSocketHandler handler = new ChatWebSocketHandler(workflowRepository, pendingSessionStore);
         Map<String, Object> response = handler.onChatInit();
 
         // Assert: response contains "sessionId" key with a valid UUID string

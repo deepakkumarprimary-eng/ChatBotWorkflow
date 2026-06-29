@@ -1,14 +1,14 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.repository.ChatSessionRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
 import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
-import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 import net.jqwik.api.*;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
@@ -52,8 +52,7 @@ class InputNodeVariableNamePropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
 
         String sessionId = "test-session-" + UUID.randomUUID();
 
@@ -162,8 +161,7 @@ class InputNodeVariableNamePropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
 
         String sessionId = "test-session-fallback";
         String nodeId = "node-abc";
@@ -236,8 +234,7 @@ class InputNodeVariableNamePropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
 
         String sessionId = "test-session-" + variableName;
 

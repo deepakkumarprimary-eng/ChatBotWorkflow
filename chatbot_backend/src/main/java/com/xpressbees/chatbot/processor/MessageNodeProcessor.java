@@ -14,6 +14,11 @@ import java.util.Map;
 public class MessageNodeProcessor implements NodeProcessor {
 
     @Override
+    public String getNodeType() {
+        return "message";
+    }
+
+    @Override
     public boolean canHandle(Map<String, Object> node) {
         String type = (String) node.get("type");
         if (!"state".equals(type)) {
@@ -26,7 +31,7 @@ public class MessageNodeProcessor implements NodeProcessor {
 
     @Override
     public NodeProcessingResult process(Map<String, Object> node, ChatSession session,
-                                         PlaceholderService placeholderService) {
+                                         PlaceholderService placeholderService, Map<String, Object> workflowJson) {
         String name = (String) node.get("name");
         String response = placeholderService.resolve(name, session.getContext());
         ChatResponse chatResponse = new ChatResponse(node, response, session.getSessionId());

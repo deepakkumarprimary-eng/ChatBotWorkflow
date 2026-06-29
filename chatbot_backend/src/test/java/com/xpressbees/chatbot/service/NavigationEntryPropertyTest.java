@@ -49,19 +49,13 @@ class NavigationEntryPropertyTest {
             expectedNodeType = (String) config.get("nodeType");
         }
 
-        // Act: invoke recordNavigationEntry via reflection
+        // Act: invoke NavigationService.recordNavigationEntry directly
         try {
-            java.lang.reflect.Method recordMethod = WorkflowExecutionServiceImpl.class.getDeclaredMethod(
-                    "recordNavigationEntry", ChatSession.class, Map.class);
-            recordMethod.setAccessible(true);
-
-            // Create a minimal service instance (only recordNavigationEntry uses session, no external deps)
-            WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                    null, null, List.of(), null, null, null, null);
-
-            recordMethod.invoke(service, session, node);
+            PlaceholderService placeholderService = new PlaceholderService();
+            NavigationService navigationService = new NavigationService(null, placeholderService);
+            navigationService.recordNavigationEntry(session, node);
         } catch (Exception e) {
-            throw new AssertionError("Failed to invoke recordNavigationEntry via reflection", e);
+            throw new AssertionError("Failed to invoke recordNavigationEntry", e);
         }
 
         // Assert: verify the navigation entry structure

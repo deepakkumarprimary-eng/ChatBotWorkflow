@@ -44,6 +44,10 @@ public class ChatSession {
     @Column(name = "status", nullable = false)
     private String status;
 
+    @Type(JsonType.class)
+    @Column(name = "last_prompt_payload", columnDefinition = "jsonb")
+    private Map<String, Object> lastPromptPayload;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

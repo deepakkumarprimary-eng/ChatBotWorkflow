@@ -51,10 +51,11 @@ class HttpExecutorRetryPropertyTest {
 
         try {
             // Create a testable HttpExecutor that skips the retry sleep
-            HttpExecutor executor = new HttpExecutor() {
+            HttpExecutor executor = new HttpExecutor(1000, 10000) {
                 @Override
-                void sleepBeforeRetry() {
+                boolean sleepBeforeRetry(int attemptNumber) {
                     // No-op for fast tests
+                    return true;
                 }
             };
 
@@ -94,10 +95,11 @@ class HttpExecutorRetryPropertyTest {
         // exactly N+1 total attempts are made.
 
         // Create a testable HttpExecutor that skips the retry sleep
-        HttpExecutor executor = new HttpExecutor() {
+        HttpExecutor executor = new HttpExecutor(1000, 10000) {
             @Override
-            void sleepBeforeRetry() {
+            boolean sleepBeforeRetry(int attemptNumber) {
                 // No-op for fast tests
+                return true;
             }
         };
 
@@ -148,10 +150,11 @@ class HttpExecutorRetryPropertyTest {
         server.start();
 
         try {
-            HttpExecutor executor = new HttpExecutor() {
+            HttpExecutor executor = new HttpExecutor(1000, 10000) {
                 @Override
-                void sleepBeforeRetry() {
+                boolean sleepBeforeRetry(int attemptNumber) {
                     // No-op for fast tests
+                    return true;
                 }
             };
 

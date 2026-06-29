@@ -1,16 +1,16 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.repository.ChatSessionRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
 import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
-import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 import net.jqwik.api.*;
 import org.mockito.ArgumentCaptor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
@@ -48,8 +48,7 @@ class InputNodePreservationPropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         // Setup session as if paused on an input node
         String sessionId = "session-" + UUID.randomUUID();
@@ -128,7 +127,7 @@ class InputNodePreservationPropertyTest {
         inputNode.put("type", "state");
         inputNode.put("config", Map.of("nodeType", "input", "variableName", "mobile_no"));
 
-        NodeProcessingResult result = processor.process(inputNode, session, placeholderService);
+        NodeProcessingResult result = processor.process(inputNode, session, placeholderService, null);
 
         // Assert PAUSE mechanics
         assertThat(result.getAction()).isEqualTo(NodeProcessingResult.Action.PAUSE);
@@ -158,8 +157,7 @@ class InputNodePreservationPropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         String sessionId = "session-resume-" + UUID.randomUUID();
         ChatSession session = new ChatSession();
@@ -231,8 +229,7 @@ class InputNodePreservationPropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         String sessionId = "api-session-1";
         ChatSession session = new ChatSession();
@@ -298,8 +295,7 @@ class InputNodePreservationPropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         String sessionId = "api-session-btn";
         ChatSession session = new ChatSession();
@@ -379,8 +375,7 @@ class InputNodePreservationPropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor(), new MessageNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         String sessionId = "context-preserve-session";
         ChatSession session = new ChatSession();

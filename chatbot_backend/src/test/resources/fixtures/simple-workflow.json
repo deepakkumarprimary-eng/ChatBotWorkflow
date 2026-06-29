@@ -1,0 +1,29 @@
+{
+  "name": "Simple Greeting Workflow",
+  "description": "A minimal 2-node workflow with a message node followed by an input node",
+  "workflowJson": {
+    "nodes": [
+      {
+        "id": "msg1",
+        "name": "Hello! What is your name?",
+        "type": "state",
+        "config": null
+      },
+      {
+        "id": "inp1",
+        "name": "Please enter your name:",
+        "type": "state",
+        "config": {
+          "nodeType": "input",
+          "variableName": "userName"
+        }
+      }
+    ],
+    "transitions": [
+      {
+        "sourceNodeId": "msg1",
+        "targetNodeId": "inp1"
+      }
+    ]
+  }
+}

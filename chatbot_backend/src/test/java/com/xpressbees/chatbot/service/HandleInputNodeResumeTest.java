@@ -8,10 +8,12 @@ import com.xpressbees.chatbot.processor.NodeProcessor;
 import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 import com.xpressbees.chatbot.dto.ValidationResult;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.junit.jupiter.api.DisplayName;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
@@ -45,8 +47,7 @@ class HandleInputNodeResumeTest {
 
         when(inputValidationService.validate(any(), any())).thenReturn(new ValidationResult(true, null));
 
-        service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors, placeholderService, messagingTemplate, inputValidationService, null);
+        service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, inputValidationService, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
     }
 
     /**

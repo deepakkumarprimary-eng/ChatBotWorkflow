@@ -27,9 +27,9 @@ This feature adds resilience mechanisms to the WebSocket layer of the chatbot wo
 #### Acceptance Criteria
 
 1. WHEN a STOMP SessionDisconnectEvent occurs, THE Disconnect_Listener SHALL identify the associated Chat_Session by mapping the STOMP session ID to the application session ID.
-2. WHEN a STOMP SessionDisconnectEvent occurs for a session in "active" status, THE Disconnect_Listener SHALL update the Chat_Session status to "disconnected" in the database.
+2. WHEN a STOMP SessionDisconnectEvent occurs for a session in "active" status, THE Disconnect_Listener SHALL update the Chat_Session status to "disconnected" in the database and SHALL log the disconnect event that triggered the status change.
 3. WHEN a STOMP SessionDisconnectEvent occurs, THE Disconnect_Listener SHALL log the event at INFO level including the application session ID, STOMP session ID, and timestamp.
-4. IF the Chat_Session cannot be found for a disconnect event, THEN THE Disconnect_Listener SHALL log a warning and take no further action.
+4. IF the Chat_Session cannot be found for a disconnect event, THEN THE Disconnect_Listener SHALL log a warning and SHALL NOT perform any status updates or other operations for that event.
 5. IF a database error occurs while updating the Chat_Session status, THEN THE Disconnect_Listener SHALL log the error at ERROR level and not propagate the exception.
 
 ### Requirement 2: STOMP Heartbeat Configuration
@@ -38,9 +38,9 @@ This feature adds resilience mechanisms to the WebSocket layer of the chatbot wo
 
 #### Acceptance Criteria
 
-1. THE WebSocket_Layer SHALL configure a server-to-client heartbeat interval of 10000 milliseconds on the STOMP message broker.
-2. THE WebSocket_Layer SHALL configure a client-to-server heartbeat interval of 10000 milliseconds on the STOMP message broker.
-3. WHEN a client fails to send a heartbeat within the configured interval plus a tolerance period, THE WebSocket_Layer SHALL treat the connection as dead and trigger a SessionDisconnectEvent.
+1. THE WebSocket_Layer SHALL configure a server-to-client heartbeat interval of exactly 10000 milliseconds on the STOMP message broker, with no tolerance for variation.
+2. THE WebSocket_Layer SHALL configure a client-to-server heartbeat interval of exactly 10000 milliseconds on the STOMP message broker, with no tolerance for variation.
+3. WHEN a client fails to send a heartbeat within the configured interval plus a tolerance period, THE WebSocket_Layer SHALL treat the connection as dead and trigger a SessionDisconnectEvent. Only heartbeat failures SHALL trigger disconnect events; other network errors or manual disconnections are not in scope.
 
 ### Requirement 3: Maximum Concurrent Connections
 
@@ -62,9 +62,9 @@ This feature adds resilience mechanisms to the WebSocket layer of the chatbot wo
 
 1. THE WebSocket_Layer SHALL enforce a per-session inactivity timeout, configurable via application properties with a default value of 30 minutes.
 2. WHILE a WebSocket connection has received no application-level messages (excluding heartbeats) for a duration exceeding the configured inactivity timeout, THE WebSocket_Layer SHALL close the WebSocket connection.
-3. WHEN the WebSocket_Layer closes a connection due to inactivity timeout, THE WebSocket_Layer SHALL send a STOMP ERROR frame with the message "Session timed out due to inactivity" before closing.
+3. WHEN the WebSocket_Layer closes a connection due to inactivity timeout, THE WebSocket_Layer SHALL send a STOMP ERROR frame with the message "Session timed out due to inactivity" before closing, UNLESS the connection has been inactive for significantly longer than the timeout period (e.g., due to delayed detection), in which case the error frame SHALL be skipped and the connection closed immediately.
 4. WHEN a connection is closed due to inactivity timeout, THE Disconnect_Listener SHALL update the Chat_Session status to "disconnected".
-5. WHEN an application-level message is sent or received on a session, THE WebSocket_Layer SHALL reset the inactivity timer for that session.
+5. WHEN an application-level message is actually sent or received over the network on a session, THE WebSocket_Layer SHALL reset the inactivity timer for that session. Messages that are prepared but not yet transmitted SHALL NOT reset the timer.
 
 ### Requirement 5: Send Buffer and Back-Pressure
 
@@ -73,10 +73,10 @@ This feature adds resilience mechanisms to the WebSocket layer of the chatbot wo
 #### Acceptance Criteria
 
 1. THE Send_Buffer SHALL have a configurable maximum size per session, defined via application properties with a default value of 50 messages.
-2. WHEN the Send_Buffer for a session reaches its configured maximum size, THE Back_Pressure_Controller SHALL pause workflow processing for that session until buffer space becomes available.
+2. WHEN the Send_Buffer for a session reaches its configured maximum size, THE Back_Pressure_Controller SHALL pause workflow processing for that session until buffer space becomes available. Workflow processing SHALL only be paused due to buffer capacity limits and no other reason.
 3. WHEN buffer space becomes available after a pause, THE Back_Pressure_Controller SHALL resume workflow processing for the paused session.
 4. THE Back_Pressure_Controller SHALL enforce a buffer drain timeout, configurable via application properties with a default value of 30 seconds.
-5. IF the Send_Buffer remains full for a duration exceeding the configured buffer drain timeout, THEN THE Back_Pressure_Controller SHALL close the WebSocket connection for that session.
+5. IF the Send_Buffer remains full for a duration exceeding the configured buffer drain timeout, THEN THE Back_Pressure_Controller SHALL close the WebSocket connection for that session, regardless of whether buffer space becomes available at the exact moment of timeout expiration.
 6. WHEN the Back_Pressure_Controller closes a connection due to buffer drain timeout, THE Back_Pressure_Controller SHALL log the event at WARN level including the session ID and timeout duration.
 7. WHEN a message is successfully delivered to the client and removed from the Send_Buffer, THE Send_Buffer SHALL decrement its current size count.
 
@@ -88,7 +88,7 @@ This feature adds resilience mechanisms to the WebSocket layer of the chatbot wo
 
 1. WHEN a client sends a reconnection request with a session ID, THE Reconnection_Handler SHALL validate that a Chat_Session with that session ID exists in the database.
 2. WHEN a reconnection request references a Chat_Session in "disconnected" status, THE Reconnection_Handler SHALL transition the Chat_Session status to "active".
-3. WHEN a session is successfully reconnected, THE Reconnection_Handler SHALL re-send the last prompt or question that was pending at the time of disconnection.
+3. WHEN a session is successfully reconnected, THE Reconnection_Handler SHALL re-send the last prompt or question that was pending at the time of disconnection. Reconnection SHALL only be considered successful if both the session status activation and the prompt re-send complete without error; if the re-send fails, the reconnection SHALL be rolled back.
 4. WHEN a session is successfully reconnected, THE Connection_Registry SHALL register the new WebSocket connection for the resumed session.
 5. IF a reconnection request references a Chat_Session that does not exist, THEN THE Reconnection_Handler SHALL return a STOMP ERROR frame with the message "Session not found".
 6. IF a reconnection request references a Chat_Session in "completed" status, THEN THE Reconnection_Handler SHALL return a STOMP ERROR frame with the message "Session has already completed".
@@ -100,11 +100,11 @@ This feature adds resilience mechanisms to the WebSocket layer of the chatbot wo
 
 #### Acceptance Criteria
 
-1. THE WebSocket_Layer SHALL read configuration from application properties using the prefix `chatbot.websocket`.
+1. THE WebSocket_Layer SHALL read configuration from application properties using the prefix `chatbot.websocket`. THE WebSocket_Layer SHALL require successful access to the configuration source before using any values; if the configuration source is inaccessible, the system SHALL fail to start rather than silently using defaults.
 2. THE WebSocket_Layer SHALL support the following configurable properties with defaults:
    - `chatbot.websocket.max-connections` (default: 1000)
    - `chatbot.websocket.inactivity-timeout-minutes` (default: 30)
    - `chatbot.websocket.heartbeat-interval-ms` (default: 10000)
    - `chatbot.websocket.send-buffer-size` (default: 50)
    - `chatbot.websocket.buffer-drain-timeout-seconds` (default: 30)
-3. WHEN a configuration property is not specified, THE WebSocket_Layer SHALL use the documented default value.
+3. WHEN the configuration source is successfully accessed but a specific property is not specified, THE WebSocket_Layer SHALL use the documented default value.

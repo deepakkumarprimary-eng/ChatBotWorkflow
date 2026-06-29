@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.xpressbees.chatbot.controller.ApiConfigControllerTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.596 s -- in com.xpressbees.chatbot.controller.ApiConfigControllerTest

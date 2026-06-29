@@ -1,15 +1,15 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.repository.ChatSessionRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
-import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 import net.jqwik.api.*;
 import org.mockito.ArgumentCaptor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +44,7 @@ class WorkflowIdValidationPropertyTest {
         session.setContext(new HashMap<>());
         when(chatSessionRepo.findBySessionId("sess-test")).thenReturn(Optional.of(session));
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         service.startWorkflow("sess-test", null);
 
@@ -82,8 +81,7 @@ class WorkflowIdValidationPropertyTest {
         ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepo, chatSessionRepo, processors, placeholderService, messagingTemplate, null, chatWebSocketHandler);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepo, processors, placeholderService, null, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(workflowRepo, placeholderService), new ChildWorkflowService(workflowRepo));
 
         service.startWorkflow("sess-test", workflowId);
 

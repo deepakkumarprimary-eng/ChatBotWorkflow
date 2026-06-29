@@ -1,12 +1,12 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.repository.ChatSessionRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.xpressbees.chatbot.entity.ChatSession;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
 import com.xpressbees.chatbot.processor.NodeProcessor;
-import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import net.jqwik.api.*;
 import org.mockito.ArgumentCaptor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
@@ -31,8 +31,7 @@ class SessionPersistencePropertyTest {
         PlaceholderService placeholderService = new PlaceholderService();
         List<NodeProcessor> processors = List.of(new InputNodeProcessor());
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                null, chatSessionRepo, processors, placeholderService, messagingTemplate, null, null);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(null, processors, placeholderService, null, null, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepo), new NavigationService(null, placeholderService), new ChildWorkflowService(null));
 
         ChatSession session = new ChatSession();
         session.setSessionId("test-session-" + UUID.randomUUID());

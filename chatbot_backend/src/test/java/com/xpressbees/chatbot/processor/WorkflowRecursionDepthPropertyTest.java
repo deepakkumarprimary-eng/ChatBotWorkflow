@@ -69,9 +69,7 @@ class WorkflowRecursionDepthPropertyTest {
 
         // Process the node
         PlaceholderService placeholderService = new PlaceholderService();
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
-
-        // Assert: result action is CONTINUE (error, not ENTER_CHILD)
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
         assert result.getAction() == NodeProcessingResult.Action.CONTINUE :
                 "Expected CONTINUE when recursion depth exceeded, got: " + result.getAction();
 

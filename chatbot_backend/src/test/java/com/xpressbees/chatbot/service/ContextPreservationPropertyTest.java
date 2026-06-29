@@ -1,5 +1,7 @@
 package com.xpressbees.chatbot.service;
 
+import com.xpressbees.chatbot.repository.ChatSessionRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.xpressbees.chatbot.controller.ChatWebSocketHandler;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
 import com.xpressbees.chatbot.entity.ChatSession;
@@ -7,12 +9,10 @@ import com.xpressbees.chatbot.entity.Workflow;
 import com.xpressbees.chatbot.processor.InputNodeProcessor;
 import com.xpressbees.chatbot.processor.MessageNodeProcessor;
 import com.xpressbees.chatbot.processor.WorkflowNodeProcessor;
-import com.xpressbees.chatbot.repository.ChatSessionRepository;
 import com.xpressbees.chatbot.repository.WorkflowRepository;
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.IntRange;
 import org.mockito.ArgumentCaptor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
@@ -59,9 +59,7 @@ class ContextPreservationPropertyTest {
         ChatWebSocketHandler chatWebSocketHandler = mock(ChatWebSocketHandler.class);
         when(chatWebSocketHandler.consumePendingSession(anyString())).thenReturn(true);
 
-        WorkflowExecutionServiceImpl service = new WorkflowExecutionServiceImpl(
-                workflowRepository, chatSessionRepository, processors,
-                placeholderService, messagingTemplate, inputValidationService, chatWebSocketHandler);
+        WorkflowExecutionServiceImpl service = TestServiceFactory.createService(workflowRepository, processors, placeholderService, inputValidationService, chatWebSocketHandler, new ChatMessageSender(messagingTemplate), new SessionStateManager(chatSessionRepository), new NavigationService(workflowRepository, placeholderService), new ChildWorkflowService(workflowRepository));
 
         // Session with user variables in context
         String sessionId = "test-session-" + UUID.randomUUID();

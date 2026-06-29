@@ -25,7 +25,7 @@ import net.jqwik.api.*;
  */
 class ApiNodeProcessorPreservationPropertyTest {
 
-    private final ApiNodeProcessor processor = new ApiNodeProcessor(null, null, null, null, null, null);
+    private final ApiNodeProcessor processor = new ApiNodeProcessor(null, null, null, null);
 
     /**
      * Property: For any node with a type string that is NOT "state" AND NOT "api",

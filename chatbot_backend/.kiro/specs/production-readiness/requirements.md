@@ -11,7 +11,6 @@ The Chatbot Workflow Engine requires production-readiness enhancements to suppor
 - **Micrometer**: Metrics instrumentation library integrated with Spring Boot Actuator for collecting application metrics
 - **MDC**: Mapped Diagnostic Context — a thread-local map used by SLF4J/Logback to attach contextual key-value pairs to log entries
 - **Correlation_ID**: A unique identifier (sessionId) propagated through all log entries related to a single workflow execution
-- **Flyway**: A database migration tool that manages versioned SQL scripts for incremental schema evolution
 - **Workflow_Engine**: The WorkflowExecutionServiceImpl component that processes workflow nodes and manages chat session state
 - **WebSocket_Connection**: A persistent bidirectional connection between the client and server used for real-time chat execution via STOMP
 - **Stale_Session**: A ChatSession entity with status "active" that has not been updated within a configurable inactivity threshold
@@ -51,20 +50,7 @@ The Chatbot Workflow Engine requires production-readiness enhancements to suppor
 8. WHEN an unexpected failure occurs, THE Workflow_Engine SHALL log the full exception at ERROR level
 9. THE Application SHALL output log entries in structured JSON format suitable for log aggregation tools when the prod profile is active
 
-### Requirement 3: Flyway Database Migrations
-
-**User Story:** As a developer, I want versioned database migrations, so that schema changes are applied incrementally, reproducibly, and support rollback in production deployments.
-
-#### Acceptance Criteria
-
-1. THE Application SHALL use Flyway for all database schema management instead of spring.sql.init.mode
-2. THE Application SHALL include an initial Flyway migration (V1) that contains the complete current schema from schema.sql
-3. WHEN the application starts, Flyway SHALL apply any pending migrations in version order before the application accepts requests
-4. IF a Flyway migration fails, THEN THE Application SHALL prevent startup and log the migration error
-5. THE Application SHALL disable spring.sql.init.mode so that schema.sql is no longer executed on startup
-6. WHILE the prod profile is active, Flyway SHALL validate that applied migrations have not been modified since their initial application
-
-### Requirement 4: Environment-Specific Configuration Profiles
+### Requirement 3: Environment-Specific Configuration Profiles
 
 **User Story:** As a developer, I want environment-specific configuration profiles, so that the application uses appropriate settings for development, staging, and production deployments.
 
@@ -77,7 +63,7 @@ The Chatbot Workflow Engine requires production-readiness enhancements to suppor
 5. WHILE the prod profile is active, THE Application SHALL configure HikariCP with connection timeout of 30 seconds, idle timeout of 10 minutes, and max lifetime of 30 minutes
 6. IF no profile is explicitly activated, THEN THE Application SHALL default to the dev profile
 
-### Requirement 5: Stale Session Cleanup
+### Requirement 4: Stale Session Cleanup
 
 **User Story:** As an operations engineer, I want stale chat sessions to be automatically cleaned up, so that the database does not accumulate abandoned session records indefinitely.
 
@@ -90,7 +76,7 @@ The Chatbot Workflow Engine requires production-readiness enhancements to suppor
 5. THE Application SHALL execute the cleanup job on a configurable schedule with a default interval of 1 hour
 6. WHILE the dev profile is active, THE Application SHALL allow the stale session cleanup job to be disabled via configuration
 
-### Requirement 6: Graceful Shutdown
+### Requirement 5: Graceful Shutdown
 
 **User Story:** As an operations engineer, I want the application to shut down gracefully, so that in-progress workflow executions are not abruptly terminated and data consistency is preserved.
 
@@ -103,7 +89,7 @@ The Chatbot Workflow Engine requires production-readiness enhancements to suppor
 5. WHEN graceful shutdown begins, THE Application SHALL report the Actuator health status as OUT_OF_SERVICE
 6. THE Application SHALL configure Spring Boot embedded server graceful shutdown mode
 
-### Requirement 7: OpenAPI Documentation
+### Requirement 6: OpenAPI Documentation
 
 **User Story:** As a developer integrating with the chatbot API, I want auto-generated API documentation, so that I can discover available endpoints, request formats, and response schemas without reading source code.
 

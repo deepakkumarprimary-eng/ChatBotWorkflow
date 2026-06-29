@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.xpressbees.chatbot.service.ExecutionTrackerTest
+-------------------------------------------------------------------------------
+Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.245 s -- in com.xpressbees.chatbot.service.ExecutionTrackerTest

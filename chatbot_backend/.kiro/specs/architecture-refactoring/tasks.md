@@ -7,13 +7,13 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
 ## Tasks
 
 - [ ] 1. Phase 1: Dead Code Removal and ChatMessageSender
-  - [ ] 1.1 Remove dead code from ApiNodeProcessor
+  - [x] 1.1 Remove dead code from ApiNodeProcessor
     - Remove the unused `ConditionEvaluator` field/injection from `ApiNodeProcessor`
     - Remove commented-out conditional branching code block
     - Verify compilation succeeds with `mvn compile`
     - _Requirements: 7.1, 7.2, 7.3_
 
-  - [ ] 1.2 Create ChatMessageSender service
+  - [x] 1.2 Create ChatMessageSender service
     - Create `com.xpressbees.chatbot.service.ChatMessageSender` class
     - Inject `SimpMessagingTemplate` via constructor
     - Implement `sendResponse(String sessionId, ChatResponse response)` sending to `/topic/chat/{sessionId}`
@@ -25,31 +25,31 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Verify `sendError` constructs `ChatErrorResponse` and sends to correct destination
     - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 2. Phase 2: WorkflowJson Parameter and Processor Decoupling
-  - [ ] 2.1 Update NodeProcessor interface to accept workflowJson parameter
+- [x] 2. Phase 2: WorkflowJson Parameter and Processor Decoupling
+  - [x] 2.1 Update NodeProcessor interface to accept workflowJson parameter
     - Add `Map<String, Object> workflowJson` parameter to the `process` method in `NodeProcessor` interface
     - Update `MessageNodeProcessor`, `InputNodeProcessor`, `ApiNodeProcessor`, `DecisionNodeProcessor`, `WorkflowNodeProcessor` to accept the new parameter
     - Update orchestrator's processor invocation to pass the already-loaded workflowJson
     - _Requirements: 6.1, 6.2_
 
-  - [ ] 2.2 Update NodeProcessingResult to support ERROR action
+  - [x] 2.2 Update NodeProcessingResult to support ERROR action
     - Add `ERROR` to the `Action` enum in `NodeProcessingResult`
     - Add `errorMessage` field with convenience constructor `NodeProcessingResult.error(String message)`
     - Maintain backwards-compatible constructor `NodeProcessingResult(Action, ChatResponse)`
     - _Requirements: 8.4_
 
-  - [ ] 2.3 Decouple ApiNodeProcessor from infrastructure
+  - [x] 2.3 Decouple ApiNodeProcessor from infrastructure
     - Remove `WorkflowRepository` dependency — use the passed `workflowJson` parameter to resolve transitions
     - Remove `SimpMessagingTemplate` dependency — return `NodeProcessingResult.error(message)` instead of sending errors directly
     - Update all error paths (API config not found, HTTP timeout, extraction failure) to return ERROR result
     - _Requirements: 6.3, 6.5, 8.1, 8.3_
 
-  - [ ] 2.4 Decouple DecisionNodeProcessor from infrastructure
+  - [x] 2.4 Decouple DecisionNodeProcessor from infrastructure
     - Remove `WorkflowRepository` dependency — use the passed `workflowJson` parameter for transition evaluation
     - Remove `SimpMessagingTemplate` dependency — return `NodeProcessingResult.error(message)` for "no matching condition"
     - _Requirements: 6.4, 6.6, 8.2, 8.3_
 
-  - [ ] 2.5 Update orchestrator to handle ERROR results from processors
+  - [x] 2.5 Update orchestrator to handle ERROR results from processors
     - In `processNodes` loop, add handling for `Action.ERROR`: invoke `chatMessageSender.sendError(sessionId, errorMessage)`
     - Replace direct `SimpMessagingTemplate` usage in the orchestrator with `ChatMessageSender` calls
     - _Requirements: 8.5, 1.4_
@@ -60,11 +60,11 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Test DecisionNodeProcessor returns ERROR for: no matching condition
     - **Validates: Requirements 8.1, 8.2, 8.3, 8.4, 8.5**
 
-- [ ] 3. Checkpoint - Phase 2 verification
+- [x] 3. Checkpoint - Phase 2 verification
   - Ensure all tests pass with `mvn test`, ask the user if questions arise.
 
-- [ ] 4. Phase 3: WorkflowJsonUtils and SessionStateManager
-  - [ ] 4.1 Create WorkflowJsonUtils utility class
+- [x] 4. Phase 3: WorkflowJsonUtils and SessionStateManager
+  - [x] 4.1 Create WorkflowJsonUtils utility class
     - Create `com.xpressbees.chatbot.util.WorkflowJsonUtils` as a `final` class with private constructor
     - Implement static `resolveNextNode(String currentNodeId, Map workflowJson)` — find target node via first matching transition
     - Implement overloaded `resolveNextNode(String currentNodeId, String targetNodeId, Map workflowJson)` — targeted routing with fallback
@@ -83,12 +83,12 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Use jqwik to generate random workflow JSON maps with 1-20 nodes and 0-25 transitions
     - **Validates: Requirements 11.1, 11.2, 11.3, 11.4**
 
-  - [ ] 4.3 Create SaveResult DTO
+  - [x] 4.3 Create SaveResult DTO
     - Create `com.xpressbees.chatbot.dto.SaveResult` with `success`, `session`, `errorMessage` fields
     - Implement static factory methods `SaveResult.success(ChatSession)` and `SaveResult.failure(String)`
     - _Requirements: 4.1, 4.4_
 
-  - [ ] 4.4 Create SessionStateManager service
+  - [x] 4.4 Create SessionStateManager service
     - Create `com.xpressbees.chatbot.service.SessionStateManager`
     - Inject `ChatSessionRepository` via constructor
     - Implement `save(ChatSession)` catching `DataAccessException` and returning `SaveResult`
@@ -103,35 +103,35 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Test `findBySessionId` delegates to repository
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-  - [ ] 4.6 Replace inline node resolution in orchestrator with WorkflowJsonUtils
+  - [x] 4.6 Replace inline node resolution in orchestrator with WorkflowJsonUtils
     - Replace all `resolveNextNode`, `findFirstNode`, `findNodeById`, `findTargetNodeByName` logic in `WorkflowExecutionServiceImpl` with calls to `WorkflowJsonUtils`
     - Remove now-redundant private methods from the orchestrator
     - _Requirements: 11.6_
 
-  - [ ] 4.7 Replace direct ChatSessionRepository usage in orchestrator with SessionStateManager
+  - [x] 4.7 Replace direct ChatSessionRepository usage in orchestrator with SessionStateManager
     - Replace `chatSessionRepository.save(...)` calls with `sessionStateManager.save(...)` and handle `SaveResult`
     - Replace `chatSessionRepository.findBySessionId(...)` with `sessionStateManager.findBySessionId(...)`
     - Replace session creation logic with `sessionStateManager.createSession(...)`
     - Remove `ChatSessionRepository` from orchestrator's constructor injection
     - _Requirements: 1.3_
 
-- [ ] 5. Checkpoint - Phase 3 verification
+- [x] 5. Checkpoint - Phase 3 verification
   - Ensure all tests pass with `mvn test`, ask the user if questions arise.
 
-- [ ] 6. Phase 4: NavigationService and ChildWorkflowService
-  - [ ] 6.1 Create NavigationResult DTO
+- [x] 6. Phase 4: NavigationService and ChildWorkflowService
+  - [x] 6.1 Create NavigationResult DTO
     - Create `com.xpressbees.chatbot.dto.NavigationResult` with `Outcome` enum (RESUME_NODE, UNAVAILABLE, ERROR)
     - Include fields: `targetNode`, `workflowJson`, `prompt`, `errorMessage`
     - Implement static factory methods: `resumeNode(...)`, `unavailable()`, `error(String)`
     - _Requirements: 13.1_
 
-  - [ ] 6.2 Create ChildWorkflowResult DTO
+  - [x] 6.2 Create ChildWorkflowResult DTO
     - Create `com.xpressbees.chatbot.dto.ChildWorkflowResult` with `Outcome` enum (NEXT_NODE, COMPLETE, ERROR)
     - Include fields: `nextNode`, `workflowJson`, `errorMessage`
     - Implement static factory methods: `nextNode(...)`, `complete()`, `error(String)`
     - _Requirements: 13.2_
 
-  - [ ] 6.3 Create NavigationService
+  - [x] 6.3 Create NavigationService
     - Create `com.xpressbees.chatbot.service.NavigationService`
     - Inject `WorkflowRepository` and `PlaceholderService` via constructor
     - Implement `handleBack(ChatSession)` — scan history for most recent awaitsInput entry, restore state, resolve prompt, handle cross-workflow unwinding
@@ -141,7 +141,7 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Use `WorkflowJsonUtils` for all node resolution
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 13.3_
 
-  - [ ] 6.4 Create ChildWorkflowService
+  - [x] 6.4 Create ChildWorkflowService
     - Create `com.xpressbees.chatbot.service.ChildWorkflowService`
     - Inject `WorkflowRepository` via constructor
     - Implement `enterChild(ChatSession, Long childWorkflowId, Map workflowNode)` — push parent onto stack, switch session to child, return first node
@@ -165,11 +165,11 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Test stack growth on enter, stack pop on end, COMPLETE when stack empty
     - **Validates: Requirements 3.1, 3.2, 3.4**
 
-- [ ] 7. Checkpoint - Phase 4 verification
+- [x] 7. Checkpoint - Phase 4 verification
   - Ensure all tests pass with `mvn test`, ask the user if questions arise.
 
-- [ ] 8. Phase 5: Orchestrator Slim-Down and Confirmation Requirements
-  - [ ] 8.1 Wire NavigationService into orchestrator
+- [x] 8. Phase 5: Orchestrator Slim-Down and Confirmation Requirements
+  - [x] 8.1 Wire NavigationService into orchestrator
     - Replace inline `handleBack` logic in orchestrator with delegation to `NavigationService.handleBack(session)`
     - Interpret `NavigationResult`: send prompt on RESUME_NODE, send error on UNAVAILABLE/ERROR
     - Replace inline `handleRestart` logic with delegation to `NavigationService.handleRestart(session)`
@@ -177,20 +177,20 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Add `NavigationService.markLastEntryAwaitsInput(...)` when processor returns PAUSE
     - _Requirements: 1.1, 2.1, 2.2, 2.3, 2.4, 2.5_
 
-  - [ ] 8.2 Wire ChildWorkflowService into orchestrator
+  - [x] 8.2 Wire ChildWorkflowService into orchestrator
     - Replace inline child workflow entry logic with delegation to `ChildWorkflowService.enterChild(...)`
     - Replace inline child workflow end logic with delegation to `ChildWorkflowService.handleChildEnd(session)`
     - Interpret `ChildWorkflowResult`: process next node on NEXT_NODE, end loop on COMPLETE, send error on ERROR
     - _Requirements: 1.2, 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 8.3 Confirm resume logic remains in orchestrator
+  - [x] 8.3 Confirm resume logic remains in orchestrator
     - Verify `handleApiNodeResume` and `handleInputNodeResume` remain as orchestrator methods
     - Verify processors never handle post-PAUSE replies
     - Verify `consumePendingSession` call remains in `startWorkflow`
     - Verify `InputValidationService` is invoked in `handleInputNodeResume` before storing input
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 12.1, 12.2, 12.3, 14.1, 14.2, 14.3, 14.4_
 
-  - [ ] 8.4 Clean up orchestrator — remove extracted code
+  - [x] 8.4 Clean up orchestrator — remove extracted code
     - Remove private navigation methods that are now in NavigationService
     - Remove private child workflow methods that are now in ChildWorkflowService
     - Remove `ChatSessionRepository` injection (replaced by SessionStateManager)
@@ -213,11 +213,11 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Verify error sent and session node position unchanged
     - **Validates: Requirements 14.1, 14.2**
 
-- [ ] 9. Checkpoint - Phase 5 verification
+- [x] 9. Checkpoint - Phase 5 verification
   - Ensure all tests pass with `mvn test`, ask the user if questions arise.
 
-- [ ] 10. Phase 6: Behavioral Equivalence Verification
-  - [ ] 10.1 Capture golden output from current implementation
+- [x] 10. Phase 6: Behavioral Equivalence Verification
+  - [x] 10.1 Capture golden output from current implementation
     - Define representative workflow definitions (linear, branching, nested child, error cases)
     - Record expected sequences of ChatResponse and ChatErrorResponse messages for each scenario
     - Store as test fixtures for comparison
@@ -239,7 +239,7 @@ Decompose the monolithic `WorkflowExecutionServiceImpl` into focused, testable s
     - Test restart mid-workflow (verify context cleared, execution restarts)
     - _Requirements: 9.1, 9.2, 9.3, 9.4_
 
-- [ ] 11. Final checkpoint - Ensure all tests pass
+- [x] 11. Final checkpoint - Ensure all tests pass
   - Ensure all tests pass with `mvn test`, ask the user if questions arise.
 
 ## Notes

@@ -1,0 +1,62 @@
+{
+  "name": "Complete Order Status Workflow",
+  "description": "A full workflow with message, input, and api nodes demonstrating all node types and transitions",
+  "workflowJson": {
+    "nodes": [
+      {
+        "id": "msg1",
+        "name": "Welcome to Order Tracking!",
+        "type": "state",
+        "config": null
+      },
+      {
+        "id": "inp1",
+        "name": "Please enter your order ID:",
+        "type": "state",
+        "config": {
+          "nodeType": "input",
+          "variableName": "orderId"
+        }
+      },
+      {
+        "id": "api1",
+        "name": "Fetching order status...",
+        "type": "state",
+        "config": {
+          "nodeType": "api",
+          "apiConfigId": "1"
+        }
+      },
+      {
+        "id": "msg2",
+        "name": "Your order {{orderId}} is currently: {{orderStatus}}",
+        "type": "state",
+        "config": null
+      },
+      {
+        "id": "msg3",
+        "name": "Thank you for using Order Tracking. Goodbye!",
+        "type": "state",
+        "config": null
+      }
+    ],
+    "transitions": [
+      {
+        "sourceNodeId": "msg1",
+        "targetNodeId": "inp1"
+      },
+      {
+        "sourceNodeId": "inp1",
+        "targetNodeId": "api1"
+      },
+      {
+        "sourceNodeId": "api1",
+        "targetNodeId": "msg2"
+      },
+      {
+        "sourceNodeId": "msg2",
+        "targetNodeId": "msg3"
+      }
+    ]
+  }
+}

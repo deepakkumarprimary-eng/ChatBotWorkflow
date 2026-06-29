@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.xpressbees.chatbot.processor.ApiNodeProcessorIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.115 s -- in com.xpressbees.chatbot.processor.ApiNodeProcessorIntegrationTest

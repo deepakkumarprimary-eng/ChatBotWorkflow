@@ -1,0 +1,42 @@
+{
+  "name": "Order Status API",
+  "url": "https://api.example.com/orders/{{orderId}}/status",
+  "method": "GET",
+  "timeoutMs": 5000,
+  "retryCount": 2,
+  "headers": [
+    {
+      "headerName": "Authorization",
+      "headerValue": "Bearer {{authToken}}"
+    },
+    {
+      "headerName": "Content-Type",
+      "headerValue": "application/json"
+    },
+    {
+      "headerName": "X-Request-ID",
+      "headerValue": "{{requestId}}"
+    }
+  ],
+  "payload": {
+    "bodyTemplate": {
+      "orderId": "{{orderId}}",
+      "includeHistory": true,
+      "format": "summary"
+    }
+  },
+  "responseMappings": [
+    {
+      "jsonPath": "$.status",
+      "contextVariableName": "orderStatus"
+    },
+    {
+      "jsonPath": "$.estimatedDelivery",
+      "contextVariableName": "deliveryDate"
+    },
+    {
+      "jsonPath": "$.trackingNumber",
+      "contextVariableName": "trackingNumber"
+    }
+  ]
+}

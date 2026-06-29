@@ -1,12 +1,9 @@
 package com.xpressbees.chatbot.processor;
 
-import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.dto.HttpExecutionResult;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
 import com.xpressbees.chatbot.dto.NodeProcessingResult.Action;
 import com.xpressbees.chatbot.entity.*;
-import com.xpressbees.chatbot.repository.ApiConfigRepository;
-import com.xpressbees.chatbot.repository.WorkflowRepository;
 import com.xpressbees.chatbot.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,33 +11,29 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
  * Integration tests for full API node processing flows.
- * Uses real ResponseExtractor, ConditionEvaluator, and PlaceholderService
- * with mocked external dependencies (repositories, HTTP, messaging).
+ * Uses real ResponseExtractor and PlaceholderService
+ * with mocked external dependencies (repository, HTTP).
  *
- * Validates: Requirements 6.1, 6.2, 7.1, 7.5, 9.1, 9.5, 9.7,
+ * Validates: Requirements 6.1, 6.2, 6.3, 6.5, 7.1, 7.5, 8.1, 8.3, 9.1, 9.5, 9.7,
  *            10.1, 10.2, 10.3, 11.1, 11.3, 12.1, 12.4
  */
 @ExtendWith(MockitoExtension.class)
 class ApiNodeProcessorIntegrationTest {
 
-    @Mock private ApiConfigRepository apiConfigRepository;
-    @Mock private WorkflowRepository workflowRepository;
+    @Mock private ApiConfigCacheService apiConfigCacheService;
     @Mock private HttpExecutor httpExecutor;
-    @Mock private SimpMessagingTemplate messagingTemplate;
+    @Mock private UrlValidator urlValidator;
 
     private final ResponseExtractor responseExtractor = new ResponseExtractor();
-    private final ConditionEvaluator conditionEvaluator = new ConditionEvaluator();
     private final PlaceholderService placeholderService = new PlaceholderService();
 
     private ApiNodeProcessor processor;
@@ -51,9 +44,11 @@ class ApiNodeProcessorIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        // Mock UrlValidator to allow all URLs in integration tests (lenient since not all tests reach URL validation)
+        lenient().when(urlValidator.validate(anyString()))
+                .thenReturn(com.xpressbees.chatbot.dto.UrlValidationResult.allowed());
         processor = new ApiNodeProcessor(
-                apiConfigRepository, workflowRepository, httpExecutor,
-                responseExtractor, conditionEvaluator, messagingTemplate);
+                apiConfigCacheService, httpExecutor, responseExtractor, urlValidator);
     }
 
     // ======================== Helper Methods ========================
@@ -90,7 +85,7 @@ class ApiNodeProcessorIntegrationTest {
     private Map<String, Object> createNode(String nodeId, Map<String, Object> config) {
         Map<String, Object> node = new HashMap<>();
         node.put("id", nodeId);
-        node.put("type", "api");
+        node.put("type", "state");
         node.put("config", config);
         return node;
     }
@@ -102,15 +97,11 @@ class ApiNodeProcessorIntegrationTest {
         return config;
     }
 
-    private Workflow createWorkflow(List<Map<String, Object>> nodes, List<Map<String, Object>> transitions) {
-        Workflow workflow = new Workflow();
-        workflow.setId(WORKFLOW_ID);
-        workflow.setName("test-workflow");
+    private Map<String, Object> createWorkflowJson(List<Map<String, Object>> nodes, List<Map<String, Object>> transitions) {
         Map<String, Object> workflowJson = new HashMap<>();
         workflowJson.put("nodes", nodes);
         workflowJson.put("transitions", transitions);
-        workflow.setWorkflowJson(workflowJson);
-        return workflow;
+        return workflowJson;
     }
 
     private Map<String, Object> createTransition(String sourceId, String targetId, String condition) {
@@ -151,54 +142,18 @@ class ApiNodeProcessorIntegrationTest {
                 createWorkflowNode("node-1", "API Node", "api"),
                 createWorkflowNode("node-2", "Next Node", "message")
         );
-        Workflow workflow = createWorkflow(nodes, transitions);
+        Map<String, Object> workflowJson = createWorkflowJson(nodes, transitions);
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), eq("http://api.example.com/status"), any(), any()))
                 .thenReturn(new HttpExecutionResult(true, 200, "{\"status\": \"active\"}", null));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         // Assert
         assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
         assertThat(session.getContext()).containsEntry("status", "active");
-    }
-
-    @Test
-    @DisplayName("Type 2 Conditional Branching: correct branch taken based on extracted values")
-    void testType2ConditionalBranching() {
-        // Arrange
-        ChatSession session = createSession();
-        ApiResponseMapping mapping = createMapping("$.status", "status");
-        ApiConfig apiConfig = createApiConfig("http://api.example.com/check", "GET", List.of(mapping));
-
-        Map<String, Object> node = createNode("node-1", createNodeConfig());
-
-        // Two conditional transitions
-        List<Map<String, Object>> transitions = List.of(
-                createTransition("node-1", "node-active", "status == active"),
-                createTransition("node-1", "node-inactive", "status == inactive")
-        );
-        List<Map<String, Object>> nodes = List.of(
-                createWorkflowNode("node-1", "API Node", "api"),
-                createWorkflowNode("node-active", "Active", "message"),
-                createWorkflowNode("node-inactive", "Inactive", "message")
-        );
-        Workflow workflow = createWorkflow(nodes, transitions);
-
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
-        when(httpExecutor.execute(eq(apiConfig), eq("http://api.example.com/check"), any(), any()))
-                .thenReturn(new HttpExecutionResult(true, 200, "{\"status\":\"active\"}", null));
-
-        // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
-
-        // Assert
-        assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
-        assertThat(session.getContext()).containsEntry("_targetNodeId", "node-active");
     }
 
     @Test
@@ -221,15 +176,14 @@ class ApiNodeProcessorIntegrationTest {
                 createWorkflowNode("node-1", "API Node", "api"),
                 createWorkflowNode("node-2", "Next Node", "message")
         );
-        Workflow workflow = createWorkflow(nodes, transitions);
+        Map<String, Object> workflowJson = createWorkflowJson(nodes, transitions);
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), eq("http://api.example.com/items"), any(), any()))
                 .thenReturn(new HttpExecutionResult(true, 200, "{\"items\":[\"A\",\"B\",\"C\"]}", null));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         // Assert
         assertThat(result.getAction()).isEqualTo(Action.PAUSE);
@@ -257,15 +211,14 @@ class ApiNodeProcessorIntegrationTest {
                 createWorkflowNode("node-opt-a", "Option A", "message"),
                 createWorkflowNode("node-opt-b", "Option B", "message")
         );
-        Workflow workflow = createWorkflow(nodes, transitions);
+        Map<String, Object> workflowJson = createWorkflowJson(nodes, transitions);
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), eq("http://api.example.com/data"), any(), any()))
                 .thenReturn(new HttpExecutionResult(true, 200, "{\"status\":\"ok\"}", null));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         // Assert
         assertThat(result.getAction()).isEqualTo(Action.PAUSE);
@@ -294,15 +247,14 @@ class ApiNodeProcessorIntegrationTest {
                 createWorkflowNode("node-1", "API Node", "api"),
                 createWorkflowNode("node-2", "Next", "message")
         );
-        Workflow workflow = createWorkflow(nodes, transitions);
+        Map<String, Object> workflowJson = createWorkflowJson(nodes, transitions);
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), any(), any(), any()))
                 .thenReturn(new HttpExecutionResult(true, 200, "{\"items\":[\"X\",\"Y\"]}", null));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         // Assert
         assertThat(result.getAction()).isEqualTo(Action.PAUSE);
@@ -321,7 +273,7 @@ class ApiNodeProcessorIntegrationTest {
         Map<String, Object> node = createNode("node-1", nodeConfig);
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
         assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
@@ -340,7 +292,7 @@ class ApiNodeProcessorIntegrationTest {
         Map<String, Object> node = createNode("node-1", nodeConfig);
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
         assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
@@ -349,25 +301,24 @@ class ApiNodeProcessorIntegrationTest {
     }
 
     @Test
-    @DisplayName("ApiConfig not found: returns CONTINUE with error message")
+    @DisplayName("ApiConfig not found: returns ERROR result")
     void testApiConfigNotFound() {
         // Arrange
         ChatSession session = createSession();
         Map<String, Object> node = createNode("node-1", createNodeConfig());
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.empty());
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.empty());
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
-        assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
-        assertThat(result.getResponse()).isNotNull();
-        assertThat(result.getResponse().getResponse()).contains("No API configuration found");
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).contains("No API configuration found");
     }
 
     @Test
-    @DisplayName("HTTP timeout failure: PAUSE and error sent to topic")
+    @DisplayName("HTTP timeout failure: returns ERROR result")
     void testHttpTimeoutFailure() {
         // Arrange
         ChatSession session = createSession();
@@ -375,20 +326,20 @@ class ApiNodeProcessorIntegrationTest {
 
         Map<String, Object> node = createNode("node-1", createNodeConfig());
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), any(), any(), any()))
                 .thenReturn(new HttpExecutionResult(false, 0, null, "timeout"));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), any(ChatErrorResponse.class));
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).contains("unreachable");
     }
 
     @Test
-    @DisplayName("HTTP status failure: PAUSE and error sent to topic")
+    @DisplayName("HTTP status failure: returns ERROR result")
     void testHttpStatusFailure() {
         // Arrange
         ChatSession session = createSession();
@@ -396,20 +347,20 @@ class ApiNodeProcessorIntegrationTest {
 
         Map<String, Object> node = createNode("node-1", createNodeConfig());
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), any(), any(), any()))
                 .thenReturn(new HttpExecutionResult(false, 500, null, "error"));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), any(ChatErrorResponse.class));
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).contains("500");
     }
 
     @Test
-    @DisplayName("Invalid JSON response: PAUSE and error sent to topic")
+    @DisplayName("Invalid JSON response: returns ERROR result")
     void testInvalidJsonResponse() {
         // Arrange
         ChatSession session = createSession();
@@ -418,50 +369,39 @@ class ApiNodeProcessorIntegrationTest {
 
         Map<String, Object> node = createNode("node-1", createNodeConfig());
 
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), any(), any(), any()))
                 .thenReturn(new HttpExecutionResult(true, 200, "{invalid json content", null));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), any(ChatErrorResponse.class));
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).isNotNull();
     }
 
     @Test
-    @DisplayName("No matching condition: PAUSE and error sent to topic")
-    void testNoMatchingCondition() {
+    @DisplayName("No options available (displayVariable empty): returns ERROR result")
+    void testNoOptionsAvailable() {
         // Arrange
         ChatSession session = createSession();
-        ApiResponseMapping mapping = createMapping("$.status", "status");
-        ApiConfig apiConfig = createApiConfig("http://api.example.com/check", "GET", List.of(mapping));
+        ApiConfig apiConfig = createApiConfig("http://api.example.com/items", "GET", List.of());
 
-        Map<String, Object> node = createNode("node-1", createNodeConfig());
+        Map<String, Object> nodeConfig = createNodeConfig();
+        Map<String, Object> node = createNode("node-1", nodeConfig);
+        node.put("displayVariable", "options");
 
-        // Two conditional transitions, neither matches "pending"
-        List<Map<String, Object>> transitions = List.of(
-                createTransition("node-1", "node-active", "status == active"),
-                createTransition("node-1", "node-inactive", "status == inactive")
-        );
-        List<Map<String, Object>> nodes = List.of(
-                createWorkflowNode("node-1", "API Node", "api"),
-                createWorkflowNode("node-active", "Active", "message"),
-                createWorkflowNode("node-inactive", "Inactive", "message")
-        );
-        Workflow workflow = createWorkflow(nodes, transitions);
-
-        when(apiConfigRepository.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        // Context has no value for "options"
+        when(apiConfigCacheService.findById(API_CONFIG_ID)).thenReturn(Optional.of(apiConfig));
         when(httpExecutor.execute(eq(apiConfig), any(), any(), any()))
-                .thenReturn(new HttpExecutionResult(true, 200, "{\"status\":\"pending\"}", null));
+                .thenReturn(new HttpExecutionResult(true, 200, "{}", null));
 
         // Act
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), any(ChatErrorResponse.class));
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).contains("No options available");
     }
 }

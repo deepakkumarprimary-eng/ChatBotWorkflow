@@ -1,22 +1,17 @@
 package com.xpressbees.chatbot.processor;
 
-import com.xpressbees.chatbot.dto.ChatErrorResponse;
 import com.xpressbees.chatbot.dto.NodeProcessingResult;
 import com.xpressbees.chatbot.dto.NodeProcessingResult.Action;
 import com.xpressbees.chatbot.entity.ChatSession;
-import com.xpressbees.chatbot.entity.Workflow;
-import com.xpressbees.chatbot.repository.WorkflowRepository;
 import com.xpressbees.chatbot.service.ConditionEvaluator;
 import com.xpressbees.chatbot.service.PlaceholderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.annotation.Order;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -29,14 +24,12 @@ import static org.mockito.Mockito.*;
  * Unit tests for DecisionNodeProcessor.
  *
  * Validates: Requirements 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, 2.4, 3.1, 3.2, 3.3, 3.4, 3.5,
- *            4.1, 4.2, 4.3, 5.1, 5.2, 7.1, 7.2
+ *            4.1, 4.2, 4.3, 5.1, 5.2, 6.4, 6.6, 7.1, 7.2, 8.2, 8.3
  */
 @ExtendWith(MockitoExtension.class)
 class DecisionNodeProcessorTest {
 
-    @Mock private WorkflowRepository workflowRepository;
     @Mock private ConditionEvaluator conditionEvaluator;
-    @Mock private SimpMessagingTemplate messagingTemplate;
     @Mock private PlaceholderService placeholderService;
 
     private DecisionNodeProcessor processor;
@@ -47,7 +40,7 @@ class DecisionNodeProcessorTest {
 
     @BeforeEach
     void setUp() {
-        processor = new DecisionNodeProcessor(workflowRepository, conditionEvaluator, messagingTemplate);
+        processor = new DecisionNodeProcessor(conditionEvaluator);
     }
 
     // ======================== Helper Methods ========================
@@ -78,14 +71,10 @@ class DecisionNodeProcessorTest {
         return transition;
     }
 
-    private Workflow createWorkflow(List<Map<String, Object>> transitions) {
-        Workflow workflow = new Workflow();
-        workflow.setId(WORKFLOW_ID);
-        workflow.setName("test-workflow");
+    private Map<String, Object> createWorkflowJson(List<Map<String, Object>> transitions) {
         Map<String, Object> workflowJson = new HashMap<>();
         workflowJson.put("transitions", transitions);
-        workflow.setWorkflowJson(workflowJson);
-        return workflow;
+        return workflowJson;
     }
 
     // ======================== canHandle Tests ========================
@@ -143,55 +132,25 @@ class DecisionNodeProcessorTest {
         assertThat(processor.canHandle(node)).isFalse();
     }
 
-    // ======================== Workflow Not Found Tests ========================
-
-    @Test
-    @DisplayName("process returns PAUSE with error when workflow not found")
-    void process_returnsPause_whenWorkflowNotFound() {
-        ChatSession session = createSession();
-        Map<String, Object> node = createDecisionNode(DECISION_NODE_ID);
-
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.empty());
-
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
-
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        assertThat(result.getResponse()).isNull();
-
-        ArgumentCaptor<ChatErrorResponse> captor = ArgumentCaptor.forClass(ChatErrorResponse.class);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), captor.capture());
-        assertThat(captor.getValue().getError()).isEqualTo("Workflow is no longer available");
-        assertThat(captor.getValue().getSessionId()).isEqualTo(SESSION_ID);
-    }
-
     // ======================== Null workflowJson Tests ========================
 
     @Test
-    @DisplayName("process returns PAUSE with error when workflowJson is null")
-    void process_returnsPause_whenWorkflowJsonIsNull() {
+    @DisplayName("process returns ERROR when workflowJson is null")
+    void process_returnsError_whenWorkflowJsonIsNull() {
         ChatSession session = createSession();
         Map<String, Object> node = createDecisionNode(DECISION_NODE_ID);
 
-        Workflow workflow = new Workflow();
-        workflow.setId(WORKFLOW_ID);
-        workflow.setWorkflowJson(null);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
-
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        assertThat(result.getResponse()).isNull();
-
-        ArgumentCaptor<ChatErrorResponse> captor = ArgumentCaptor.forClass(ChatErrorResponse.class);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), captor.capture());
-        assertThat(captor.getValue().getError()).isEqualTo("Workflow is no longer available");
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).isEqualTo("Workflow is no longer available");
     }
 
     // ======================== Zero Outgoing Transitions Tests ========================
 
     @Test
-    @DisplayName("process returns PAUSE with error when zero outgoing transitions")
-    void process_returnsPause_whenZeroOutgoingTransitions() {
+    @DisplayName("process returns ERROR when zero outgoing transitions")
+    void process_returnsError_whenZeroOutgoingTransitions() {
         ChatSession session = createSession();
         Map<String, Object> node = createDecisionNode(DECISION_NODE_ID);
 
@@ -199,17 +158,12 @@ class DecisionNodeProcessorTest {
         List<Map<String, Object>> transitions = List.of(
                 createTransition("other-node", "target-1", "x == 1")
         );
-        Workflow workflow = createWorkflow(transitions);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        Map<String, Object> workflowJson = createWorkflowJson(transitions);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        assertThat(result.getResponse()).isNull();
-
-        ArgumentCaptor<ChatErrorResponse> captor = ArgumentCaptor.forClass(ChatErrorResponse.class);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), captor.capture());
-        assertThat(captor.getValue().getError()).isEqualTo("Decision node has no outgoing transitions");
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).isEqualTo("Decision node has no outgoing transitions");
     }
 
     // ======================== Happy Path: Single Transition Match ========================
@@ -223,18 +177,14 @@ class DecisionNodeProcessorTest {
         List<Map<String, Object>> transitions = List.of(
                 createTransition(DECISION_NODE_ID, "target-node-1", "status == active")
         );
-        Workflow workflow = createWorkflow(transitions);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        Map<String, Object> workflowJson = createWorkflowJson(transitions);
         when(conditionEvaluator.evaluate(eq("status == active"), anyMap())).thenReturn(true);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
         assertThat(result.getResponse()).isNull();
         assertThat(session.getContext()).containsEntry("_targetNodeId", "target-node-1");
-
-        // No WebSocket messages should be sent on success
-        verify(messagingTemplate, never()).convertAndSend(anyString(), any(Object.class));
     }
 
     // ======================== Multiple Transitions: Second Matches ========================
@@ -250,12 +200,11 @@ class DecisionNodeProcessorTest {
                 createTransition(DECISION_NODE_ID, "target-B", "status == inactive"),
                 createTransition(DECISION_NODE_ID, "target-C", "status == pending")
         );
-        Workflow workflow = createWorkflow(transitions);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        Map<String, Object> workflowJson = createWorkflowJson(transitions);
         when(conditionEvaluator.evaluate(eq("status == active"), anyMap())).thenReturn(false);
         when(conditionEvaluator.evaluate(eq("status == inactive"), anyMap())).thenReturn(true);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
         assertThat(result.getResponse()).isNull();
@@ -263,8 +212,6 @@ class DecisionNodeProcessorTest {
 
         // Third condition should NOT be evaluated (first-match-wins)
         verify(conditionEvaluator, never()).evaluate(eq("status == pending"), anyMap());
-        // No WebSocket messages on success
-        verify(messagingTemplate, never()).convertAndSend(anyString(), any(Object.class));
     }
 
     // ======================== Transition with Null Condition is Skipped ========================
@@ -280,11 +227,10 @@ class DecisionNodeProcessorTest {
         Map<String, Object> transitionWithCondition = createTransition(DECISION_NODE_ID, "target-match", "x == 1");
 
         List<Map<String, Object>> transitions = List.of(transitionNoCondition, transitionWithCondition);
-        Workflow workflow = createWorkflow(transitions);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        Map<String, Object> workflowJson = createWorkflowJson(transitions);
         when(conditionEvaluator.evaluate(eq("x == 1"), anyMap())).thenReturn(true);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
         assertThat(result.getAction()).isEqualTo(Action.CONTINUE);
         assertThat(session.getContext()).containsEntry("_targetNodeId", "target-match");
@@ -295,8 +241,8 @@ class DecisionNodeProcessorTest {
     // ======================== Matched Transition with Null targetNodeId ========================
 
     @Test
-    @DisplayName("process returns PAUSE with error when matched transition has null targetNodeId")
-    void process_returnsPause_whenMatchedTransitionHasNullTarget() {
+    @DisplayName("process returns ERROR when matched transition has null targetNodeId")
+    void process_returnsError_whenMatchedTransitionHasNullTarget() {
         ChatSession session = createSession();
         Map<String, Object> node = createDecisionNode(DECISION_NODE_ID);
 
@@ -307,25 +253,20 @@ class DecisionNodeProcessorTest {
         transition.put("condition", "status == active");
 
         List<Map<String, Object>> transitions = List.of(transition);
-        Workflow workflow = createWorkflow(transitions);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        Map<String, Object> workflowJson = createWorkflowJson(transitions);
         when(conditionEvaluator.evaluate(eq("status == active"), anyMap())).thenReturn(true);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        assertThat(result.getResponse()).isNull();
-
-        ArgumentCaptor<ChatErrorResponse> captor = ArgumentCaptor.forClass(ChatErrorResponse.class);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), captor.capture());
-        assertThat(captor.getValue().getError()).isEqualTo("Matched transition has no target node");
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).isEqualTo("Matched transition has no target node");
     }
 
     // ======================== No Condition Matches ========================
 
     @Test
-    @DisplayName("process returns PAUSE and does not store _targetNodeId when no condition matches")
-    void process_returnsPause_whenNoConditionMatches() {
+    @DisplayName("process returns ERROR when no condition matches")
+    void process_returnsError_whenNoConditionMatches() {
         ChatSession session = createSession();
         Map<String, Object> node = createDecisionNode(DECISION_NODE_ID);
 
@@ -333,20 +274,15 @@ class DecisionNodeProcessorTest {
                 createTransition(DECISION_NODE_ID, "target-A", "status == active"),
                 createTransition(DECISION_NODE_ID, "target-B", "status == inactive")
         );
-        Workflow workflow = createWorkflow(transitions);
-        when(workflowRepository.findById(WORKFLOW_ID)).thenReturn(Optional.of(workflow));
+        Map<String, Object> workflowJson = createWorkflowJson(transitions);
         when(conditionEvaluator.evaluate(eq("status == active"), anyMap())).thenReturn(false);
         when(conditionEvaluator.evaluate(eq("status == inactive"), anyMap())).thenReturn(false);
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, workflowJson);
 
-        assertThat(result.getAction()).isEqualTo(Action.PAUSE);
-        assertThat(result.getResponse()).isNull();
+        assertThat(result.getAction()).isEqualTo(Action.ERROR);
+        assertThat(result.getErrorMessage()).isEqualTo("No matching condition found for decision node");
         assertThat(session.getContext()).doesNotContainKey("_targetNodeId");
-
-        ArgumentCaptor<ChatErrorResponse> captor = ArgumentCaptor.forClass(ChatErrorResponse.class);
-        verify(messagingTemplate).convertAndSend(eq("/topic/chat/" + SESSION_ID), captor.capture());
-        assertThat(captor.getValue().getError()).isEqualTo("No matching condition found for decision node");
     }
 
     // ======================== Annotation Verification ========================

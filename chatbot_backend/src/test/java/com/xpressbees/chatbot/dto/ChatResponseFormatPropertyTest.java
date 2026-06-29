@@ -30,7 +30,7 @@ class ChatResponseFormatPropertyTest {
     void messageNodeResponseContainsRequiredFields(@ForAll("messageNodes") Map<String, Object> node,
                                                     @ForAll("sessionIds") String sessionId) {
         ChatSession session = createSession(sessionId);
-        NodeProcessingResult result = messageProcessor.process(node, session, placeholderService);
+        NodeProcessingResult result = messageProcessor.process(node, session, placeholderService, null);
 
         ChatResponse response = result.getResponse();
         assert response.getNode() != null : "Node field must not be null";
@@ -45,7 +45,7 @@ class ChatResponseFormatPropertyTest {
     void inputNodeResponseContainsRequiredFields(@ForAll("inputNodes") Map<String, Object> node,
                                                   @ForAll("sessionIds") String sessionId) {
         ChatSession session = createSession(sessionId);
-        NodeProcessingResult result = inputProcessor.process(node, session, placeholderService);
+        NodeProcessingResult result = inputProcessor.process(node, session, placeholderService, null);
 
         ChatResponse response = result.getResponse();
         assert response.getNode() != null : "Node field must not be null";
@@ -62,7 +62,7 @@ class ChatResponseFormatPropertyTest {
         ChatSession session = createSession("session-123");
         session.getContext().put("mobile_no", mobileNo);
 
-        NodeProcessingResult result = messageProcessor.process(node, session, placeholderService);
+        NodeProcessingResult result = messageProcessor.process(node, session, placeholderService, null);
 
         String responseText = result.getResponse().getResponse();
         assert !responseText.contains("{{mobile_no}}") :

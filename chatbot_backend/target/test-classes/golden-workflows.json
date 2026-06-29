@@ -1,0 +1,203 @@
+{
+  "description": "Golden workflow definitions for behavioral equivalence testing. Each scenario defines a workflow (or set of workflows), expected inputs, and the expected sequence of WebSocket messages produced by the orchestrator.",
+  "scenarios": [
+    {
+      "id": "linear-3-message",
+      "description": "Linear workflow: 3 message nodes → complete",
+      "workflows": {
+        "1": {
+          "id": 1,
+          "name": "Linear 3-Message Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "msg1", "name": "Hello", "type": "state", "config": null },
+              { "id": "msg2", "name": "How are you?", "type": "state", "config": null },
+              { "id": "msg3", "name": "Goodbye", "type": "state", "config": null }
+            ],
+            "transitions": [
+              { "sourceNodeId": "msg1", "targetNodeId": "msg2" },
+              { "sourceNodeId": "msg2", "targetNodeId": "msg3" }
+            ]
+          }
+        }
+      },
+      "startWorkflowId": 1,
+      "userInputs": [],
+      "expectedMessages": [
+        { "type": "ChatResponse", "response": "Hello", "completed": null },
+        { "type": "ChatResponse", "response": "How are you?", "completed": null },
+        { "type": "ChatResponse", "response": "Goodbye", "completed": null },
+        { "type": "ChatResponse", "response": "Goodbye", "completed": true }
+      ],
+      "expectedSessionStatus": "completed",
+      "note": "The orchestrator sends each CONTINUE response, plus a final completion response re-sending the last node's text with completed=true"
+    },
+    {
+      "id": "input-workflow",
+      "description": "Input workflow: message → input → message → complete",
+      "workflows": {
+        "2": {
+          "id": 2,
+          "name": "Input Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "msg1", "name": "Welcome!", "type": "state", "config": null },
+              { "id": "inp1", "name": "What is your name?", "type": "state", "config": { "nodeType": "input", "variableName": "userName" } },
+              { "id": "msg2", "name": "Thanks, {{userName}}!", "type": "state", "config": null }
+            ],
+            "transitions": [
+              { "sourceNodeId": "msg1", "targetNodeId": "inp1" },
+              { "sourceNodeId": "inp1", "targetNodeId": "msg2" }
+            ]
+          }
+        }
+      },
+      "startWorkflowId": 2,
+      "userInputs": ["Alice"],
+      "expectedMessages": [
+        { "type": "ChatResponse", "response": "Welcome!", "completed": null },
+        { "type": "ChatResponse", "response": "What is your name?", "completed": null },
+        { "type": "ChatResponse", "response": "Thanks, Alice!", "completed": true }
+      ],
+      "expectedSessionStatus": "completed"
+    },
+    {
+      "id": "branching-decision",
+      "description": "Branching workflow: message → decision → [branch A message | branch B message]",
+      "workflows": {
+        "3": {
+          "id": 3,
+          "name": "Branching Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "inp1", "name": "Pick a or b", "type": "state", "config": { "nodeType": "input", "variableName": "choice" } },
+              { "id": "dec1", "name": "Decision", "type": "decision", "config": null },
+              { "id": "msgA", "name": "You chose A", "type": "state", "config": null },
+              { "id": "msgB", "name": "You chose B", "type": "state", "config": null }
+            ],
+            "transitions": [
+              { "sourceNodeId": "inp1", "targetNodeId": "dec1" },
+              { "sourceNodeId": "dec1", "targetNodeId": "msgA", "condition": "choice == a" },
+              { "sourceNodeId": "dec1", "targetNodeId": "msgB", "condition": "choice == b" }
+            ]
+          }
+        }
+      },
+      "startWorkflowId": 3,
+      "userInputs": ["a"],
+      "expectedMessages": [
+        { "type": "ChatResponse", "response": "Pick a or b", "completed": null },
+        { "type": "ChatResponse", "response": "You chose A", "completed": true }
+      ],
+      "expectedSessionStatus": "completed",
+      "variants": [
+        {
+          "id": "branching-decision-B",
+          "userInputs": ["b"],
+          "expectedMessages": [
+            { "type": "ChatResponse", "response": "Pick a or b", "completed": null },
+            { "type": "ChatResponse", "response": "You chose B", "completed": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "api-node-workflow",
+      "description": "API node workflow: message → api (auto-advance, single transition) → message",
+      "workflows": {
+        "4": {
+          "id": 4,
+          "name": "API Node Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "msg1", "name": "Fetching data...", "type": "state", "config": null },
+              { "id": "api1", "name": "API Call", "type": "state", "config": { "nodeType": "api", "apiConfigId": "100" } },
+              { "id": "msg2", "name": "Data fetched!", "type": "state", "config": null }
+            ],
+            "transitions": [
+              { "sourceNodeId": "msg1", "targetNodeId": "api1" },
+              { "sourceNodeId": "api1", "targetNodeId": "msg2" }
+            ]
+          }
+        }
+      },
+      "startWorkflowId": 4,
+      "userInputs": [],
+      "apiConfigId": 100,
+      "expectedMessages": [
+        { "type": "ChatResponse", "response": "Fetching data...", "completed": null },
+        { "type": "ChatResponse", "response": "Data fetched!", "completed": true }
+      ],
+      "expectedSessionStatus": "completed"
+    },
+    {
+      "id": "nested-child-workflow",
+      "description": "Nested child workflow: parent(msg → workflow_node → msg_end), child(msg_child)",
+      "workflows": {
+        "5": {
+          "id": 5,
+          "name": "Parent Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "p_msg1", "name": "Parent start", "type": "state", "config": null },
+              { "id": "p_wf", "name": "Enter Child", "type": "state", "config": { "nodeType": "workflow", "workflowId": "6" } },
+              { "id": "p_msg2", "name": "Back in parent", "type": "state", "config": null }
+            ],
+            "transitions": [
+              { "sourceNodeId": "p_msg1", "targetNodeId": "p_wf" },
+              { "sourceNodeId": "p_wf", "targetNodeId": "p_msg2" }
+            ]
+          }
+        },
+        "6": {
+          "id": 6,
+          "name": "Child Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "c_msg1", "name": "Hello from child", "type": "state", "config": null }
+            ],
+            "transitions": [
+              { "sourceNodeId": "c_msg1", "targetNodeId": "nonexistent" }
+            ]
+          }
+        }
+      },
+      "startWorkflowId": 5,
+      "userInputs": [],
+      "expectedMessages": [
+        { "type": "ChatResponse", "response": "Parent start", "completed": null },
+        { "type": "ChatResponse", "response": "Hello from child", "completed": null },
+        { "type": "ChatResponse", "response": "Back in parent", "completed": null },
+        { "type": "ChatResponse", "response": "Back in parent", "completed": true }
+      ],
+      "expectedSessionStatus": "completed",
+      "note": "Child workflow completes and returns to parent; last node gets both CONTINUE and completion response"
+    },
+    {
+      "id": "error-missing-api-config",
+      "description": "Error case: API node references non-existent API config",
+      "workflows": {
+        "7": {
+          "id": 7,
+          "name": "Missing API Config Workflow",
+          "workflowJson": {
+            "nodes": [
+              { "id": "msg1", "name": "Starting...", "type": "state", "config": null },
+              { "id": "api1", "name": "Bad API Call", "type": "state", "config": { "nodeType": "api", "apiConfigId": "999" } }
+            ],
+            "transitions": [
+              { "sourceNodeId": "msg1", "targetNodeId": "api1" }
+            ]
+          }
+        }
+      },
+      "startWorkflowId": 7,
+      "userInputs": [],
+      "expectedMessages": [
+        { "type": "ChatResponse", "response": "Starting...", "completed": null },
+        { "type": "ChatErrorResponse", "error": "No API configuration found for ID: 999" }
+      ],
+      "expectedSessionStatus": "active"
+    }
+  ]
+}

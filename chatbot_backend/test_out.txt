@@ -1,0 +1,82 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.xpressbees:chatbot >-----------------------
+[INFO] Building chatbot 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ chatbot ---
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ chatbot ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 98 source files with javac [debug parameters release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ chatbot ---
+[INFO] Copying 5 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ chatbot ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 91 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/WorkflowCacheEvictionTest.java: e:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\WorkflowCacheEvictionTest.java uses unchecked or unsafe operations.
+[INFO] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/WorkflowCacheEvictionTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/RestClientPoolTest.java:[35,9] cannot access com.xpressbees.chatbot.service.RestClientPool
+  bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\RestClientPool.class
+    unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\RestClientPool.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/SessionSendBufferPropertyTest.java:[49,9] cannot access com.xpressbees.chatbot.service.SessionSendBuffer
+  bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\SessionSendBuffer.class
+    unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\SessionSendBuffer.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/StaleSessionCleanupPropertyTest.java:[64,9] cannot access com.xpressbees.chatbot.service.StaleSessionCleanupService
+  bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\StaleSessionCleanupService.class
+    unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\StaleSessionCleanupService.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/TestServiceFactory.java:[42,9] cannot access com.xpressbees.chatbot.service.ExecutionTracker
+  bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\ExecutionTracker.class
+    unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\ExecutionTracker.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/TestServiceFactory.java:[69,20] cannot access com.xpressbees.chatbot.service.BufferedMessageSenderImpl
+  bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\BufferedMessageSenderImpl.class
+    unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\BufferedMessageSenderImpl.class
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  01:35 min
+[INFO] Finished at: 2026-06-29T15:41:21+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:testCompile (default-testCompile) on project chatbot: Compilation failure: Compilation failure: 
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/RestClientPoolTest.java:[35,9] cannot access com.xpressbees.chatbot.service.RestClientPool
+[ERROR]   bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\RestClientPool.class
+[ERROR]     unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\RestClientPool.class
+[ERROR]     Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/SessionSendBufferPropertyTest.java:[49,9] cannot access com.xpressbees.chatbot.service.SessionSendBuffer
+[ERROR]   bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\SessionSendBuffer.class
+[ERROR]     unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\SessionSendBuffer.class
+[ERROR]     Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/StaleSessionCleanupPropertyTest.java:[64,9] cannot access com.xpressbees.chatbot.service.StaleSessionCleanupService
+[ERROR]   bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\StaleSessionCleanupService.class
+[ERROR]     unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\StaleSessionCleanupService.class
+[ERROR]     Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/TestServiceFactory.java:[42,9] cannot access com.xpressbees.chatbot.service.ExecutionTracker
+[ERROR]   bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\ExecutionTracker.class
+[ERROR]     unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\ExecutionTracker.class
+[ERROR]     Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] /e:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/TestServiceFactory.java:[69,20] cannot access com.xpressbees.chatbot.service.BufferedMessageSenderImpl
+[ERROR]   bad class file: e:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\BufferedMessageSenderImpl.class
+[ERROR]     unable to access file: java.nio.file.NoSuchFileException: E:\ChatBotWorkflow\chatbot_backend\target\classes\com\xpressbees\chatbot\service\BufferedMessageSenderImpl.class
+[ERROR]     Please remove or make sure it appears in the correct subdirectory of the classpath.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

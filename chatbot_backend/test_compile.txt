@@ -1,0 +1,29 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.xpressbees:chatbot >-----------------------
+[INFO] Building chatbot 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ chatbot ---
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ chatbot ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 98 source files with javac [debug parameters release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ chatbot ---
+[INFO] Copying 5 resources from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ chatbot ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 96 source files with javac [debug parameters release 17] to target\test-classes
+[INFO] /E:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/WorkflowCacheEvictionTest.java: E:\ChatBotWorkflow\chatbot_backend\src\test\java\com\xpressbees\chatbot\service\WorkflowCacheEvictionTest.java uses unchecked or unsafe operations.
+[INFO] /E:/ChatBotWorkflow/chatbot_backend/src/test/java/com/xpressbees/chatbot/service/WorkflowCacheEvictionTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  17.853 s
+[INFO] Finished at: 2026-06-29T16:38:31+05:30
+[INFO] ------------------------------------------------------------------------

@@ -47,7 +47,7 @@ class WorkflowNodeProcessorPropertyTest {
         session.setContext(new HashMap<>());
 
         // Call processor
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Assert result action is CONTINUE
         assert result.getAction() == NodeProcessingResult.Action.CONTINUE :

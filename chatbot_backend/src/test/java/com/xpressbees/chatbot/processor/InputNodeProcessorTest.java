@@ -56,7 +56,7 @@ class InputNodeProcessorTest {
         ChatSession session = createSession("session-1");
         Map<String, Object> node = createNode("node-1", "Enter your email", "email");
 
-        processor.process(node, session, placeholderService);
+        processor.process(node, session, placeholderService, null);
 
         assertEquals("email", session.getContext().get("_inputVariableName"));
     }
@@ -67,7 +67,7 @@ class InputNodeProcessorTest {
         ChatSession session = createSession("session-2");
         Map<String, Object> node = createNode("node-2", "Enter your order ID", "order_id");
 
-        processor.process(node, session, placeholderService);
+        processor.process(node, session, placeholderService, null);
 
         assertEquals("order_id", session.getContext().get("_inputVariableName"));
     }
@@ -78,7 +78,7 @@ class InputNodeProcessorTest {
         ChatSession session = createSession("session-3");
         Map<String, Object> node = createNode("node-abc", "Enter something", null);
 
-        processor.process(node, session, placeholderService);
+        processor.process(node, session, placeholderService, null);
 
         assertEquals("node-abc", session.getContext().get("_inputVariableName"));
     }
@@ -89,7 +89,7 @@ class InputNodeProcessorTest {
         ChatSession session = createSession("session-4");
         Map<String, Object> node = createNode("node-xyz", "Enter something", "");
 
-        processor.process(node, session, placeholderService);
+        processor.process(node, session, placeholderService, null);
 
         assertEquals("node-xyz", session.getContext().get("_inputVariableName"));
     }
@@ -100,7 +100,7 @@ class InputNodeProcessorTest {
         ChatSession session = createSession("session-5");
         Map<String, Object> node = createNode("node-ws", "Enter something", "   ");
 
-        processor.process(node, session, placeholderService);
+        processor.process(node, session, placeholderService, null);
 
         assertEquals("node-ws", session.getContext().get("_inputVariableName"));
     }
@@ -111,7 +111,7 @@ class InputNodeProcessorTest {
         ChatSession session = createSession("session-6");
         Map<String, Object> node = createNode("node-pause", "Please enter your name", "user_name");
 
-        NodeProcessingResult result = processor.process(node, session, placeholderService);
+        NodeProcessingResult result = processor.process(node, session, placeholderService, null);
 
         // Verify PAUSE action
         assertEquals(NodeProcessingResult.Action.PAUSE, result.getAction());

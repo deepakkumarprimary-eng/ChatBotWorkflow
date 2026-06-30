@@ -68,6 +68,7 @@ com\xpressbees\chatbot\service\ConnectionRegistryPropertyTest.class
 com\xpressbees\chatbot\service\DisconnectListenerTest.class
 com\xpressbees\chatbot\service\EncryptionServiceTest$NullInputHandling.class
 com\xpressbees\chatbot\dto\InputValidationPropertyTest.class
+com\xpressbees\chatbot\controller\ChatWebSocketControllerPreservationTest.class
 com\xpressbees\chatbot\service\CorrelationIdManagerPropertyTest.class
 com\xpressbees\chatbot\service\InputValidationServiceImplTest$FullValidationTests.class
 com\xpressbees\chatbot\service\ProcessorRegistryTest.class
@@ -99,6 +100,7 @@ com\xpressbees\chatbot\controller\ReconnectionControllerPropertyTest$SessionStat
 com\xpressbees\chatbot\config\CorsConfigTest$ConfigurationDetails.class
 com\xpressbees\chatbot\service\GracefulShutdownListenerTest$ShutdownInitiation.class
 com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest$TransitionScenarioWithTrueIndices.class
+com\xpressbees\chatbot\controller\ChatWebSocketControllerTest.class
 com\xpressbees\chatbot\integration\WebSocketStompIntegrationTest$1.class
 com\xpressbees\chatbot\service\InactivityDetectionPropertyTest.class
 com\xpressbees\chatbot\service\UrlValidatorTest.class
@@ -156,6 +158,7 @@ com\xpressbees\chatbot\processor\ApiNodeProcessorBehaviorPropertyTest$Transition
 com\xpressbees\chatbot\service\InputNodePreservationPropertyTest.class
 com\xpressbees\chatbot\service\ConditionEvaluatorExtendedPropertyTest.class
 com\xpressbees\chatbot\config\ConnectionLimitInterceptorTest.class
+com\xpressbees\chatbot\controller\ChatWebSocketControllerExceptionHandlerTest.class
 com\xpressbees\chatbot\service\HttpExecutorRetryPropertyTest$3.class
 com\xpressbees\chatbot\service\CorrelationIdManagerTest$Lifecycle.class
 com\xpressbees\chatbot\service\UrlValidatorTest$AllowlistMatching.class

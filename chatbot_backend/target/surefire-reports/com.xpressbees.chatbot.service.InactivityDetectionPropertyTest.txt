@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.xpressbees.chatbot.service.InactivityDetectionPropertyTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.36 s -- in com.xpressbees.chatbot.service.InactivityDetectionPropertyTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.54 s -- in com.xpressbees.chatbot.service.InactivityDetectionPropertyTest

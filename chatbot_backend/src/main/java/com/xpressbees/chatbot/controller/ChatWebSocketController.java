@@ -3,9 +3,12 @@ package com.xpressbees.chatbot.controller;
 import com.xpressbees.chatbot.dto.ChatBackRequest;
 import com.xpressbees.chatbot.dto.ChatMessageRequest;
 import com.xpressbees.chatbot.dto.ChatStartRequest;
+import com.xpressbees.chatbot.service.BufferedMessageSender;
 import com.xpressbees.chatbot.service.ConnectionRegistry;
 import com.xpressbees.chatbot.service.WorkflowExecutionService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -14,13 +17,18 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatWebSocketController {
 
+    private static final Logger log = LoggerFactory.getLogger(ChatWebSocketController.class);
+
     private final WorkflowExecutionService workflowExecutionService;
     private final ConnectionRegistry connectionRegistry;
+    private final BufferedMessageSender bufferedMessageSender;
 
     public ChatWebSocketController(WorkflowExecutionService workflowExecutionService,
-                                   ConnectionRegistry connectionRegistry) {
+                                   ConnectionRegistry connectionRegistry,
+                                   BufferedMessageSender bufferedMessageSender) {
         this.workflowExecutionService = workflowExecutionService;
         this.connectionRegistry = connectionRegistry;
+        this.bufferedMessageSender = bufferedMessageSender;
     }
 
     @MessageMapping("/chat.start")
@@ -54,6 +62,21 @@ public class ChatWebSocketController {
 
     @MessageExceptionHandler
     public void handleException(Exception ex, SimpMessageHeaderAccessor headerAccessor) {
-        // Errors are handled in the service layer via sendError
+        String stompSessionId = headerAccessor.getSessionId();
+        String applicationSessionId = null;
+
+        if (stompSessionId != null) {
+            applicationSessionId = connectionRegistry.getApplicationSessionId(stompSessionId);
+        }
+
+        log.error("Unhandled exception in WebSocket handler: sessionId={}, stompSessionId={}, error={}",
+                applicationSessionId != null ? applicationSessionId : "unknown",
+                stompSessionId != null ? stompSessionId : "unknown",
+                ex.getMessage(),
+                ex);
+
+        if (applicationSessionId != null) {
+            bufferedMessageSender.sendError(applicationSessionId, "An unexpected error occurred");
+        }
     }
 }
